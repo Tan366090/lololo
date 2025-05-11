@@ -1,0 +1,1155 @@
+[2025-05-11 18:26:43] Starting Payroll API Tests
+[2025-05-11 18:26:43] ========================================
+
+[2025-05-11 18:26:43] Testing GET /payroll.php
+[2025-05-11 18:26:43] Status Code: 200
+Error: JSON decode error: Syntax error
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> GET /qlnhansu_V3/backend/src/public/admin/api/payroll.php HTTP/1.1
+Host: localhost
+Accept: */*
+Accept-Encoding: deflate, gzip
+
+< HTTP/1.1 200 OK
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Transfer-Encoding: chunked
+< Content-Type: application/json
+< 
+* Connection #0 to host localhost left intact
+
+Raw Response:
+ {"success":true,"data":[{"id":7366,"employee":{"id":1,"code":"EMP-ADM-001","name":"L\u00ea Kh\u00e1nh Duy","department":"IT","position":"IT Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7366-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024"},{"id":7367,"employee":{"id":2,"code":"EMP-MGR-IT-002","name":"Tr\u1ea7n H\u1ea3i \u0110\u0103ng","department":"IT","position":"Senior Developer"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7367-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024"},{"id":7368,"employee":{"id":3,"code":"EMP-HR-003","name":"Tr\u1ea7n T\u1ea5n \u0110\u1ea1t","department":"HR","position":"HR Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7368-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024"},{"id":7369,"employee":{"id":4,"code":"EMP-IT-004","name":"V\u00f5 V\u0103n Hi\u1ebfu","department":"IT","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7369-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024"},{"id":7370,"employee":{"id":5,"code":"EMP-IT-005","name":"Nguy\u1ec5n Thanh To\u00e0n","department":"IT","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7370-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024"},{"id":7371,"employee":{"id":6,"code":"EMP-HR-006","name":"Tr\u1ea7n V\u0103n L\u1ed9c","department":"HR","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7371-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024"},{"id":7372,"employee":{"id":7,"code":"EMP-FIN-007","name":"L\u01b0u ph\u00fac L\u1ed9c","department":"Finance","position":"Finance Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7372-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024"},{"id":7373,"employee":{"id":8,"code":"EMP-MKT-008","name":"Nguy\u1ec5n Minh Minh","department":"Marketing","position":"Marketing Director"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7373-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024"},{"id":7374,"employee":{"id":9,"code":"EMP-SLS-009","name":"\u0110\u1eb7ng Thanh Phong","department":"Sales","position":"Sales Executive"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7374-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024"},{"id":7375,"employee":{"id":10,"code":"EMP-OPT-010","name":"D\u01b0\u01a1ng H\u1eefu Nh\u1edd","department":"Operations","position":"Operations Lead"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7375-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024"}],"totalItems":160,"currentPage":1,"totalPages":16}{"success":true,"data":{"items":[{"id":7366,"employee":{"id":1,"code":"EMP-ADM-001","name":"L\u00ea Kh\u00e1nh Duy","department":"IT","position":"IT Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7366-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":121,"payroll_id":7366,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7367,"employee":{"id":2,"code":"EMP-MGR-IT-002","name":"Tr\u1ea7n H\u1ea3i \u0110\u0103ng","department":"IT","position":"Senior Developer"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7367-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":122,"payroll_id":7367,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7368,"employee":{"id":3,"code":"EMP-HR-003","name":"Tr\u1ea7n T\u1ea5n \u0110\u1ea1t","department":"HR","position":"HR Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7368-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":123,"payroll_id":7368,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7369,"employee":{"id":4,"code":"EMP-IT-004","name":"V\u00f5 V\u0103n Hi\u1ebfu","department":"IT","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7369-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":124,"payroll_id":7369,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7370,"employee":{"id":5,"code":"EMP-IT-005","name":"Nguy\u1ec5n Thanh To\u00e0n","department":"IT","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7370-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":125,"payroll_id":7370,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7371,"employee":{"id":6,"code":"EMP-HR-006","name":"Tr\u1ea7n V\u0103n L\u1ed9c","department":"HR","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7371-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":126,"payroll_id":7371,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7372,"employee":{"id":7,"code":"EMP-FIN-007","name":"L\u01b0u ph\u00fac L\u1ed9c","department":"Finance","position":"Finance Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7372-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":127,"payroll_id":7372,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7373,"employee":{"id":8,"code":"EMP-MKT-008","name":"Nguy\u1ec5n Minh Minh","department":"Marketing","position":"Marketing Director"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7373-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":128,"payroll_id":7373,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7374,"employee":{"id":9,"code":"EMP-SLS-009","name":"\u0110\u1eb7ng Thanh Phong","department":"Sales","position":"Sales Executive"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7374-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":129,"payroll_id":7374,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7375,"employee":{"id":10,"code":"EMP-OPT-010","name":"D\u01b0\u01a1ng H\u1eefu Nh\u1edd","department":"Operations","position":"Operations Lead"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7375-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":130,"payroll_id":7375,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]}],"pagination":{"total":160,"page":1,"per_page":10,"total_pages":16}}} 
+
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing GET /payroll.php?action=getById&id=1
+[2025-05-11 18:26:43] Status Code: 404
+Error: JSON decode error: Syntax error
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> GET /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getById&id=1 HTTP/1.1
+Host: localhost
+Accept: */*
+Accept-Encoding: deflate, gzip
+
+< HTTP/1.1 404 Not Found
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Content-Length: 177
+< Content-Type: application/json
+< 
+* Connection #0 to host localhost left intact
+
+Raw Response:
+ {"success":false,"message":"Kh\u00f4ng t\u00ecm th\u1ea5y phi\u1ebfu l\u01b0\u01a1ng"}{"success":false,"message":"Kh\u00f4ng t\u00ecm th\u1ea5y th\u00f4ng tin l\u01b0\u01a1ng"}
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing GET /payroll.php?action=years
+[2025-05-11 18:26:43] Status Code: 200
+Error: JSON decode error: Syntax error
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> GET /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=years HTTP/1.1
+Host: localhost
+Accept: */*
+Accept-Encoding: deflate, gzip
+
+< HTTP/1.1 200 OK
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Transfer-Encoding: chunked
+< Content-Type: application/json
+< 
+* Connection #0 to host localhost left intact
+
+Raw Response:
+ {"success":true,"data":[2024,2023]}{"success":true,"data":{"items":[{"id":7366,"employee":{"id":1,"code":"EMP-ADM-001","name":"L\u00ea Kh\u00e1nh Duy","department":"IT","position":"IT Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7366-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":121,"payroll_id":7366,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7367,"employee":{"id":2,"code":"EMP-MGR-IT-002","name":"Tr\u1ea7n H\u1ea3i \u0110\u0103ng","department":"IT","position":"Senior Developer"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7367-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":122,"payroll_id":7367,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7368,"employee":{"id":3,"code":"EMP-HR-003","name":"Tr\u1ea7n T\u1ea5n \u0110\u1ea1t","department":"HR","position":"HR Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7368-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":123,"payroll_id":7368,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7369,"employee":{"id":4,"code":"EMP-IT-004","name":"V\u00f5 V\u0103n Hi\u1ebfu","department":"IT","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7369-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":124,"payroll_id":7369,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7370,"employee":{"id":5,"code":"EMP-IT-005","name":"Nguy\u1ec5n Thanh To\u00e0n","department":"IT","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7370-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":125,"payroll_id":7370,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7371,"employee":{"id":6,"code":"EMP-HR-006","name":"Tr\u1ea7n V\u0103n L\u1ed9c","department":"HR","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7371-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":126,"payroll_id":7371,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7372,"employee":{"id":7,"code":"EMP-FIN-007","name":"L\u01b0u ph\u00fac L\u1ed9c","department":"Finance","position":"Finance Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7372-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":127,"payroll_id":7372,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7373,"employee":{"id":8,"code":"EMP-MKT-008","name":"Nguy\u1ec5n Minh Minh","department":"Marketing","position":"Marketing Director"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7373-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":128,"payroll_id":7373,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7374,"employee":{"id":9,"code":"EMP-SLS-009","name":"\u0110\u1eb7ng Thanh Phong","department":"Sales","position":"Sales Executive"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7374-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":129,"payroll_id":7374,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7375,"employee":{"id":10,"code":"EMP-OPT-010","name":"D\u01b0\u01a1ng H\u1eefu Nh\u1edd","department":"Operations","position":"Operations Lead"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7375-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":130,"payroll_id":7375,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]}],"pagination":{"total":160,"page":1,"per_page":10,"total_pages":16}}} 
+
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing GET /payroll.php?action=components
+[2025-05-11 18:26:43] Status Code: 200
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> GET /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=components HTTP/1.1
+Host: localhost
+Accept: */*
+Accept-Encoding: deflate, gzip
+
+< HTTP/1.1 200 OK
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Transfer-Encoding: chunked
+< Content-Type: application/json
+< 
+* Connection #0 to host localhost left intact
+
+Response:
+{
+    "success": true,
+    "data": {
+        "items": [
+            {
+                "id": 7366,
+                "employee": {
+                    "id": 1,
+                    "code": "EMP-ADM-001",
+                    "name": "L\u00ea Kh\u00e1nh Duy",
+                    "department": "IT",
+                    "position": "IT Manager"
+                },
+                "period": {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "month": "01\/2024",
+                    "work_days": "22.0"
+                },
+                "salary": {
+                    "base": "27.500.000",
+                    "allowances": "2.750.000",
+                    "bonuses": "1.375.000",
+                    "deductions": "0",
+                    "gross": "31.625.000",
+                    "tax": "3.162.500",
+                    "insurance": "3.320.625",
+                    "net": "25.141.875"
+                },
+                "payment": {
+                    "date": "2025-04-30",
+                    "method": "bank_transfer",
+                    "method_text": "Chuy\u1ec3n kho\u1ea3n",
+                    "reference": "PAY-7366-20250430"
+                },
+                "status": {
+                    "code": "paid",
+                    "text": "\u0110\u00e3 thanh to\u00e1n"
+                },
+                "created_by": {
+                    "id": 1,
+                    "username": "admin",
+                    "email": "admin@company.com"
+                },
+                "created_at": "2025-04-30 21:31:37",
+                "notes": "L\u01b0\u01a1ng th\u00e1ng 01\/2024",
+                "details": {
+                    "allowances": [],
+                    "bonuses": [],
+                    "deductions": []
+                },
+                "approvals": [
+                    {
+                        "approval_id": 121,
+                        "payroll_id": 7366,
+                        "approver_id": 1,
+                        "approval_level": 1,
+                        "status": "approved",
+                        "comments": null,
+                        "approved_at": "2025-04-30 21:31:37",
+                        "created_at": "2025-05-05 14:04:19",
+                        "approver_name": "admin"
+                    }
+                ]
+            },
+            {
+                "id": 7367,
+                "employee": {
+                    "id": 2,
+                    "code": "EMP-MGR-IT-002",
+                    "name": "Tr\u1ea7n H\u1ea3i \u0110\u0103ng",
+                    "department": "IT",
+                    "position": "Senior Developer"
+                },
+                "period": {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "month": "01\/2024",
+                    "work_days": "22.0"
+                },
+                "salary": {
+                    "base": "27.500.000",
+                    "allowances": "2.750.000",
+                    "bonuses": "1.375.000",
+                    "deductions": "0",
+                    "gross": "31.625.000",
+                    "tax": "3.162.500",
+                    "insurance": "3.320.625",
+                    "net": "25.141.875"
+                },
+                "payment": {
+                    "date": "2025-04-30",
+                    "method": "bank_transfer",
+                    "method_text": "Chuy\u1ec3n kho\u1ea3n",
+                    "reference": "PAY-7367-20250430"
+                },
+                "status": {
+                    "code": "paid",
+                    "text": "\u0110\u00e3 thanh to\u00e1n"
+                },
+                "created_by": {
+                    "id": 1,
+                    "username": "admin",
+                    "email": "admin@company.com"
+                },
+                "created_at": "2025-04-30 21:31:37",
+                "notes": "L\u01b0\u01a1ng th\u00e1ng 01\/2024",
+                "details": {
+                    "allowances": [],
+                    "bonuses": [],
+                    "deductions": []
+                },
+                "approvals": [
+                    {
+                        "approval_id": 122,
+                        "payroll_id": 7367,
+                        "approver_id": 1,
+                        "approval_level": 1,
+                        "status": "approved",
+                        "comments": null,
+                        "approved_at": "2025-04-30 21:31:37",
+                        "created_at": "2025-05-05 14:04:19",
+                        "approver_name": "admin"
+                    }
+                ]
+            },
+            {
+                "id": 7368,
+                "employee": {
+                    "id": 3,
+                    "code": "EMP-HR-003",
+                    "name": "Tr\u1ea7n T\u1ea5n \u0110\u1ea1t",
+                    "department": "HR",
+                    "position": "HR Manager"
+                },
+                "period": {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "month": "01\/2024",
+                    "work_days": "22.0"
+                },
+                "salary": {
+                    "base": "27.500.000",
+                    "allowances": "2.750.000",
+                    "bonuses": "1.375.000",
+                    "deductions": "0",
+                    "gross": "31.625.000",
+                    "tax": "3.162.500",
+                    "insurance": "3.320.625",
+                    "net": "25.141.875"
+                },
+                "payment": {
+                    "date": "2025-04-30",
+                    "method": "bank_transfer",
+                    "method_text": "Chuy\u1ec3n kho\u1ea3n",
+                    "reference": "PAY-7368-20250430"
+                },
+                "status": {
+                    "code": "paid",
+                    "text": "\u0110\u00e3 thanh to\u00e1n"
+                },
+                "created_by": {
+                    "id": 1,
+                    "username": "admin",
+                    "email": "admin@company.com"
+                },
+                "created_at": "2025-04-30 21:31:37",
+                "notes": "L\u01b0\u01a1ng th\u00e1ng 01\/2024",
+                "details": {
+                    "allowances": [],
+                    "bonuses": [],
+                    "deductions": []
+                },
+                "approvals": [
+                    {
+                        "approval_id": 123,
+                        "payroll_id": 7368,
+                        "approver_id": 1,
+                        "approval_level": 1,
+                        "status": "approved",
+                        "comments": null,
+                        "approved_at": "2025-04-30 21:31:37",
+                        "created_at": "2025-05-05 14:04:19",
+                        "approver_name": "admin"
+                    }
+                ]
+            },
+            {
+                "id": 7369,
+                "employee": {
+                    "id": 4,
+                    "code": "EMP-IT-004",
+                    "name": "V\u00f5 V\u0103n Hi\u1ebfu",
+                    "department": "IT",
+                    "position": "Recruiter"
+                },
+                "period": {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "month": "01\/2024",
+                    "work_days": "22.0"
+                },
+                "salary": {
+                    "base": "27.500.000",
+                    "allowances": "2.750.000",
+                    "bonuses": "1.375.000",
+                    "deductions": "0",
+                    "gross": "31.625.000",
+                    "tax": "3.162.500",
+                    "insurance": "3.320.625",
+                    "net": "25.141.875"
+                },
+                "payment": {
+                    "date": "2025-04-30",
+                    "method": "bank_transfer",
+                    "method_text": "Chuy\u1ec3n kho\u1ea3n",
+                    "reference": "PAY-7369-20250430"
+                },
+                "status": {
+                    "code": "paid",
+                    "text": "\u0110\u00e3 thanh to\u00e1n"
+                },
+                "created_by": {
+                    "id": 1,
+                    "username": "admin",
+                    "email": "admin@company.com"
+                },
+                "created_at": "2025-04-30 21:31:37",
+                "notes": "L\u01b0\u01a1ng th\u00e1ng 01\/2024",
+                "details": {
+                    "allowances": [],
+                    "bonuses": [],
+                    "deductions": []
+                },
+                "approvals": [
+                    {
+                        "approval_id": 124,
+                        "payroll_id": 7369,
+                        "approver_id": 1,
+                        "approval_level": 1,
+                        "status": "approved",
+                        "comments": null,
+                        "approved_at": "2025-04-30 21:31:37",
+                        "created_at": "2025-05-05 14:04:19",
+                        "approver_name": "admin"
+                    }
+                ]
+            },
+            {
+                "id": 7370,
+                "employee": {
+                    "id": 5,
+                    "code": "EMP-IT-005",
+                    "name": "Nguy\u1ec5n Thanh To\u00e0n",
+                    "department": "IT",
+                    "position": "Recruiter"
+                },
+                "period": {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "month": "01\/2024",
+                    "work_days": "22.0"
+                },
+                "salary": {
+                    "base": "27.500.000",
+                    "allowances": "2.750.000",
+                    "bonuses": "1.375.000",
+                    "deductions": "0",
+                    "gross": "31.625.000",
+                    "tax": "3.162.500",
+                    "insurance": "3.320.625",
+                    "net": "25.141.875"
+                },
+                "payment": {
+                    "date": "2025-04-30",
+                    "method": "bank_transfer",
+                    "method_text": "Chuy\u1ec3n kho\u1ea3n",
+                    "reference": "PAY-7370-20250430"
+                },
+                "status": {
+                    "code": "paid",
+                    "text": "\u0110\u00e3 thanh to\u00e1n"
+                },
+                "created_by": {
+                    "id": 1,
+                    "username": "admin",
+                    "email": "admin@company.com"
+                },
+                "created_at": "2025-04-30 21:31:37",
+                "notes": "L\u01b0\u01a1ng th\u00e1ng 01\/2024",
+                "details": {
+                    "allowances": [],
+                    "bonuses": [],
+                    "deductions": []
+                },
+                "approvals": [
+                    {
+                        "approval_id": 125,
+                        "payroll_id": 7370,
+                        "approver_id": 1,
+                        "approval_level": 1,
+                        "status": "approved",
+                        "comments": null,
+                        "approved_at": "2025-04-30 21:31:37",
+                        "created_at": "2025-05-05 14:04:19",
+                        "approver_name": "admin"
+                    }
+                ]
+            },
+            {
+                "id": 7371,
+                "employee": {
+                    "id": 6,
+                    "code": "EMP-HR-006",
+                    "name": "Tr\u1ea7n V\u0103n L\u1ed9c",
+                    "department": "HR",
+                    "position": "Recruiter"
+                },
+                "period": {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "month": "01\/2024",
+                    "work_days": "22.0"
+                },
+                "salary": {
+                    "base": "27.500.000",
+                    "allowances": "2.750.000",
+                    "bonuses": "1.375.000",
+                    "deductions": "0",
+                    "gross": "31.625.000",
+                    "tax": "3.162.500",
+                    "insurance": "3.320.625",
+                    "net": "25.141.875"
+                },
+                "payment": {
+                    "date": "2025-04-30",
+                    "method": "bank_transfer",
+                    "method_text": "Chuy\u1ec3n kho\u1ea3n",
+                    "reference": "PAY-7371-20250430"
+                },
+                "status": {
+                    "code": "paid",
+                    "text": "\u0110\u00e3 thanh to\u00e1n"
+                },
+                "created_by": {
+                    "id": 1,
+                    "username": "admin",
+                    "email": "admin@company.com"
+                },
+                "created_at": "2025-04-30 21:31:37",
+                "notes": "L\u01b0\u01a1ng th\u00e1ng 01\/2024",
+                "details": {
+                    "allowances": [],
+                    "bonuses": [],
+                    "deductions": []
+                },
+                "approvals": [
+                    {
+                        "approval_id": 126,
+                        "payroll_id": 7371,
+                        "approver_id": 1,
+                        "approval_level": 1,
+                        "status": "approved",
+                        "comments": null,
+                        "approved_at": "2025-04-30 21:31:37",
+                        "created_at": "2025-05-05 14:04:19",
+                        "approver_name": "admin"
+                    }
+                ]
+            },
+            {
+                "id": 7372,
+                "employee": {
+                    "id": 7,
+                    "code": "EMP-FIN-007",
+                    "name": "L\u01b0u ph\u00fac L\u1ed9c",
+                    "department": "Finance",
+                    "position": "Finance Manager"
+                },
+                "period": {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "month": "01\/2024",
+                    "work_days": "22.0"
+                },
+                "salary": {
+                    "base": "27.500.000",
+                    "allowances": "2.750.000",
+                    "bonuses": "1.375.000",
+                    "deductions": "0",
+                    "gross": "31.625.000",
+                    "tax": "3.162.500",
+                    "insurance": "3.320.625",
+                    "net": "25.141.875"
+                },
+                "payment": {
+                    "date": "2025-04-30",
+                    "method": "bank_transfer",
+                    "method_text": "Chuy\u1ec3n kho\u1ea3n",
+                    "reference": "PAY-7372-20250430"
+                },
+                "status": {
+                    "code": "paid",
+                    "text": "\u0110\u00e3 thanh to\u00e1n"
+                },
+                "created_by": {
+                    "id": 1,
+                    "username": "admin",
+                    "email": "admin@company.com"
+                },
+                "created_at": "2025-04-30 21:31:37",
+                "notes": "L\u01b0\u01a1ng th\u00e1ng 01\/2024",
+                "details": {
+                    "allowances": [],
+                    "bonuses": [],
+                    "deductions": []
+                },
+                "approvals": [
+                    {
+                        "approval_id": 127,
+                        "payroll_id": 7372,
+                        "approver_id": 1,
+                        "approval_level": 1,
+                        "status": "approved",
+                        "comments": null,
+                        "approved_at": "2025-04-30 21:31:37",
+                        "created_at": "2025-05-05 14:04:19",
+                        "approver_name": "admin"
+                    }
+                ]
+            },
+            {
+                "id": 7373,
+                "employee": {
+                    "id": 8,
+                    "code": "EMP-MKT-008",
+                    "name": "Nguy\u1ec5n Minh Minh",
+                    "department": "Marketing",
+                    "position": "Marketing Director"
+                },
+                "period": {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "month": "01\/2024",
+                    "work_days": "22.0"
+                },
+                "salary": {
+                    "base": "27.500.000",
+                    "allowances": "2.750.000",
+                    "bonuses": "1.375.000",
+                    "deductions": "0",
+                    "gross": "31.625.000",
+                    "tax": "3.162.500",
+                    "insurance": "3.320.625",
+                    "net": "25.141.875"
+                },
+                "payment": {
+                    "date": "2025-04-30",
+                    "method": "bank_transfer",
+                    "method_text": "Chuy\u1ec3n kho\u1ea3n",
+                    "reference": "PAY-7373-20250430"
+                },
+                "status": {
+                    "code": "paid",
+                    "text": "\u0110\u00e3 thanh to\u00e1n"
+                },
+                "created_by": {
+                    "id": 1,
+                    "username": "admin",
+                    "email": "admin@company.com"
+                },
+                "created_at": "2025-04-30 21:31:37",
+                "notes": "L\u01b0\u01a1ng th\u00e1ng 01\/2024",
+                "details": {
+                    "allowances": [],
+                    "bonuses": [],
+                    "deductions": []
+                },
+                "approvals": [
+                    {
+                        "approval_id": 128,
+                        "payroll_id": 7373,
+                        "approver_id": 1,
+                        "approval_level": 1,
+                        "status": "approved",
+                        "comments": null,
+                        "approved_at": "2025-04-30 21:31:37",
+                        "created_at": "2025-05-05 14:04:19",
+                        "approver_name": "admin"
+                    }
+                ]
+            },
+            {
+                "id": 7374,
+                "employee": {
+                    "id": 9,
+                    "code": "EMP-SLS-009",
+                    "name": "\u0110\u1eb7ng Thanh Phong",
+                    "department": "Sales",
+                    "position": "Sales Executive"
+                },
+                "period": {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "month": "01\/2024",
+                    "work_days": "22.0"
+                },
+                "salary": {
+                    "base": "27.500.000",
+                    "allowances": "2.750.000",
+                    "bonuses": "1.375.000",
+                    "deductions": "0",
+                    "gross": "31.625.000",
+                    "tax": "3.162.500",
+                    "insurance": "3.320.625",
+                    "net": "25.141.875"
+                },
+                "payment": {
+                    "date": "2025-04-30",
+                    "method": "bank_transfer",
+                    "method_text": "Chuy\u1ec3n kho\u1ea3n",
+                    "reference": "PAY-7374-20250430"
+                },
+                "status": {
+                    "code": "paid",
+                    "text": "\u0110\u00e3 thanh to\u00e1n"
+                },
+                "created_by": {
+                    "id": 1,
+                    "username": "admin",
+                    "email": "admin@company.com"
+                },
+                "created_at": "2025-04-30 21:31:37",
+                "notes": "L\u01b0\u01a1ng th\u00e1ng 01\/2024",
+                "details": {
+                    "allowances": [],
+                    "bonuses": [],
+                    "deductions": []
+                },
+                "approvals": [
+                    {
+                        "approval_id": 129,
+                        "payroll_id": 7374,
+                        "approver_id": 1,
+                        "approval_level": 1,
+                        "status": "approved",
+                        "comments": null,
+                        "approved_at": "2025-04-30 21:31:37",
+                        "created_at": "2025-05-05 14:04:19",
+                        "approver_name": "admin"
+                    }
+                ]
+            },
+            {
+                "id": 7375,
+                "employee": {
+                    "id": 10,
+                    "code": "EMP-OPT-010",
+                    "name": "D\u01b0\u01a1ng H\u1eefu Nh\u1edd",
+                    "department": "Operations",
+                    "position": "Operations Lead"
+                },
+                "period": {
+                    "start": "2024-01-01",
+                    "end": "2024-01-31",
+                    "month": "01\/2024",
+                    "work_days": "22.0"
+                },
+                "salary": {
+                    "base": "27.500.000",
+                    "allowances": "2.750.000",
+                    "bonuses": "1.375.000",
+                    "deductions": "0",
+                    "gross": "31.625.000",
+                    "tax": "3.162.500",
+                    "insurance": "3.320.625",
+                    "net": "25.141.875"
+                },
+                "payment": {
+                    "date": "2025-04-30",
+                    "method": "bank_transfer",
+                    "method_text": "Chuy\u1ec3n kho\u1ea3n",
+                    "reference": "PAY-7375-20250430"
+                },
+                "status": {
+                    "code": "paid",
+                    "text": "\u0110\u00e3 thanh to\u00e1n"
+                },
+                "created_by": {
+                    "id": 1,
+                    "username": "admin",
+                    "email": "admin@company.com"
+                },
+                "created_at": "2025-04-30 21:31:37",
+                "notes": "L\u01b0\u01a1ng th\u00e1ng 01\/2024",
+                "details": {
+                    "allowances": [],
+                    "bonuses": [],
+                    "deductions": []
+                },
+                "approvals": [
+                    {
+                        "approval_id": 130,
+                        "payroll_id": 7375,
+                        "approver_id": 1,
+                        "approval_level": 1,
+                        "status": "approved",
+                        "comments": null,
+                        "approved_at": "2025-04-30 21:31:37",
+                        "created_at": "2025-05-05 14:04:19",
+                        "approver_name": "admin"
+                    }
+                ]
+            }
+        ],
+        "pagination": {
+            "total": 160,
+            "page": 1,
+            "per_page": 10,
+            "total_pages": 16
+        }
+    }
+}
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing GET /payroll.php?action=approval-history&id=1
+[2025-05-11 18:26:43] Status Code: 500
+Error: JSON decode error: Syntax error
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> GET /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=approval-history&id=1 HTTP/1.1
+Host: localhost
+Accept: */*
+Accept-Encoding: deflate, gzip
+
+< HTTP/1.1 500 Internal Server Error
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Connection: close
+< Transfer-Encoding: chunked
+< Content-Type: application/json
+< 
+* Closing connection
+
+Raw Response:
+ {"success":false,"message":"SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.full_name' in 'field list'"}{"success":true,"data":{"items":[{"id":7366,"employee":{"id":1,"code":"EMP-ADM-001","name":"L\u00ea Kh\u00e1nh Duy","department":"IT","position":"IT Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7366-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":121,"payroll_id":7366,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7367,"employee":{"id":2,"code":"EMP-MGR-IT-002","name":"Tr\u1ea7n H\u1ea3i \u0110\u0103ng","department":"IT","position":"Senior Developer"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7367-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":122,"payroll_id":7367,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7368,"employee":{"id":3,"code":"EMP-HR-003","name":"Tr\u1ea7n T\u1ea5n \u0110\u1ea1t","department":"HR","position":"HR Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7368-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":123,"payroll_id":7368,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7369,"employee":{"id":4,"code":"EMP-IT-004","name":"V\u00f5 V\u0103n Hi\u1ebfu","department":"IT","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7369-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":124,"payroll_id":7369,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7370,"employee":{"id":5,"code":"EMP-IT-005","name":"Nguy\u1ec5n Thanh To\u00e0n","department":"IT","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7370-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":125,"payroll_id":7370,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7371,"employee":{"id":6,"code":"EMP-HR-006","name":"Tr\u1ea7n V\u0103n L\u1ed9c","department":"HR","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7371-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":126,"payroll_id":7371,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7372,"employee":{"id":7,"code":"EMP-FIN-007","name":"L\u01b0u ph\u00fac L\u1ed9c","department":"Finance","position":"Finance Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7372-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":127,"payroll_id":7372,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7373,"employee":{"id":8,"code":"EMP-MKT-008","name":"Nguy\u1ec5n Minh Minh","department":"Marketing","position":"Marketing Director"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7373-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":128,"payroll_id":7373,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7374,"employee":{"id":9,"code":"EMP-SLS-009","name":"\u0110\u1eb7ng Thanh Phong","department":"Sales","position":"Sales Executive"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7374-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":129,"payroll_id":7374,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7375,"employee":{"id":10,"code":"EMP-OPT-010","name":"D\u01b0\u01a1ng H\u1eefu Nh\u1edd","department":"Operations","position":"Operations Lead"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7375-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":130,"payroll_id":7375,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]}],"pagination":{"total":160,"page":1,"per_page":10,"total_pages":16}}} 
+
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing GET /payroll.php?action=calculate
+[2025-05-11 18:26:43] Status Code: 400
+Error: JSON decode error: Syntax error
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> GET /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=calculate&employee_id=1&start_date=2025-05-11&end_date=2025-06-11 HTTP/1.1
+Host: localhost
+Accept: */*
+Accept-Encoding: deflate, gzip
+
+< HTTP/1.1 400 Bad Request
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Content-Length: 248
+< Connection: close
+< Content-Type: application/json
+< 
+* Closing connection
+
+Raw Response:
+ {"success":false,"message":"L\u1ed7i t\u00ednh l\u01b0\u01a1ng: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date' in 'where clause'"}{"success":true,"data":{"items":[],"pagination":{"total":0,"page":1,"per_page":10,"total_pages":0}}} 
+
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing GET /payroll.php?action=department-report
+[2025-05-11 18:26:43] Status Code: 400
+Error: JSON decode error: Syntax error
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> GET /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=department-report&department_id=1&month=05&year=2025 HTTP/1.1
+Host: localhost
+Accept: */*
+Accept-Encoding: deflate, gzip
+
+< HTTP/1.1 400 Bad Request
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Connection: close
+< Transfer-Encoding: chunked
+< Content-Type: application/json
+< 
+* Closing connection
+
+Raw Response:
+ {"success":false,"message":"L\u1ed7i xu\u1ea5t b\u00e1o c\u00e1o: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.code' in 'field list'"}{"success":true,"data":{"items":[{"id":7366,"employee":{"id":1,"code":"EMP-ADM-001","name":"L\u00ea Kh\u00e1nh Duy","department":"IT","position":"IT Manager"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7366-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":121,"payroll_id":7366,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7376,"employee":{"id":1,"code":"EMP-ADM-001","name":"L\u00ea Kh\u00e1nh Duy","department":"IT","position":"IT Manager"},"period":{"start":"2024-02-01","end":"2024-02-29","month":"02\/2024","work_days":"20.0"},"salary":{"base":"25.300.000","allowances":"2.530.000","bonuses":"1.265.000","deductions":"0","gross":"29.095.000","tax":"2.909.500","insurance":"3.054.975","net":"23.130.525"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7376-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 02\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":131,"payroll_id":7376,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7386,"employee":{"id":1,"code":"EMP-ADM-001","name":"L\u00ea Kh\u00e1nh Duy","department":"IT","position":"IT Manager"},"period":{"start":"2024-03-01","end":"2024-03-31","month":"03\/2024","work_days":"22.0"},"salary":{"base":"29.700.000","allowances":"2.970.000","bonuses":"1.485.000","deductions":"0","gross":"34.155.000","tax":"3.415.500","insurance":"3.586.275","net":"27.153.225"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7386-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 03\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":141,"payroll_id":7386,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7396,"employee":{"id":1,"code":"EMP-ADM-001","name":"L\u00ea Kh\u00e1nh Duy","department":"IT","position":"IT Manager"},"period":{"start":"2024-04-01","end":"2024-04-30","month":"04\/2024","work_days":"21.0"},"salary":{"base":"28.600.000","allowances":"2.860.000","bonuses":"1.430.000","deductions":"0","gross":"32.890.000","tax":"3.289.000","insurance":"3.453.450","net":"26.147.550"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7396-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 04\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":151,"payroll_id":7396,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7367,"employee":{"id":2,"code":"EMP-MGR-IT-002","name":"Tr\u1ea7n H\u1ea3i \u0110\u0103ng","department":"IT","position":"Senior Developer"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7367-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":122,"payroll_id":7367,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7377,"employee":{"id":2,"code":"EMP-MGR-IT-002","name":"Tr\u1ea7n H\u1ea3i \u0110\u0103ng","department":"IT","position":"Senior Developer"},"period":{"start":"2024-02-01","end":"2024-02-29","month":"02\/2024","work_days":"20.0"},"salary":{"base":"25.300.000","allowances":"2.530.000","bonuses":"1.265.000","deductions":"0","gross":"29.095.000","tax":"2.909.500","insurance":"3.054.975","net":"23.130.525"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7377-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 02\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":132,"payroll_id":7377,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7387,"employee":{"id":2,"code":"EMP-MGR-IT-002","name":"Tr\u1ea7n H\u1ea3i \u0110\u0103ng","department":"IT","position":"Senior Developer"},"period":{"start":"2024-03-01","end":"2024-03-31","month":"03\/2024","work_days":"22.0"},"salary":{"base":"29.700.000","allowances":"2.970.000","bonuses":"1.485.000","deductions":"0","gross":"34.155.000","tax":"3.415.500","insurance":"3.586.275","net":"27.153.225"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7387-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 03\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":142,"payroll_id":7387,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7397,"employee":{"id":2,"code":"EMP-MGR-IT-002","name":"Tr\u1ea7n H\u1ea3i \u0110\u0103ng","department":"IT","position":"Senior Developer"},"period":{"start":"2024-04-01","end":"2024-04-30","month":"04\/2024","work_days":"21.0"},"salary":{"base":"28.600.000","allowances":"2.860.000","bonuses":"1.430.000","deductions":"0","gross":"32.890.000","tax":"3.289.000","insurance":"3.453.450","net":"26.147.550"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7397-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 04\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":152,"payroll_id":7397,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7369,"employee":{"id":4,"code":"EMP-IT-004","name":"V\u00f5 V\u0103n Hi\u1ebfu","department":"IT","position":"Recruiter"},"period":{"start":"2024-01-01","end":"2024-01-31","month":"01\/2024","work_days":"22.0"},"salary":{"base":"27.500.000","allowances":"2.750.000","bonuses":"1.375.000","deductions":"0","gross":"31.625.000","tax":"3.162.500","insurance":"3.320.625","net":"25.141.875"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7369-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 01\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":124,"payroll_id":7369,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]},{"id":7379,"employee":{"id":4,"code":"EMP-IT-004","name":"V\u00f5 V\u0103n Hi\u1ebfu","department":"IT","position":"Recruiter"},"period":{"start":"2024-02-01","end":"2024-02-29","month":"02\/2024","work_days":"20.0"},"salary":{"base":"25.300.000","allowances":"2.530.000","bonuses":"1.265.000","deductions":"0","gross":"29.095.000","tax":"2.909.500","insurance":"3.054.975","net":"23.130.525"},"payment":{"date":"2025-04-30","method":"bank_transfer","method_text":"Chuy\u1ec3n kho\u1ea3n","reference":"PAY-7379-20250430"},"status":{"code":"paid","text":"\u0110\u00e3 thanh to\u00e1n"},"created_by":{"id":1,"username":"admin","email":"admin@company.com"},"created_at":"2025-04-30 21:31:37","notes":"L\u01b0\u01a1ng th\u00e1ng 02\/2024","details":{"allowances":[],"bonuses":[],"deductions":[]},"approvals":[{"approval_id":134,"payroll_id":7379,"approver_id":1,"approval_level":1,"status":"approved","comments":null,"approved_at":"2025-04-30 21:31:37","created_at":"2025-05-05 14:04:19","approver_name":"admin"}]}],"pagination":{"total":64,"page":1,"per_page":10,"total_pages":7}}} 
+
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing GET /payroll.php?action=getEmployeePayroll
+[2025-05-11 18:26:43] Status Code: 200
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> GET /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getEmployeePayroll&employeeCode=NV001 HTTP/1.1
+Host: localhost
+Accept: */*
+Accept-Encoding: deflate, gzip
+
+< HTTP/1.1 200 OK
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Content-Length: 80
+< Content-Type: application/json
+< 
+* Connection #0 to host localhost left intact
+
+Response:
+{
+    "success": false,
+    "message": "Kh\u00f4ng t\u00ecm th\u1ea5y nh\u00e2n vi\u00ean"
+}
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing GET /payroll.php?action=searchEmployee
+[2025-05-11 18:26:43] Status Code: 200
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> GET /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=searchEmployee&employeeCode=NV001 HTTP/1.1
+Host: localhost
+Accept: */*
+Accept-Encoding: deflate, gzip
+
+< HTTP/1.1 200 OK
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Content-Length: 80
+< Content-Type: application/json
+< 
+* Connection #0 to host localhost left intact
+
+Response:
+{
+    "success": false,
+    "message": "Kh\u00f4ng t\u00ecm th\u1ea5y nh\u00e2n vi\u00ean"
+}
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing POST /payroll.php
+[2025-05-11 18:26:43] Status Code: 405
+Error: JSON decode error: Syntax error
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> POST /qlnhansu_V3/backend/src/public/admin/api/payroll.php HTTP/1.1
+Host: localhost
+Accept-Encoding: deflate, gzip
+Content-Type: application/json
+Accept: application/json
+Content-Length: 103
+
+< HTTP/1.1 405 Method Not Allowed
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Content-Length: 222
+< Content-Type: application/json
+< 
+* Connection #0 to host localhost left intact
+
+Raw Response:
+ {"success":false,"message":"SQLSTATE[42S22]: Column not found: 1054 Unknown column 'basic_salary' in 'field list'"}{"success":false,"message":"Ph\u01b0\u01a1ng th\u1ee9c kh\u00f4ng \u0111\u01b0\u1ee3c h\u1ed7 tr\u1ee3"} 
+
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing POST /payroll.php?action=approve
+[2025-05-11 18:26:43] Status Code: 405
+Error: JSON decode error: Syntax error
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> POST /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=approve&id=1 HTTP/1.1
+Host: localhost
+Accept-Encoding: deflate, gzip
+Content-Type: application/json
+Accept: application/json
+Content-Length: 64
+
+< HTTP/1.1 405 Method Not Allowed
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Content-Length: 259
+< Content-Type: application/json
+< 
+* Connection #0 to host localhost left intact
+
+Raw Response:
+ {"success":false,"message":"L\u1ed7i x\u1eed l\u00fd ph\u00ea duy\u1ec7t: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'p.id' in 'on clause'"}{"success":false,"message":"Ph\u01b0\u01a1ng th\u1ee9c kh\u00f4ng \u0111\u01b0\u1ee3c h\u1ed7 tr\u1ee3"} 
+
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing POST /payroll.php?action=export
+[2025-05-11 18:26:43] Status Code: 200
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> POST /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=export HTTP/1.1
+Host: localhost
+Accept-Encoding: deflate, gzip
+Content-Type: application/json
+Accept: application/json
+Content-Length: 56
+
+< HTTP/1.1 200 OK
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Content-Length: 72
+< Content-Type: application/json
+< 
+* Connection #0 to host localhost left intact
+
+Response:
+{
+    "error": "Kh\u00f4ng c\u00f3 d\u1eef li\u1ec7u \u0111\u1ec3 xu\u1ea5t"
+}
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing PUT /payroll.php?id=1
+[2025-05-11 18:26:43] Status Code: 405
+Error: JSON decode error: Syntax error
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> PUT /qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=1 HTTP/1.1
+Host: localhost
+Accept-Encoding: deflate, gzip
+Content-Type: application/json
+Accept: application/json
+Content-Length: 56
+
+< HTTP/1.1 405 Method Not Allowed
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Content-Length: 214
+< Content-Type: application/json
+< 
+* Connection #0 to host localhost left intact
+
+Raw Response:
+ {"success":false,"message":"SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'"}{"success":false,"message":"Ph\u01b0\u01a1ng th\u1ee9c kh\u00f4ng \u0111\u01b0\u1ee3c h\u1ed7 tr\u1ee3"} 
+
+
+[2025-05-11 18:26:43] ----------------------------------------
+
+[2025-05-11 18:26:43] Testing DELETE /payroll.php?id=1
+[2025-05-11 18:26:44] Status Code: 405
+Error: JSON decode error: Syntax error
+Debug Info:
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> DELETE /qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=1 HTTP/1.1
+Host: localhost
+Accept: */*
+Accept-Encoding: deflate, gzip
+
+< HTTP/1.1 405 Method Not Allowed
+< Date: Sun, 11 May 2025 16:26:43 GMT
+< Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+< X-Powered-By: PHP/8.2.12
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: GET, POST, OPTIONS
+< Access-Control-Allow-Headers: Content-Type, Authorization
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Referrer-Policy: strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'self' https: http://localhost:*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:;
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: 0
+< Content-Length: 214
+< Content-Type: application/json
+< 
+* Connection #0 to host localhost left intact
+
+Raw Response:
+ {"success":false,"message":"SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'"}{"success":false,"message":"Ph\u01b0\u01a1ng th\u1ee9c kh\u00f4ng \u0111\u01b0\u1ee3c h\u1ed7 tr\u1ee3"} 
+
+
+[2025-05-11 18:26:44] ----------------------------------------
+
+[2025-05-11 18:26:44] 
+All tests completed!

@@ -22609,3 +22609,2223 @@ Stack trace:
 [11-May-2025 14:57:10 Europe/Berlin] Attempting to connect to database: qlnhansu
 [11-May-2025 14:57:10 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
 [11-May-2025 14:57:10 Europe/Berlin] Database connection successful
+[11-May-2025 14:59:19 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 14:59:19 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 14:59:19 Europe/Berlin] Database connection successful
+[11-May-2025 14:59:19 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 14:59:19 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 14:59:19 Europe/Berlin] Database connection successful
+[11-May-2025 14:59:19 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 14:59:19 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 14:59:19 Europe/Berlin] Database connection successful
+[11-May-2025 14:59:20 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 14:59:20 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 14:59:20 Europe/Berlin] Database connection successful
+[11-May-2025 14:59:26 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 14:59:26 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 14:59:26 Europe/Berlin] Database connection successful
+[11-May-2025 14:59:26 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 14:59:26 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 14:59:26 Europe/Berlin] Successfully connected to database
+[11-May-2025 14:59:26 Europe/Berlin] Testing database connection...
+[11-May-2025 14:59:26 Europe/Berlin] Database connection test successful
+[11-May-2025 14:59:26 Europe/Berlin] Request Method: GET
+[11-May-2025 14:59:26 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?page=1&limit=10&search=&department=&month=&year=
+[11-May-2025 14:59:26 Europe/Berlin] GET params: Array
+(
+    [page] => 1
+    [limit] => 10
+    [search] => 
+    [department] => 
+    [month] => 
+    [year] => 
+)
+
+[11-May-2025 14:59:26 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 14:59:30 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 14:59:30 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 14:59:30 Europe/Berlin] Database connection successful
+[11-May-2025 14:59:30 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 14:59:30 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 14:59:30 Europe/Berlin] Successfully connected to database
+[11-May-2025 14:59:30 Europe/Berlin] Testing database connection...
+[11-May-2025 14:59:30 Europe/Berlin] Database connection test successful
+[11-May-2025 14:59:30 Europe/Berlin] Request Method: GET
+[11-May-2025 14:59:30 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?page=1&limit=10&search=&department=&month=&year=
+[11-May-2025 14:59:30 Europe/Berlin] GET params: Array
+(
+    [page] => 1
+    [limit] => 10
+    [search] => 
+    [department] => 
+    [month] => 
+    [year] => 
+)
+
+[11-May-2025 14:59:30 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 17:00:27 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:00:27 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:00:27 Europe/Berlin] Database connection successful
+[11-May-2025 17:00:41 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:00:41 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:00:41 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:00:41 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:00:41 Europe/Berlin] Database connection successful
+[11-May-2025 17:00:41 Europe/Berlin] Database connection successful
+[11-May-2025 17:00:41 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:00:41 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:00:41 Europe/Berlin] Database connection successful
+[11-May-2025 17:00:41 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:00:41 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:00:41 Europe/Berlin] Database connection successful
+[11-May-2025 17:00:52 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:00:52 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:00:52 Europe/Berlin] Database connection successful
+[11-May-2025 17:00:52 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 17:00:52 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 17:00:52 Europe/Berlin] Successfully connected to database
+[11-May-2025 17:00:52 Europe/Berlin] Testing database connection...
+[11-May-2025 17:00:52 Europe/Berlin] Database connection test successful
+[11-May-2025 17:00:52 Europe/Berlin] Request Method: GET
+[11-May-2025 17:00:52 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?page=1&limit=10&search=&department=&month=&year=
+[11-May-2025 17:00:52 Europe/Berlin] GET params: Array
+(
+    [page] => 1
+    [limit] => 10
+    [search] => 
+    [department] => 
+    [month] => 
+    [year] => 
+)
+
+[11-May-2025 17:00:52 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 17:03:55 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:03:55 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:03:55 Europe/Berlin] Database connection successful
+[11-May-2025 17:03:55 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 17:03:55 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 17:03:55 Europe/Berlin] Successfully connected to database
+[11-May-2025 17:03:55 Europe/Berlin] Testing database connection...
+[11-May-2025 17:03:55 Europe/Berlin] Database connection test successful
+[11-May-2025 17:03:55 Europe/Berlin] Request Method: GET
+[11-May-2025 17:03:55 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?page=1&limit=10&search=&department=&month=6&year=
+[11-May-2025 17:03:55 Europe/Berlin] GET params: Array
+(
+    [page] => 1
+    [limit] => 10
+    [search] => 
+    [department] => 
+    [month] => 6
+    [year] => 
+)
+
+[11-May-2025 17:03:55 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 17:04:19 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:04:19 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:04:19 Europe/Berlin] Database connection successful
+[11-May-2025 17:04:19 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 17:04:19 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 17:04:19 Europe/Berlin] Successfully connected to database
+[11-May-2025 17:04:19 Europe/Berlin] Testing database connection...
+[11-May-2025 17:04:19 Europe/Berlin] Database connection test successful
+[11-May-2025 17:04:19 Europe/Berlin] Request Method: POST
+[11-May-2025 17:04:19 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=export
+[11-May-2025 17:04:19 Europe/Berlin] GET params: Array
+(
+    [action] => export
+)
+
+[11-May-2025 17:04:19 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 17:04:26 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:04:26 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:04:26 Europe/Berlin] Database connection successful
+[11-May-2025 17:04:26 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 17:04:26 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 17:04:26 Europe/Berlin] Successfully connected to database
+[11-May-2025 17:04:26 Europe/Berlin] Testing database connection...
+[11-May-2025 17:04:26 Europe/Berlin] Database connection test successful
+[11-May-2025 17:04:26 Europe/Berlin] Request Method: GET
+[11-May-2025 17:04:26 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=searchEmployee&employeeCode=NV25059009
+[11-May-2025 17:04:26 Europe/Berlin] GET params: Array
+(
+    [action] => searchEmployee
+    [employeeCode] => NV25059009
+)
+
+[11-May-2025 17:04:26 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 17:04:34 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:04:34 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:04:34 Europe/Berlin] Database connection successful
+[11-May-2025 17:04:34 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 17:04:34 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 17:04:34 Europe/Berlin] Successfully connected to database
+[11-May-2025 17:04:34 Europe/Berlin] Testing database connection...
+[11-May-2025 17:04:34 Europe/Berlin] Database connection test successful
+[11-May-2025 17:04:34 Europe/Berlin] Request Method: GET
+[11-May-2025 17:04:34 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=searchEmployee&employeeCode=EMP-ADM-001
+[11-May-2025 17:04:34 Europe/Berlin] GET params: Array
+(
+    [action] => searchEmployee
+    [employeeCode] => EMP-ADM-001
+)
+
+[11-May-2025 17:04:34 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 17:05:32 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:05:32 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:05:32 Europe/Berlin] Database connection successful
+[11-May-2025 17:05:32 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 17:05:32 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 17:05:32 Europe/Berlin] Successfully connected to database
+[11-May-2025 17:05:32 Europe/Berlin] Testing database connection...
+[11-May-2025 17:05:32 Europe/Berlin] Database connection test successful
+[11-May-2025 17:05:32 Europe/Berlin] Request Method: GET
+[11-May-2025 17:05:32 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?page=2&limit=10&search=&department=&month=6&year=
+[11-May-2025 17:05:32 Europe/Berlin] GET params: Array
+(
+    [page] => 2
+    [limit] => 10
+    [search] => 
+    [department] => 
+    [month] => 6
+    [year] => 
+)
+
+[11-May-2025 17:05:32 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 17:05:35 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:05:35 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:05:35 Europe/Berlin] Database connection successful
+[11-May-2025 17:05:35 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 17:05:35 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 17:05:35 Europe/Berlin] Successfully connected to database
+[11-May-2025 17:05:35 Europe/Berlin] Testing database connection...
+[11-May-2025 17:05:35 Europe/Berlin] Database connection test successful
+[11-May-2025 17:05:35 Europe/Berlin] Request Method: GET
+[11-May-2025 17:05:35 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?page=1&limit=10&search=&department=&month=6&year=
+[11-May-2025 17:05:35 Europe/Berlin] GET params: Array
+(
+    [page] => 1
+    [limit] => 10
+    [search] => 
+    [department] => 
+    [month] => 6
+    [year] => 
+)
+
+[11-May-2025 17:05:35 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 17:05:49 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:05:49 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:05:49 Europe/Berlin] Database connection successful
+[11-May-2025 17:05:49 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 17:05:49 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 17:05:49 Europe/Berlin] Successfully connected to database
+[11-May-2025 17:05:49 Europe/Berlin] Testing database connection...
+[11-May-2025 17:05:49 Europe/Berlin] Database connection test successful
+[11-May-2025 17:05:49 Europe/Berlin] Request Method: GET
+[11-May-2025 17:05:49 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?page=1&limit=10&search=&department=&month=&year=
+[11-May-2025 17:05:49 Europe/Berlin] GET params: Array
+(
+    [page] => 1
+    [limit] => 10
+    [search] => 
+    [department] => 
+    [month] => 
+    [year] => 
+)
+
+[11-May-2025 17:05:49 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 17:53:38 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:53:38 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:53:38 Europe/Berlin] Database connection successful
+[11-May-2025 17:53:38 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 17:53:38 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 17:53:38 Europe/Berlin] Successfully connected to database
+[11-May-2025 17:53:38 Europe/Berlin] Testing database connection...
+[11-May-2025 17:53:38 Europe/Berlin] Database connection test successful
+[11-May-2025 17:53:38 Europe/Berlin] Request Method: GET
+[11-May-2025 17:53:38 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 17:53:38 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 17:53:38 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 17:55:13 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:55:13 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:55:13 Europe/Berlin] Database connection successful
+[11-May-2025 17:57:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:57:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:57:47 Europe/Berlin] Database connection successful
+[11-May-2025 17:57:52 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:57:52 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:57:52 Europe/Berlin] Database connection successful
+[11-May-2025 17:57:52 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 17:57:52 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 17:57:52 Europe/Berlin] Successfully connected to database
+[11-May-2025 17:57:52 Europe/Berlin] Testing database connection...
+[11-May-2025 17:57:52 Europe/Berlin] Database connection test successful
+[11-May-2025 17:57:52 Europe/Berlin] Request Method: GET
+[11-May-2025 17:57:52 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 17:57:52 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 17:57:52 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 17:57:54 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:57:54 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:57:54 Europe/Berlin] Database connection successful
+[11-May-2025 17:59:21 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 17:59:21 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 17:59:21 Europe/Berlin] Database connection successful
+[11-May-2025 18:03:12 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:03:12 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:03:12 Europe/Berlin] Database connection successful
+[11-May-2025 18:03:12 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:03:12 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:03:12 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:03:12 Europe/Berlin] Testing database connection...
+[11-May-2025 18:03:12 Europe/Berlin] Database connection test successful
+[11-May-2025 18:03:12 Europe/Berlin] Request Method: GET
+[11-May-2025 18:03:12 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 18:03:12 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 18:03:12 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:04:58 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:04:58 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:04:58 Europe/Berlin] Database connection successful
+[11-May-2025 18:04:58 Europe/Berlin] PHP Fatal error:  Cannot redeclare getStatusText() (previously declared in C:\xampp\htdocs\qlnhansu_V3\backend\src\public\admin\api\payroll.php:1785) in C:\xampp\htdocs\qlnhansu_V3\backend\src\config\functions.php on line 53
+[11-May-2025 18:10:22 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:10:22 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:10:22 Europe/Berlin] Database connection successful
+[11-May-2025 18:10:22 Europe/Berlin] PHP Fatal error:  Cannot redeclare logActivity() (previously declared in C:\xampp\htdocs\qlnhansu_V3\backend\src\public\admin\api\payroll.php:1804) in C:\xampp\htdocs\qlnhansu_V3\backend\src\config\functions.php on line 63
+[11-May-2025 18:10:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:10:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:10:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:10:56 Europe/Berlin] PHP Fatal error:  Cannot redeclare formatMoney() (previously declared in C:\xampp\htdocs\qlnhansu_V3\backend\src\public\admin\api\payroll.php:1785) in C:\xampp\htdocs\qlnhansu_V3\backend\src\config\functions.php on line 87
+[11-May-2025 18:12:17 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:12:17 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:12:17 Europe/Berlin] Database connection successful
+[11-May-2025 18:12:17 Europe/Berlin] PHP Fatal error:  Cannot redeclare validateInput() (previously declared in C:\xampp\htdocs\qlnhansu_V3\backend\src\public\admin\api\payroll.php:1785) in C:\xampp\htdocs\qlnhansu_V3\backend\src\config\functions.php on line 267
+[11-May-2025 18:12:38 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:12:38 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:12:38 Europe/Berlin] Database connection successful
+[11-May-2025 18:12:38 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:12:38 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:12:38 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:12:38 Europe/Berlin] Testing database connection...
+[11-May-2025 18:12:38 Europe/Berlin] Database connection test successful
+[11-May-2025 18:12:38 Europe/Berlin] Request Method: GET
+[11-May-2025 18:12:38 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 18:12:38 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 18:12:38 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:16:41 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:16:41 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:16:41 Europe/Berlin] Database connection successful
+[11-May-2025 18:16:41 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:16:41 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:16:41 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:16:41 Europe/Berlin] Testing database connection...
+[11-May-2025 18:16:41 Europe/Berlin] Database connection test successful
+[11-May-2025 18:16:41 Europe/Berlin] Request Method: GET
+[11-May-2025 18:16:41 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 18:16:41 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 18:16:41 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:17:04 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:17:04 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:17:04 Europe/Berlin] Database connection successful
+[11-May-2025 18:17:04 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:17:04 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:17:04 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:17:04 Europe/Berlin] Testing database connection...
+[11-May-2025 18:17:04 Europe/Berlin] Database connection test successful
+[11-May-2025 18:17:04 Europe/Berlin] Request Method: GET
+[11-May-2025 18:17:04 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getById&id=1
+[11-May-2025 18:17:04 Europe/Berlin] GET params: Array
+(
+    [action] => getById
+    [id] => 1
+)
+
+[11-May-2025 18:17:04 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:17:20 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:17:20 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:17:20 Europe/Berlin] Database connection successful
+[11-May-2025 18:17:20 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:17:20 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:17:20 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:17:20 Europe/Berlin] Testing database connection...
+[11-May-2025 18:17:20 Europe/Berlin] Database connection test successful
+[11-May-2025 18:17:20 Europe/Berlin] Request Method: GET
+[11-May-2025 18:17:20 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=years
+[11-May-2025 18:17:20 Europe/Berlin] GET params: Array
+(
+    [action] => years
+)
+
+[11-May-2025 18:17:20 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:17:30 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:17:30 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:17:30 Europe/Berlin] Database connection successful
+[11-May-2025 18:17:30 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:17:30 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:17:30 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:17:30 Europe/Berlin] Testing database connection...
+[11-May-2025 18:17:30 Europe/Berlin] Database connection test successful
+[11-May-2025 18:17:30 Europe/Berlin] Request Method: GET
+[11-May-2025 18:17:30 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=components
+[11-May-2025 18:17:30 Europe/Berlin] GET params: Array
+(
+    [action] => components
+)
+
+[11-May-2025 18:17:30 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:18:13 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:18:13 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:18:13 Europe/Berlin] Database connection successful
+[11-May-2025 18:18:13 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:18:13 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:18:13 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:18:13 Europe/Berlin] Testing database connection...
+[11-May-2025 18:18:13 Europe/Berlin] Database connection test successful
+[11-May-2025 18:18:13 Europe/Berlin] Request Method: GET
+[11-May-2025 18:18:13 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=approval-history&id=1
+[11-May-2025 18:18:13 Europe/Berlin] GET params: Array
+(
+    [action] => approval-history
+    [id] => 1
+)
+
+[11-May-2025 18:18:13 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:18:13 Europe/Berlin] Error in getPayrollApprovalHistory: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.full_name' in 'field list'
+[11-May-2025 18:18:24 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:18:24 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:18:24 Europe/Berlin] Database connection successful
+[11-May-2025 18:18:24 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:18:24 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:18:24 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:18:24 Europe/Berlin] Testing database connection...
+[11-May-2025 18:18:24 Europe/Berlin] Database connection test successful
+[11-May-2025 18:18:24 Europe/Berlin] Request Method: GET
+[11-May-2025 18:18:24 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=calculate&employee_id=1&start_date=2024-03-01&end_date=2024-03-31
+[11-May-2025 18:18:24 Europe/Berlin] GET params: Array
+(
+    [action] => calculate
+    [employee_id] => 1
+    [start_date] => 2024-03-01
+    [end_date] => 2024-03-31
+)
+
+[11-May-2025 18:18:24 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:18:59 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:18:59 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:18:59 Europe/Berlin] Database connection successful
+[11-May-2025 18:18:59 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:18:59 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:18:59 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:18:59 Europe/Berlin] Testing database connection...
+[11-May-2025 18:18:59 Europe/Berlin] Database connection test successful
+[11-May-2025 18:18:59 Europe/Berlin] Request Method: GET
+[11-May-2025 18:18:59 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=department-report&department_id=1&month=03&year=2024
+[11-May-2025 18:18:59 Europe/Berlin] GET params: Array
+(
+    [action] => department-report
+    [department_id] => 1
+    [month] => 03
+    [year] => 2024
+)
+
+[11-May-2025 18:18:59 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:19:12 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:19:12 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:19:12 Europe/Berlin] Database connection successful
+[11-May-2025 18:19:12 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:19:12 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:19:12 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:19:12 Europe/Berlin] Testing database connection...
+[11-May-2025 18:19:12 Europe/Berlin] Database connection test successful
+[11-May-2025 18:19:12 Europe/Berlin] Request Method: GET
+[11-May-2025 18:19:12 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getEmployeePayroll&employeeCode=NV001
+[11-May-2025 18:19:12 Europe/Berlin] GET params: Array
+(
+    [action] => getEmployeePayroll
+    [employeeCode] => NV001
+)
+
+[11-May-2025 18:19:12 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:55 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:55 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:55 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:55 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:55 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:55 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:55 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:55 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:55 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:55 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:55 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:55 Europe/Berlin] Request Method: GET
+[11-May-2025 18:22:55 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 18:22:55 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 18:22:55 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:55 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:55 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:55 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:55 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:55 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:55 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:55 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:55 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:55 Europe/Berlin] Request Method: GET
+[11-May-2025 18:22:55 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getById&id=1
+[11-May-2025 18:22:55 Europe/Berlin] GET params: Array
+(
+    [action] => getById
+    [id] => 1
+)
+
+[11-May-2025 18:22:55 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: GET
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=years
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+    [action] => years
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: GET
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=components
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+    [action] => components
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: GET
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=approval-history&id=1
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+    [action] => approval-history
+    [id] => 1
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Error in getPayrollApprovalHistory: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.full_name' in 'field list'
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: GET
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=calculate&employee_id=1&start_date=2025-05-11&end_date=2025-06-11
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+    [action] => calculate
+    [employee_id] => 1
+    [start_date] => 2025-05-11
+    [end_date] => 2025-06-11
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: GET
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=department-report&department_id=1&month=05&year=2025
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+    [action] => department-report
+    [department_id] => 1
+    [month] => 05
+    [year] => 2025
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: GET
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getEmployeePayroll&employeeCode=NV001
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+    [action] => getEmployeePayroll
+    [employeeCode] => NV001
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: GET
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=searchEmployee&employeeCode=NV001
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+    [action] => searchEmployee
+    [employeeCode] => NV001
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: POST
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Error in createPayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'basic_salary' in 'field list'
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: POST
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=approve&id=1
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+    [action] => approve
+    [id] => 1
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: POST
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=export
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+    [action] => export
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: PUT
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=1
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+    [id] => 1
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Error in updatePayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:22:56 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:22:56 Europe/Berlin] Database connection successful
+[11-May-2025 18:22:56 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:22:56 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:22:56 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:22:56 Europe/Berlin] Testing database connection...
+[11-May-2025 18:22:56 Europe/Berlin] Database connection test successful
+[11-May-2025 18:22:56 Europe/Berlin] Request Method: DELETE
+[11-May-2025 18:22:56 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=1
+[11-May-2025 18:22:56 Europe/Berlin] GET params: Array
+(
+    [id] => 1
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:22:56 Europe/Berlin] Error in deletePayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[11-May-2025 18:24:46 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:46 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:46 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:46 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:46 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:46 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:46 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:46 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:46 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:46 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:46 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:46 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:46 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 18:24:46 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 18:24:46 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getById&id=1
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [action] => getById
+    [id] => 1
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=years
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [action] => years
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=components
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [action] => components
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=approval-history&id=1
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [action] => approval-history
+    [id] => 1
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Error in getPayrollApprovalHistory: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.full_name' in 'field list'
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=calculate&employee_id=1&start_date=2025-05-11&end_date=2025-06-11
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [action] => calculate
+    [employee_id] => 1
+    [start_date] => 2025-05-11
+    [end_date] => 2025-06-11
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=department-report&department_id=1&month=05&year=2025
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [action] => department-report
+    [department_id] => 1
+    [month] => 05
+    [year] => 2025
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getEmployeePayroll&employeeCode=NV001
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [action] => getEmployeePayroll
+    [employeeCode] => NV001
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=searchEmployee&employeeCode=NV001
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [action] => searchEmployee
+    [employeeCode] => NV001
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: POST
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Error in createPayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'basic_salary' in 'field list'
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: POST
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=approve&id=1
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [action] => approve
+    [id] => 1
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: POST
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=export
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [action] => export
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: PUT
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=1
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [id] => 1
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Error in updatePayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: DELETE
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=1
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [id] => 1
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Error in deletePayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 37
+[11-May-2025 18:24:47 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 38
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:47 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:47 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:47 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:47 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:47 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:47 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:47 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:47 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:47 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getById&id=1
+[11-May-2025 18:24:47 Europe/Berlin] GET params: Array
+(
+    [action] => getById
+    [id] => 1
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:47 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 44
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 45
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=years
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+    [action] => years
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 51
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 52
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=components
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+    [action] => components
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 58
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 59
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=approval-history&id=1
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+    [action] => approval-history
+    [id] => 1
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Error in getPayrollApprovalHistory: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.full_name' in 'field list'
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 65
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 66
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=calculate&employee_id=1&start_date=2025-05-11&end_date=2025-06-11
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+    [action] => calculate
+    [employee_id] => 1
+    [start_date] => 2025-05-11
+    [end_date] => 2025-06-11
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 72
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 73
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=department-report&department_id=1&month=05&year=2025
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+    [action] => department-report
+    [department_id] => 1
+    [month] => 05
+    [year] => 2025
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 79
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 80
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getEmployeePayroll&employeeCode=NV001
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+    [action] => getEmployeePayroll
+    [employeeCode] => NV001
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 86
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 87
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: GET
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=searchEmployee&employeeCode=NV001
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+    [action] => searchEmployee
+    [employeeCode] => NV001
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 93
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 94
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: POST
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Error in createPayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'basic_salary' in 'field list'
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 100
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 101
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: POST
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=approve&id=1
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+    [action] => approve
+    [id] => 1
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 107
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 108
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: POST
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=export
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+    [action] => export
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 114
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 115
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: PUT
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=1
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+    [id] => 1
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Error in updatePayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 121
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 122
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:24:48 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:24:48 Europe/Berlin] Database connection successful
+[11-May-2025 18:24:48 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:24:48 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:24:48 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:24:48 Europe/Berlin] Testing database connection...
+[11-May-2025 18:24:48 Europe/Berlin] Database connection test successful
+[11-May-2025 18:24:48 Europe/Berlin] Request Method: DELETE
+[11-May-2025 18:24:48 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=1
+[11-May-2025 18:24:48 Europe/Berlin] GET params: Array
+(
+    [id] => 1
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:24:48 Europe/Berlin] Error in deletePayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 128
+[11-May-2025 18:24:48 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\qlnhansu_V3\backend\src\tests\run_payroll_tests.php on line 129
+[11-May-2025 18:26:10 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:10 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:10 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:40 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:40 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:40 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: GET
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: GET
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getById&id=1
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+    [action] => getById
+    [id] => 1
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: GET
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=years
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+    [action] => years
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: GET
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=components
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+    [action] => components
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: GET
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=approval-history&id=1
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+    [action] => approval-history
+    [id] => 1
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Error in getPayrollApprovalHistory: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.full_name' in 'field list'
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: GET
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=calculate&employee_id=1&start_date=2025-05-11&end_date=2025-06-11
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+    [action] => calculate
+    [employee_id] => 1
+    [start_date] => 2025-05-11
+    [end_date] => 2025-06-11
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: GET
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=department-report&department_id=1&month=05&year=2025
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+    [action] => department-report
+    [department_id] => 1
+    [month] => 05
+    [year] => 2025
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: GET
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=getEmployeePayroll&employeeCode=NV001
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+    [action] => getEmployeePayroll
+    [employeeCode] => NV001
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: GET
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=searchEmployee&employeeCode=NV001
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+    [action] => searchEmployee
+    [employeeCode] => NV001
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: POST
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Error in createPayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'basic_salary' in 'field list'
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: POST
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=approve&id=1
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+    [action] => approve
+    [id] => 1
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: POST
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=export
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+    [action] => export
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:43 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:43 Europe/Berlin] Request Method: PUT
+[11-May-2025 18:26:43 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=1
+[11-May-2025 18:26:43 Europe/Berlin] GET params: Array
+(
+    [id] => 1
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:43 Europe/Berlin] Error in updatePayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database: qlnhansu
+[11-May-2025 18:26:43 Europe/Berlin] DSN: mysql:host=localhost;dbname=qlnhansu;charset=utf8mb4
+[11-May-2025 18:26:43 Europe/Berlin] Database connection successful
+[11-May-2025 18:26:43 Europe/Berlin] Successfully loaded database.php and functions.php
+[11-May-2025 18:26:43 Europe/Berlin] Attempting to connect to database...
+[11-May-2025 18:26:43 Europe/Berlin] Successfully connected to database
+[11-May-2025 18:26:43 Europe/Berlin] Testing database connection...
+[11-May-2025 18:26:44 Europe/Berlin] Database connection test successful
+[11-May-2025 18:26:44 Europe/Berlin] Request Method: DELETE
+[11-May-2025 18:26:44 Europe/Berlin] Request URI: /qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=1
+[11-May-2025 18:26:44 Europe/Berlin] GET params: Array
+(
+    [id] => 1
+)
+
+[11-May-2025 18:26:44 Europe/Berlin] Path parts: Array
+(
+    [0] => qlnhansu_V3
+    [1] => backend
+    [2] => src
+    [3] => public
+    [4] => admin
+    [5] => api
+    [6] => payroll.php
+)
+
+[11-May-2025 18:26:44 Europe/Berlin] Error in deletePayroll: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
