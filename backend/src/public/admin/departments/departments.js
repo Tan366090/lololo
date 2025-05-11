@@ -303,12 +303,17 @@ async function saveDepartment(event) {
     
     // Validation
     if (!name) {
-        showToast('error', 'Vui lòng nhập tên phòng ban');
+        showToast('error', 'Tên phòng ban không được để trống');
         return;
     }
     
     if (name.length < 3) {
         showToast('error', 'Tên phòng ban phải có ít nhất 3 ký tự');
+        return;
+    }
+    
+    if (name.length > 255) {
+        showToast('error', 'Tên phòng ban không được vượt quá 255 ký tự');
         return;
     }
     
@@ -349,7 +354,7 @@ async function saveDepartment(event) {
         const result = await response.json();
         
         if (result.success) {
-            showToast('success', currentDepartmentId ? 'Cập nhật thành công' : 'Thêm mới thành công');
+            showToast('success', currentDepartmentId ? 'Cập nhật phòng ban thành công' : 'Thêm phòng ban thành công');
             departmentModal.style.display = 'none';
             fetchDepartments();
         } else {
@@ -366,11 +371,14 @@ async function saveDepartment(event) {
 // Enhanced delete with dependency check
 async function deleteDepartment(id) {
     const dept = departments.find(d => d.id === id);
-    if (!dept) return;
+    if (!dept) {
+        showToast('error', 'Không tìm thấy phòng ban');
+        return;
+    }
     
     // Check for dependencies
     if (dept.employee_count > 0) {
-        showToast('error', 'Không thể xóa phòng ban đang có nhân viên');
+        showToast('error', 'Không thể xóa phòng ban vì còn nhân viên');
         return;
     }
     
@@ -451,6 +459,7 @@ async function exportToExcel() {
 // View department details
 async function viewDepartment(id) {
     try {
+        showLoadingState();
         const response = await fetch(`/qlnhansu_V3/backend/src/api/v1/departments.php?action=getById&id=${id}`);
         const result = await response.json();
         
@@ -478,6 +487,8 @@ async function viewDepartment(id) {
     } catch (error) {
         console.error('Error:', error);
         showToast('error', 'Lỗi kết nối server');
+    } finally {
+        hideLoadingState();
     }
 }
 
@@ -492,7 +503,10 @@ function addDepartment() {
 // Edit department
 function editDepartment(id) {
     const dept = departments.find(d => d.id === id);
-    if (!dept) return;
+    if (!dept) {
+        showToast('error', 'Không tìm thấy phòng ban');
+        return;
+    }
     
     currentDepartmentId = id;
     document.getElementById('modalTitle').textContent = 'Chỉnh sửa phòng ban';
@@ -502,6 +516,8 @@ function editDepartment(id) {
     document.getElementById('departmentCode').value = dept.id;
     document.getElementById('departmentDescription').value = dept.description || '';
     document.getElementById('departmentStatus').value = dept.status;
+    document.getElementById('parentDepartment').value = dept.parent_id || '';
+    document.getElementById('departmentManager').value = dept.manager_id || '';
     
     departmentModal.style.display = 'block';
 }
@@ -519,19 +535,27 @@ function formatDate(dateString) {
     });
 }
 
-// Show toast notification
+// Show toast notification with improved styling
 function showToast(type, message) {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-        <span>${message}</span>
+        <div class="toast-content">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <span>${message}</span>
+        </div>
+        <div class="toast-progress"></div>
     `;
     
     document.querySelector('.toast-container').appendChild(toast);
     
+    // Add animation
+    setTimeout(() => toast.classList.add('show'), 100);
+    
+    // Remove after 3 seconds
     setTimeout(() => {
-        toast.remove();
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
 
@@ -565,6 +589,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.ctrlKey && e.key === 'n') {
             e.preventDefault();
             addDepartment();
+        }
+    });
+    
+    // Add form validation
+    const departmentForm = document.getElementById('departmentForm');
+    departmentForm.addEventListener('submit', saveDepartment);
+    
+    // Add modal close handlers
+    const closeButtons = document.querySelectorAll('.close, .btn-close, #cancelBtn');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            departmentModal.style.display = 'none';
+        });
+    });
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', (event) => {
+        if (event.target === departmentModal) {
+            departmentModal.style.display = 'none';
         }
     });
 });

@@ -258,7 +258,9 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="departmentName" class="required-field">Tên phòng ban</label>
-                                <input type="text" id="departmentName" class="form-control" required>
+                                <input type="text" id="departmentName" class="form-control" required 
+                                       minlength="3" maxlength="255" placeholder="Nhập tên phòng ban">
+                                <div class="invalid-feedback">Tên phòng ban phải có ít nhất 3 ký tự</div>
                             </div>
                             <div class="form-group">
                                 <label for="departmentCode">Mã phòng ban</label>
@@ -282,7 +284,8 @@
                     <div class="form-section">
                         <h4><i class="fas fa-align-left"></i> Mô tả</h4>
                         <div class="form-group">
-                            <textarea id="departmentDescription" class="form-control" rows="3"></textarea>
+                            <textarea id="departmentDescription" class="form-control" rows="3" 
+                                      placeholder="Nhập mô tả phòng ban"></textarea>
                         </div>
                     </div>
 
