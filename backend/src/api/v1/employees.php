@@ -71,6 +71,9 @@ switch ($action) {
     case 'getById':
         getEmployeeById();
         break;
+    case 'getPotentialManagers':
+        getPotentialManagers();
+        break;
     default:
         sendResponse(false, 'Invalid action', [], ['action' => 'Invalid action specified'], 400);
 }
@@ -615,5 +618,49 @@ function getEmployeeById() {
         sendResponse(true, 'Employee details retrieved successfully', ['employee' => $employee]);
     } catch (Exception $e) {
         sendResponse(false, 'Failed to get employee details', [], ['server' => $e->getMessage()], 500);
+    }
+}
+
+// Hàm lấy danh sách nhân viên có thể làm quản lý phòng ban
+function getPotentialManagers() {
+    try {
+        $db = Database::getInstance();
+        $conn = $db->getConnection();
+        
+        // Kiểm tra kết nối database
+        if (!$conn) {
+            throw new Exception("Database connection failed");
+        }
+        
+        $sql = "SELECT e.id, e.name, e.email, e.employee_code, p.name as position_name
+                FROM employees e
+                LEFT JOIN positions p ON e.position_id = p.id
+                WHERE e.status = 'active'
+                AND e.id NOT IN (
+                    SELECT manager_id 
+                    FROM departments 
+                    WHERE manager_id IS NOT NULL
+                )
+                ORDER BY e.name ASC";
+        
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            throw new Exception("Failed to prepare statement: " . $conn->errorInfo()[2]);
+        }
+        
+        $result = $stmt->execute();
+        if (!$result) {
+            throw new Exception("Failed to execute statement: " . $stmt->errorInfo()[2]);
+        }
+        
+        $managers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        sendResponse(true, 'Potential managers retrieved successfully', ['managers' => $managers]);
+    } catch (PDOException $e) {
+        error_log("Database error in getPotentialManagers: " . $e->getMessage());
+        sendResponse(false, 'Database error occurred', [], ['server' => $e->getMessage()], 500);
+    } catch (Exception $e) {
+        error_log("Error in getPotentialManagers: " . $e->getMessage());
+        sendResponse(false, 'Failed to get potential managers', [], ['server' => $e->getMessage()], 500);
     }
 } 

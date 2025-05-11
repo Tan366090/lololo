@@ -127,7 +127,7 @@ function updateManagerOptions() {
     departmentManagerSelect.innerHTML = '<option value="">Chọn quản lý</option>';
     
     // Fetch employees who can be managers
-    fetch('/qlnhansu_V3/backend/src/api/v1/employees.php?action=getPotentialManagers')
+    fetch('/qlnhansu_V3/backend/src/api/employees.php?action=getPotentialManagers')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -135,19 +135,21 @@ function updateManagerOptions() {
             return response.json();
         })
         .then(result => {
-            if (result.success) {
+            if (result.success && Array.isArray(result.data)) {
                 result.data.forEach(employee => {
                     const option = document.createElement('option');
                     option.value = employee.id;
-                    option.textContent = `${employee.name} - ${employee.position}`;
+                    option.textContent = `${employee.name} - ${employee.position_name}`;
                     departmentManagerSelect.appendChild(option);
                 });
             } else {
                 console.warn('Không thể lấy danh sách quản lý:', result.message);
+                showToast('error', 'Không thể tải danh sách quản lý');
             }
         })
         .catch(error => {
             console.error('Error fetching managers:', error);
+            showToast('error', 'Lỗi kết nối server. Vui lòng thử lại sau.');
             // Thêm một option mặc định khi có lỗi
             const option = document.createElement('option');
             option.value = "";
@@ -291,7 +293,7 @@ function smartSearch() {
     }, 300);
 }
 
-// Enhanced save department with validation
+// Enhanced save department with validation and retry mechanism
 async function saveDepartment(event) {
     event.preventDefault();
     
@@ -328,47 +330,83 @@ async function saveDepartment(event) {
         return;
     }
     
+    // Validate status
+    if (!status || !['active', 'inactive'].includes(status)) {
+        showToast('error', 'Trạng thái phòng ban không hợp lệ');
+        return;
+    }
+    
     const formData = {
         name,
         description,
-        status,
+        status: status, // Use the selected status
         parent_id: parentId || null,
         manager_id: managerId || null
     };
-    
-    try {
-        showLoadingState();
-        
-        const url = currentDepartmentId 
-            ? `/qlnhansu_V3/backend/src/api/v1/departments.php?action=update&id=${currentDepartmentId}`
-            : '/qlnhansu_V3/backend/src/api/v1/departments.php?action=create';
-            
-        const response = await fetch(url, {
-            method: currentDepartmentId ? 'PUT' : 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            showToast('success', currentDepartmentId ? 'Cập nhật phòng ban thành công' : 'Thêm phòng ban thành công');
-            departmentModal.style.display = 'none';
-            fetchDepartments();
-        } else {
-            showToast('error', result.message || 'Có lỗi xảy ra');
+
+    // Add version if editing
+    if (currentDepartmentId) {
+        const currentDept = departments.find(d => d.id === currentDepartmentId);
+        if (currentDept) {
+            formData.version = currentDept.version;
         }
-    } catch (error) {
-        console.error('Error:', error);
-        showToast('error', 'Lỗi kết nối server');
-    } finally {
-        hideLoadingState();
+    }
+    
+    let retries = 3;
+    while (retries > 0) {
+        try {
+            showLoadingState();
+            
+            const url = currentDepartmentId 
+                ? `/qlnhansu_V3/backend/src/api/v1/departments.php?action=update&id=${currentDepartmentId}`
+                : '/qlnhansu_V3/backend/src/api/v1/departments.php?action=create';
+                
+            const response = await fetch(url, {
+                method: currentDepartmentId ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                showToast('success', currentDepartmentId ? 'Cập nhật phòng ban thành công' : 'Thêm phòng ban thành công');
+                departmentModal.style.display = 'none';
+                await fetchDepartments(); // Refresh data
+                break;
+            } else {
+                if (result.message.includes('Dữ liệu đã bị thay đổi')) {
+                    // Refresh data and retry
+                    await fetchDepartments();
+                    const updatedDept = departments.find(d => d.id === currentDepartmentId);
+                    if (updatedDept) {
+                        formData.version = updatedDept.version;
+                    }
+                    retries--;
+                    if (retries === 0) {
+                        showToast('error', 'Không thể cập nhật do xung đột dữ liệu. Vui lòng thử lại.');
+                    }
+                    continue;
+                }
+                throw new Error(result.message || 'Có lỗi xảy ra');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            retries--;
+            if (retries === 0) {
+                showToast('error', 'Lỗi kết nối server. Vui lòng thử lại sau.');
+            } else {
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
+            }
+        } finally {
+            hideLoadingState();
+        }
     }
 }
 
-// Enhanced delete with dependency check
+// Enhanced delete with retry mechanism
 async function deleteDepartment(id) {
     const dept = departments.find(d => d.id === id);
     if (!dept) {
@@ -391,33 +429,49 @@ async function deleteDepartment(id) {
     
     if (!confirm('Bạn có chắc chắn muốn xóa phòng ban này?')) return;
     
-    try {
-        showLoadingState();
-        
-        const response = await fetch(`/qlnhansu_V3/backend/src/api/v1/departments.php?action=delete&id=${id}`, {
-            method: 'DELETE'
-        });
-        const result = await response.json();
-        
-        if (result.success) {
-            showToast('success', 'Xóa phòng ban thành công');
-            fetchDepartments();
-        } else {
-            showToast('error', result.message || 'Không thể xóa phòng ban');
+    let retries = 3;
+    while (retries > 0) {
+        try {
+            showLoadingState();
+            
+            const response = await fetch(`/qlnhansu_V3/backend/src/api/v1/departments.php?action=delete&id=${id}`, {
+                method: 'DELETE'
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+                showToast('success', 'Xóa phòng ban thành công');
+                await fetchDepartments(); // Refresh data
+                break;
+            } else {
+                throw new Error(result.message || 'Không thể xóa phòng ban');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            retries--;
+            if (retries === 0) {
+                showToast('error', 'Lỗi kết nối server. Vui lòng thử lại sau.');
+            } else {
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
+            }
+        } finally {
+            hideLoadingState();
         }
-    } catch (error) {
-        console.error('Error:', error);
-        showToast('error', 'Lỗi kết nối server');
-    } finally {
-        hideLoadingState();
     }
 }
 
 // Enhanced export with progress
 async function exportToExcel() {
     try {
+        // Check if XLSX is available
+        if (typeof XLSX === 'undefined') {
+            showToast('error', 'Thư viện xuất Excel chưa được tải. Vui lòng tải lại trang.');
+            return;
+        }
+
         showLoadingState();
         
+        // Format data with better structure
         const data = filteredDepartments.map(dept => ({
             'Mã PB': dept.id,
             'Tên phòng ban': dept.name,
@@ -428,25 +482,117 @@ async function exportToExcel() {
             'Ngày tạo': formatDate(dept.created_at),
             'Cập nhật lần cuối': formatDate(dept.updated_at)
         }));
-        
-        const worksheet = XLSX.utils.json_to_sheet(data);
+
+        // Create workbook
         const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Phòng ban');
         
-        // Add styling
+        // Create worksheet
+        const worksheet = XLSX.utils.json_to_sheet(data);
+
+        // Add title row
+        const title = "DANH SÁCH PHÒNG BAN";
+        const subtitle = `Ngày xuất: ${formatDate(new Date())}`;
+        const titleRow = [title];
+        const subtitleRow = [subtitle];
+        const emptyRow = [""];
+        
+        // Insert title rows at the beginning
+        XLSX.utils.sheet_add_aoa(worksheet, [titleRow, subtitleRow, emptyRow], { origin: "A1" });
+        
+        // Merge cells for title
+        worksheet['!merges'] = [
+            { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } }, // Merge title
+            { s: { r: 1, c: 0 }, e: { r: 1, c: 7 } }  // Merge subtitle
+        ];
+
+        // Style configuration
+        const headerStyle = {
+            font: { bold: true, color: { rgb: "FFFFFF" } },
+            fill: { fgColor: { rgb: "1F4E78" } },
+            alignment: { horizontal: "center", vertical: "center" },
+            border: {
+                top: { style: "thin", color: { rgb: "000000" } },
+                bottom: { style: "thin", color: { rgb: "000000" } },
+                left: { style: "thin", color: { rgb: "000000" } },
+                right: { style: "thin", color: { rgb: "000000" } }
+            }
+        };
+
+        const titleStyle = {
+            font: { bold: true, size: 16, color: { rgb: "FFFFFF" } },
+            fill: { fgColor: { rgb: "4472C4" } },
+            alignment: { horizontal: "center", vertical: "center" }
+        };
+
+        const subtitleStyle = {
+            font: { italic: true, size: 12, color: { rgb: "FFFFFF" } },
+            fill: { fgColor: { rgb: "5B9BD5" } },
+            alignment: { horizontal: "center", vertical: "center" }
+        };
+
+        const cellStyle = {
+            alignment: { vertical: "center" },
+            border: {
+                top: { style: "thin", color: { rgb: "000000" } },
+                bottom: { style: "thin", color: { rgb: "000000" } },
+                left: { style: "thin", color: { rgb: "000000" } },
+                right: { style: "thin", color: { rgb: "000000" } }
+            }
+        };
+
+        // Apply styles
+        const range = XLSX.utils.decode_range(worksheet['!ref']);
+        for (let R = range.s.r; R <= range.e.r; R++) {
+            for (let C = range.s.c; C <= range.e.c; C++) {
+                const cell_address = XLSX.utils.encode_cell({ r: R, c: C });
+                if (!worksheet[cell_address]) continue;
+
+                if (R === 0) {
+                    // Title row
+                    worksheet[cell_address].s = titleStyle;
+                } else if (R === 1) {
+                    // Subtitle row
+                    worksheet[cell_address].s = subtitleStyle;
+                } else if (R === 3) {
+                    // Header row
+                    worksheet[cell_address].s = headerStyle;
+                } else {
+                    // Data rows
+                    worksheet[cell_address].s = cellStyle;
+                }
+            }
+        }
+
+        // Set column widths
         const wscols = [
-            {wch: 10}, // Mã PB
-            {wch: 30}, // Tên phòng ban
-            {wch: 25}, // Trưởng phòng
-            {wch: 15}, // Số nhân viên
-            {wch: 20}, // Trạng thái
-            {wch: 40}, // Mô tả
-            {wch: 20}, // Ngày tạo
-            {wch: 20}  // Cập nhật lần cuối
+            { wch: 10 },  // Mã PB
+            { wch: 30 },  // Tên phòng ban
+            { wch: 25 },  // Trưởng phòng
+            { wch: 15 },  // Số nhân viên
+            { wch: 20 },  // Trạng thái
+            { wch: 40 },  // Mô tả
+            { wch: 20 },  // Ngày tạo
+            { wch: 20 }   // Cập nhật lần cuối
         ];
         worksheet['!cols'] = wscols;
-        
-        XLSX.writeFile(workbook, `danh_sach_phong_ban_${formatDate(new Date())}.xlsx`);
+
+        // Set row heights
+        worksheet['!rows'] = [
+            { hpt: 30 },  // Title row
+            { hpt: 20 },  // Subtitle row
+            { hpt: 10 },  // Empty row
+            { hpt: 25 }   // Header row
+        ];
+
+        // Add worksheet to workbook
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Phòng ban');
+
+        // Generate filename with timestamp
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `danh_sach_phong_ban_${timestamp}.xlsx`;
+
+        // Write file
+        XLSX.writeFile(workbook, filename);
         showToast('success', 'Xuất Excel thành công');
     } catch (error) {
         console.error('Error:', error);
@@ -466,15 +612,15 @@ async function viewDepartment(id) {
         if (result.success) {
             const dept = result.data;
             
-            // Update modal content
-            document.getElementById('infoDeptCode').textContent = dept.id;
-            document.getElementById('infoDeptName').textContent = dept.name;
+            // Update modal content with null checks
+            document.getElementById('infoDeptCode').textContent = dept.id || 'N/A';
+            document.getElementById('infoDeptName').textContent = dept.name || 'N/A';
             document.getElementById('infoDeptDesc').textContent = dept.description || 'Chưa có';
-            document.getElementById('infoDeptManager').textContent = dept.manager.name || 'Chưa có';
-            document.getElementById('infoDeptEmployeeCount').textContent = dept.employee_count;
-            document.getElementById('infoDeptParent').textContent = dept.parent_department.name || 'Không có';
-            document.getElementById('infoDeptCreated').textContent = formatDate(dept.created_at);
-            document.getElementById('infoDeptUpdated').textContent = formatDate(dept.updated_at);
+            document.getElementById('infoDeptManager').textContent = dept.manager?.name || 'Chưa có';
+            document.getElementById('infoDeptEmployeeCount').textContent = dept.employee_count || 0;
+            document.getElementById('infoDeptParent').textContent = dept.parent_department?.name || 'Không có';
+            document.getElementById('infoDeptCreated').textContent = formatDate(dept.created_at) || 'N/A';
+            document.getElementById('infoDeptUpdated').textContent = formatDate(dept.updated_at) || 'N/A';
             document.getElementById('infoDeptStatus').textContent = 
                 dept.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động';
             
@@ -497,6 +643,15 @@ function addDepartment() {
     currentDepartmentId = null;
     document.getElementById('modalTitle').textContent = 'Thêm phòng ban mới';
     document.getElementById('departmentForm').reset();
+    
+    // Set default status to active
+    document.getElementById('departmentStatus').value = 'active';
+    
+    // Reset other fields
+    document.getElementById('departmentCode').value = '';
+    document.getElementById('parentDepartment').value = '';
+    document.getElementById('departmentManager').value = '';
+    
     departmentModal.style.display = 'block';
 }
 
@@ -515,10 +670,20 @@ function editDepartment(id) {
     document.getElementById('departmentName').value = dept.name;
     document.getElementById('departmentCode').value = dept.id;
     document.getElementById('departmentDescription').value = dept.description || '';
-    document.getElementById('departmentStatus').value = dept.status;
-    document.getElementById('parentDepartment').value = dept.parent_id || '';
-    document.getElementById('departmentManager').value = dept.manager_id || '';
     
+    // Set status with proper handling
+    const statusSelect = document.getElementById('departmentStatus');
+    statusSelect.value = dept.status || 'active';
+    
+    // Set parent department
+    const parentSelect = document.getElementById('parentDepartment');
+    parentSelect.value = dept.parent_id || '';
+    
+    // Set manager
+    const managerSelect = document.getElementById('departmentManager');
+    managerSelect.value = dept.manager_id || '';
+    
+    // Show modal
     departmentModal.style.display = 'block';
 }
 
@@ -614,6 +779,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Hàm khởi tạo biểu đồ
 function initializeCharts(departments) {
+    // Destroy existing charts if they exist
+    if (departmentChart) {
+        departmentChart.destroy();
+        departmentChart = null;
+    }
+    if (departmentStatusChart) {
+        departmentStatusChart.destroy();
+        departmentStatusChart = null;
+    }
+
     // Dữ liệu cho biểu đồ phân bố nhân viên
     const employeeData = {
         labels: departments.map(dept => dept.name),
@@ -659,12 +834,12 @@ function initializeCharts(departments) {
                 ...inactiveDepartments.map(() => 1)
             ],
             backgroundColor: [
-                ...activeDepartments.map(() => 'rgba(46, 204, 113, 0.8)'),  // Xanh lá tươi
-                ...inactiveDepartments.map(() => 'rgba(231, 76, 60, 0.8)') // Đỏ tươi
+                ...activeDepartments.map(() => '#00e676'),  // Xanh lá tươi
+                ...inactiveDepartments.map(() => '#ff1744') // Đỏ tươi
             ],
             borderColor: [
-                ...activeDepartments.map(() => 'rgba(46, 204, 113, 1)'),
-                ...inactiveDepartments.map(() => 'rgba(231, 76, 60, 1)')
+                ...activeDepartments.map(() => '#00c853'),
+                ...inactiveDepartments.map(() => '#d50000')
             ],
             borderWidth: 2
         }]

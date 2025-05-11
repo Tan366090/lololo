@@ -1,4 +1,3 @@
-
 <?php
 // Bật error reporting để debug
 error_reporting(E_ALL);
@@ -316,6 +315,137 @@ class EmployeeAPI {
             ]);
         }
     }
+
+    // Hàm lấy danh sách nhân viên có thể làm quản lý phòng ban
+    public function getPotentialManagers() {
+        try {
+            $sql = "SELECT e.id, e.name, e.email, e.employee_code, p.name as position_name
+                    FROM employees e
+                    LEFT JOIN positions p ON e.position_id = p.id
+                    WHERE e.status = 'active'
+                    AND e.id NOT IN (
+                        SELECT manager_id 
+                        FROM departments 
+                        WHERE manager_id IS NOT NULL
+                    )
+                    ORDER BY e.name ASC";
+            
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $managers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            echo json_encode([
+                'success' => true,
+                'data' => $managers
+            ]);
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Lỗi khi lấy danh sách quản lý tiềm năng: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    // Lấy thông tin chi tiết nhân viên theo ID
+    public function getById($id) {
+        try {
+            // Debug log
+            error_log("Getting employee details for ID: " . $id);
+
+            $query = "SELECT 
+                        e.id,
+                        e.name,
+                        e.email,
+                        e.phone,
+                        e.department_id,
+                        d.name as department_name,
+                        e.position_id,
+                        p.name as position_name,
+                        e.status,
+                        e.created_at,
+                        e.updated_at
+                     FROM employees e
+                     LEFT JOIN departments d ON e.department_id = d.id
+                     LEFT JOIN positions p ON e.position_id = p.id
+                     WHERE e.id = ?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([$id]);
+            
+            if ($stmt->rowCount() === 0) {
+                http_response_code(404);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Không tìm thấy nhân viên'
+                ]);
+                return;
+            }
+
+            $employee = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Debug log
+            error_log("Employee data: " . print_r($employee, true));
+
+            // Kiểm tra xem nhân viên có phải là quản lý không
+            $manager_query = "SELECT d.id, d.name 
+                            FROM departments d 
+                            WHERE d.manager_id = ?";
+            
+            $stmt = $this->conn->prepare($manager_query);
+            $stmt->execute([$id]);
+            $managing_department = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($managing_department) {
+                $employee['is_manager'] = true;
+                $employee['managing_department'] = $managing_department;
+            } else {
+                $employee['is_manager'] = false;
+                $employee['managing_department'] = null;
+            }
+
+            // Lấy lịch sử quản lý
+            $history_query = "SELECT 
+                                d.name as department_name,
+                                dm.start_date,
+                                dm.end_date,
+                                dm.status
+                             FROM department_managers dm
+                             JOIN departments d ON dm.department_id = d.id
+                             WHERE dm.employee_id = ?
+                             ORDER BY dm.start_date DESC";
+            
+            try {
+                $stmt = $this->conn->prepare($history_query);
+                $stmt->execute([$id]);
+                $employee['manager_history'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                // Nếu bảng department_managers chưa tồn tại, gán mảng rỗng
+                error_log("Error getting manager history: " . $e->getMessage());
+                $employee['manager_history'] = [];
+            }
+
+            echo json_encode([
+                'success' => true,
+                'data' => $employee
+            ]);
+
+        } catch (PDOException $e) {
+            error_log("Database error in getById: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Lỗi khi lấy thông tin nhân viên: ' . $e->getMessage()
+            ]);
+        } catch (Exception $e) {
+            error_log("General error in getById: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Lỗi không xác định: ' . $e->getMessage()
+            ]);
+        }
+    }
 }
 
 // Xử lý request
@@ -379,7 +509,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'employee_qualifications' && !
         d.graduation_date DESC,
         c.issue_date DESC,
         tr.completion_date DESC";
-        
+    
     $stmt = $conn->prepare($query);
     $stmt->execute([$employee_id]);
     $qualifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -388,6 +518,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'employee_qualifications' && !
         'success' => true,
         'data' => $qualifications
     ]);
+    exit();
+}
+
+if (isset($_GET['action']) && $_GET['action'] === 'getPotentialManagers') {
+    $api->getPotentialManagers();
+    exit();
+}
+
+// Thêm xử lý cho action getById
+if (isset($_GET['action']) && $_GET['action'] === 'getById' && isset($_GET['id'])) {
+    $api->getById($_GET['id']);
     exit();
 }
 

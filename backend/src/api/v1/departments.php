@@ -199,8 +199,23 @@ function createDepartment() {
     }
 
     try {
-        $sql = "INSERT INTO departments (name, description, manager_id, parent_id, created_at, updated_at) 
-                VALUES (:name, :description, :manager_id, :parent_id, NOW(), NOW())";
+        $conn->beginTransaction();
+
+        // Kiểm tra trùng tên
+        $checkSql = "SELECT COUNT(*) as count FROM departments WHERE LOWER(name) = LOWER(:name)";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->bindParam(':name', $data['name']);
+        $checkStmt->execute();
+        $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result['count'] > 0) {
+            $conn->rollBack();
+            jsonResponse(false, 'Tên phòng ban đã tồn tại');
+            return;
+        }
+
+        $sql = "INSERT INTO departments (name, description, manager_id, parent_id, created_at, updated_at, version) 
+                VALUES (:name, :description, :manager_id, :parent_id, NOW(), NOW(), 1)";
         
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':name', $data['name']);
@@ -210,11 +225,14 @@ function createDepartment() {
         
         if ($stmt->execute()) {
             $id = $conn->lastInsertId();
+            $conn->commit();
             jsonResponse(true, 'Thêm phòng ban thành công', ['id' => $id]);
         } else {
+            $conn->rollBack();
             jsonResponse(false, 'Không thêm được phòng ban');
         }
     } catch (PDOException $e) {
+        $conn->rollBack();
         jsonResponse(false, 'Lỗi: ' . $e->getMessage());
     }
 }
@@ -237,13 +255,49 @@ function updateDepartment() {
     }
 
     try {
+        $conn->beginTransaction();
+
+        // Lock bản ghi cần cập nhật
+        $lockSql = "SELECT * FROM departments WHERE id = ? FOR UPDATE";
+        $lockStmt = $conn->prepare($lockSql);
+        $lockStmt->execute([$id]);
+        $department = $lockStmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$department) {
+            $conn->rollBack();
+            jsonResponse(false, 'Không tìm thấy phòng ban');
+            return;
+        }
+
+        // Kiểm tra version
+        if (isset($data['version']) && $data['version'] !== $department['version']) {
+            $conn->rollBack();
+            jsonResponse(false, 'Dữ liệu đã bị thay đổi bởi người khác. Vui lòng làm mới trang.');
+            return;
+        }
+
+        // Kiểm tra trùng tên
+        $checkSql = "SELECT COUNT(*) as count FROM departments WHERE LOWER(name) = LOWER(:name) AND id != :id";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->bindParam(':name', $data['name']);
+        $checkStmt->bindParam(':id', $id);
+        $checkStmt->execute();
+        $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result['count'] > 0) {
+            $conn->rollBack();
+            jsonResponse(false, 'Tên phòng ban đã tồn tại');
+            return;
+        }
+
         $sql = "UPDATE departments 
                 SET name = :name, 
                     description = :description,
                     manager_id = :manager_id,
                     parent_id = :parent_id,
-                    updated_at = NOW()
-                WHERE id = :id";
+                    updated_at = NOW(),
+                    version = version + 1
+                WHERE id = :id AND version = :version";
         
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':name', $data['name']);
@@ -251,13 +305,17 @@ function updateDepartment() {
         $stmt->bindParam(':manager_id', $data['manager_id']);
         $stmt->bindParam(':parent_id', $data['parent_id']);
         $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':version', $department['version']);
         
         if ($stmt->execute()) {
+            $conn->commit();
             jsonResponse(true, 'Cập nhật phòng ban thành công');
         } else {
+            $conn->rollBack();
             jsonResponse(false, 'Không cập nhật được phòng ban');
         }
     } catch (PDOException $e) {
+        $conn->rollBack();
         jsonResponse(false, 'Lỗi: ' . $e->getMessage());
     }
 }
@@ -277,14 +335,39 @@ function deleteDepartment() {
     }
     
     try {
-        // Kiểm tra xem phòng ban có nhân viên không
+        $conn->beginTransaction();
+
+        // Lock bản ghi cần xóa
+        $lockSql = "SELECT * FROM departments WHERE id = ? FOR UPDATE";
+        $lockStmt = $conn->prepare($lockSql);
+        $lockStmt->execute([$id]);
+        $department = $lockStmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$department) {
+            $conn->rollBack();
+            throw new Exception('Không tìm thấy phòng ban');
+        }
+
+        // Kiểm tra nhân viên
         $sql = "SELECT COUNT(*) as count FROM employees WHERE department_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($row['count'] > 0) {
+            $conn->rollBack();
             throw new Exception('Không thể xóa phòng ban vì còn nhân viên');
+        }
+        
+        // Kiểm tra phòng ban con
+        $sql = "SELECT COUNT(*) as count FROM departments WHERE parent_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($row['count'] > 0) {
+            $conn->rollBack();
+            throw new Exception('Không thể xóa phòng ban đang có phòng ban con');
         }
         
         // Xóa phòng ban
@@ -292,15 +375,13 @@ function deleteDepartment() {
         $stmt = $conn->prepare($sql);
         $stmt->execute([$id]);
         
-        if ($stmt->rowCount() === 0) {
-            throw new Exception('Không tìm thấy phòng ban');
-        }
-        
+        $conn->commit();
         echo json_encode([
             'success' => true,
             'message' => 'Xóa phòng ban thành công'
         ]);
     } catch (Exception $e) {
+        $conn->rollBack();
         http_response_code(500);
         echo json_encode([
             'success' => false,

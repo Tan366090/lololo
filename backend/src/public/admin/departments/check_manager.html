@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra nhân viên quản lý</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f1c40f;
+            --light-bg: #f8f9fa;
+            --border-color: #e9ecef;
+            --text-color: #2c3e50;
+            --shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            background-color: #f5f6fa;
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container-fluid {
+            padding: 2rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .card {
+            box-shadow: var(--shadow);
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            border-radius: 10px 10px 0 0 !important;
+        }
+
+        .card-header h5 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem;
+        }
+
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        .status-badge {
+            padding: 0.5em 1em;
+            border-radius: 50px;
+            font-size: 0.875em;
+            font-weight: 600;
+            display: inline-block;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .status-badge.active {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .status-badge.inactive {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+        }
+
+        .manager-badge {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            padding: 0.5em 1em;
+            border-radius: 50px;
+            font-size: 0.875em;
+            font-weight: 600;
+        }
+
+        .filter-section {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline-primary {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-outline-success {
+            color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .btn-outline-success:hover {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-info {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            color: white;
+        }
+
+        .loading-overlay {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            min-width: 300px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .toast.warning {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .toast-content i {
+            font-size: 1.25rem;
+        }
+
+        .employee-info {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-top: 1.5rem;
+        }
+
+        .employee-info h5 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .employee-info p {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .employee-info .label {
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 120px;
+        }
+
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-header {
+            background-color: var(--light-bg);
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 10px 10px 0 0;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .modal-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-buttons .btn {
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container-fluid {
+                padding: 1rem;
+            }
+
+            .filter-section {
+                padding: 1rem;
+            }
+
+            .card-header {
+                padding: 1rem;
+            }
+
+            .table th, .table td {
+                padding: 0.75rem;
+            }
+
+            .status-badge {
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="departmentFilter">Phòng ban</label>
+                        <select class="form-select" id="departmentFilter">
+                            <option value="">Tất cả phòng ban</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="statusFilter">Trạng thái</label>
+                        <select class="form-select" id="statusFilter">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="active">Đang hoạt động</option>
+                            <option value="inactive">Không hoạt động</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="managerFilter">Vai trò quản lý</label>
+                        <select class="form-select" id="managerFilter">
+                            <option value="">Tất cả</option>
+                            <option value="is_manager">Đang là quản lý</option>
+                            <option value="not_manager">Chưa là quản lý</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="searchInput">Tìm kiếm</label>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Tên, email, số điện thoại...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Employee List -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Danh sách nhân viên</h5>
+                <div class="btn-group">
+                    <button class="btn btn-outline-primary" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i> Làm mới
+                    </button>
+                    <button class="btn btn-outline-success" id="exportBtn">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Họ tên</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Phòng ban</th>
+                                <th>Vị trí</th>
+                                <th>Trạng thái</th>
+                                <th>Vai trò quản lý</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeeTableBody">
+                            <!-- Employee data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Employee Detail Modal -->
+        <div class="modal fade" id="employeeModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Chi tiết nhân viên</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="employee-info">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><span class="label">ID:</span> <span id="employeeId"></span></p>
+                                    <p><span class="label">Họ tên:</span> <span id="employeeName"></span></p>
+                                    <p><span class="label">Email:</span> <span id="employeeEmail"></span></p>
+                                    <p><span class="label">Số điện thoại:</span> <span id="employeePhone"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><span class="label">Phòng ban:</span> <span id="employeeDepartment"></span></p>
+                                    <p><span class="label">Vị trí:</span> <span id="employeePosition"></span></p>
+                                    <p><span class="label">Trạng thái:</span> <span id="employeeStatus"></span></p>
+                                    <p><span class="label">Vai trò quản lý:</span> <span id="employeeManagerRole"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h5>Lịch sử quản lý</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Phòng ban</th>
+                                            <th>Thời gian bắt đầu</th>
+                                            <th>Thời gian kết thúc</th>
+                                            <th>Trạng thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="managerHistoryBody">
+                                        <!-- Manager history will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script>
+        // State
+        let employees = [];
+        let filteredEmployees = [];
+        let departments = [];
+        let isLoading = false;
+        let debounceTimer;
+
+        // DOM Elements
+        const departmentFilter = document.getElementById('departmentFilter');
+        const statusFilter = document.getElementById('statusFilter');
+        const managerFilter = document.getElementById('managerFilter');
+        const searchInput = document.getElementById('searchInput');
+        const employeeTableBody = document.getElementById('employeeTableBody');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const employeeModal = new bootstrap.Modal(document.getElementById('employeeModal'));
+
+        // Fetch data
+        async function fetchData() {
+            if (isLoading) return;
+            
+            try {
+                isLoading = true;
+                showLoadingState();
+                
+                // Fetch departments
+                const deptResponse = await fetch('/qlnhansu_V3/backend/src/api/departments.php?action=getAll');
+                const deptResult = await deptResponse.json();
+                
+                console.log('Departments data:', deptResult); // Debug log
+                
+                if (deptResult.success) {
+                    departments = deptResult.data;
+                    updateDepartmentOptions();
+                }
+                
+                // Fetch employees
+                const empResponse = await fetch('/qlnhansu_V3/backend/src/api/employees.php?action=getAll');
+                const empResult = await empResponse.json();
+                
+                console.log('Employees data:', empResult); // Debug log
+                
+                if (empResult.success) {
+                    // Add manager information to employees
+                    employees = empResult.data.map(emp => {
+                        // Tìm phòng ban mà nhân viên đang quản lý
+                        const managingDepartment = departments.find(dept => dept.manager_id === emp.id);
+                        
+                        return {
+                            ...emp,
+                            is_manager: !!managingDepartment,
+                            managing_department: managingDepartment ? managingDepartment.name : null
+                        };
+                    });
+                    
+                    filteredEmployees = [...employees];
+                    renderEmployees();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('error', 'Lỗi kết nối server');
+            } finally {
+                isLoading = false;
+                hideLoadingState();
+            }
+        }
+
+        // Update department options
+        function updateDepartmentOptions() {
+            departmentFilter.innerHTML = '<option value="">Tất cả phòng ban</option>';
+            departments.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept.id;
+                option.textContent = dept.name;
+                departmentFilter.appendChild(option);
+            });
+        }
+
+        // Render employees
+        function renderEmployees() {
+            employeeTableBody.innerHTML = '';
+            
+            filteredEmployees.forEach(emp => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${emp.id}</td>
+                    <td>${emp.name}</td>
+                    <td>${emp.email || 'N/A'}</td>
+                    <td>${emp.phone || 'N/A'}</td>
+                    <td>${emp.department_name || 'N/A'}</td>
+                    <td>${emp.position_name || 'N/A'}</td>
+                    <td>
+                        <span class="status-badge ${emp.status}">
+                            ${emp.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động'}
+                        </span>
+                    </td>
+                    <td>
+                        ${emp.is_manager ? 
+                            `<span class="badge manager-badge">Quản lý ${emp.managing_department}</span>` : 
+                            '<span class="badge bg-secondary">Chưa là quản lý</span>'}
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="viewEmployee(${emp.id})" title="Xem chi tiết">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                `;
+                employeeTableBody.appendChild(row);
+            });
+        }
+
+        // View employee details
+        async function viewEmployee(id) {
+            try {
+                showLoadingState();
+                const response = await fetch(`/qlnhansu_V3/backend/src/api/employees.php?action=getById&id=${id}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const emp = result.data;
+                    const managingDepartment = departments.find(dept => dept.manager_id === emp.id);
+                    
+                    // Update modal content
+                    document.getElementById('employeeId').textContent = emp.id;
+                    document.getElementById('employeeName').textContent = emp.name;
+                    document.getElementById('employeeEmail').textContent = emp.email || 'N/A';
+                    document.getElementById('employeePhone').textContent = emp.phone || 'N/A';
+                    document.getElementById('employeeDepartment').textContent = emp.department_name || 'N/A';
+                    document.getElementById('employeePosition').textContent = emp.position_name || 'N/A';
+                    document.getElementById('employeeStatus').innerHTML = `
+                        <span class="status-badge ${emp.status}">
+                            ${emp.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động'}
+                        </span>
+                    `;
+                    document.getElementById('employeeManagerRole').innerHTML = managingDepartment ? 
+                        `<span class="badge manager-badge">Quản lý ${managingDepartment.name}</span>` : 
+                        '<span class="badge bg-secondary">Chưa là quản lý</span>';
+                    
+                    // Get manager history
+                    const historyResponse = await fetch(`/qlnhansu_V3/backend/src/api/employees.php?action=getManagerHistory&id=${id}`);
+                    const historyResult = await historyResponse.json();
+                    
+                    // Update manager history table
+                    const historyBody = document.getElementById('managerHistoryBody');
+                    historyBody.innerHTML = '';
+                    
+                    if (historyResult.success && historyResult.data.length > 0) {
+                        historyResult.data.forEach(record => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${record.department_name}</td>
+                                <td>${formatDate(record.start_date)}</td>
+                                <td>${record.end_date ? formatDate(record.end_date) : 'Hiện tại'}</td>
+                                <td>
+                                    <span class="status-badge ${record.status}">
+                                        ${record.status === 'active' ? 'Đang quản lý' : 'Đã kết thúc'}
+                                    </span>
+                                </td>
+                            `;
+                            historyBody.appendChild(row);
+                        });
+                    } else {
+                        historyBody.innerHTML = `
+                            <tr>
+                                <td colspan="4" class="text-center">Không có lịch sử quản lý</td>
+                            </tr>
+                        `;
+                    }
+                    
+                    // Show modal
+                    employeeModal.show();
+                } else {
+                    showToast('error', 'Không thể lấy thông tin nhân viên');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('error', 'Lỗi kết nối server');
+            } finally {
+                hideLoadingState();
+            }
+        }
+
+        // Format date function
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Filter employees
+        function filterEmployees() {
+            const departmentValue = departmentFilter.value;
+            const statusValue = statusFilter.value;
+            const managerValue = managerFilter.value;
+            const searchValue = searchInput.value.toLowerCase();
+            
+            filteredEmployees = employees.filter(emp => {
+                const matchesDepartment = !departmentValue || emp.department_id === parseInt(departmentValue);
+                const matchesStatus = !statusValue || emp.status === statusValue;
+                const matchesManager = !managerValue || 
+                    (managerValue === 'is_manager' && emp.is_manager) ||
+                    (managerValue === 'not_manager' && !emp.is_manager);
+                const matchesSearch = !searchValue || 
+                    emp.name.toLowerCase().includes(searchValue) ||
+                    (emp.email && emp.email.toLowerCase().includes(searchValue)) ||
+                    (emp.phone && emp.phone.includes(searchValue));
+                
+                return matchesDepartment && matchesStatus && matchesManager && matchesSearch;
+            });
+            
+            renderEmployees();
+        }
+
+        // Export to Excel
+        function exportToExcel() {
+            try {
+                const data = filteredEmployees.map(emp => ({
+                    'ID': emp.id,
+                    'Họ tên': emp.name,
+                    'Email': emp.email || 'N/A',
+                    'Số điện thoại': emp.phone || 'N/A',
+                    'Phòng ban': emp.department_name || 'N/A',
+                    'Vị trí': emp.position_name || 'N/A',
+                    'Trạng thái': emp.status === 'active' ? 'Đang hoạt động' : 'Không hoạt động',
+                    'Vai trò quản lý': emp.is_manager ? `Quản lý ${emp.managing_department}` : 'Chưa là quản lý'
+                }));
+
+                const worksheet = XLSX.utils.json_to_sheet(data);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'Nhân viên');
+                
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+                XLSX.writeFile(workbook, `danh_sach_nhan_vien_${timestamp}.xlsx`);
+                
+                showToast('success', 'Xuất Excel thành công');
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('error', 'Lỗi khi xuất Excel');
+            }
+        }
+
+        // Show loading state
+        function showLoadingState() {
+            document.querySelector('.loading-overlay').style.display = 'flex';
+        }
+
+        // Hide loading state
+        function hideLoadingState() {
+            document.querySelector('.loading-overlay').style.display = 'none';
+        }
+
+        // Show toast notification
+        function showToast(type, message) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.querySelector('.toast-container').appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Event listeners
+        departmentFilter.addEventListener('change', filterEmployees);
+        statusFilter.addEventListener('change', filterEmployees);
+        managerFilter.addEventListener('change', filterEmployees);
+        searchInput.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(filterEmployees, 300);
+        });
+        refreshBtn.addEventListener('click', fetchData);
+        exportBtn.addEventListener('click', exportToExcel);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', fetchData);
+    </script>
+</body>
+</html> 
