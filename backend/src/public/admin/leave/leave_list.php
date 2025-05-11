@@ -46,7 +46,7 @@ session_start();
 .dashboard-cards {
     display: flex;
     flex-wrap: nowrap;
-    gap: 1rem;
+    gap: 1.5rem;
     margin: 2rem 0 2.5rem 0;
     overflow-x: auto;
     padding-bottom: 8px;
@@ -55,8 +55,8 @@ session_start();
 
 .dashboard-card {
     flex: 1;
-    min-width: 200px;
-    max-width: 250px;
+    min-width: 220px;
+    max-width: 280px;
     background: linear-gradient(135deg, #fff 60%, #f7fafd 100%);
     border-radius: 22px;
     box-shadow: 0 4px 24px rgba(52, 152, 219, 0.08), 0 1.5px 6px rgba(0,0,0,0.04);
@@ -806,6 +806,45 @@ session_start();
 .chart-row {
     margin-bottom: 3rem;
 }
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .dashboard-cards {
+        justify-content: flex-start;
+        padding-bottom: 12px;
+    }
+    
+    .dashboard-card {
+        min-width: 200px;
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-cards {
+        gap: 1rem;
+    }
+    
+    .dashboard-card {
+        min-width: 180px;
+        max-width: 220px;
+        padding: 1.2rem;
+    }
+    
+    .card-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.5rem;
+    }
+    
+    .card-title {
+        font-size: 1rem;
+    }
+    
+    .card-value {
+        font-size: 2rem;
+    }
+}
 </style>
 <body>
     <!-- Toast Container -->
@@ -1008,14 +1047,14 @@ session_start();
                         </div>
                     </div>
                 </div>
-                <div class="dashboard-card" id="expiredLeavesCard">
+                <!-- <div class="dashboard-card" id="expiredLeavesCard">
                     <div class="card-header">
                         <div class="card-icon" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
                             <i class="fas fa-hourglass-end"></i>
                         </div>
                         <div>
                             <h6 class="card-title">Đơn quá hạn duyệt</h6>
-                            <h3 class="card-value" id="expiredLeaves">0</h3>
+                            <h3 class="card-value" id="approvalOverdueLeaves">0</h3>
                         </div>
                     </div>
                     <div class="leave-tooltip">
@@ -1035,7 +1074,7 @@ session_start();
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <!-- Thêm sau phần dashboard-cards hoặc vị trí phù hợp -->
@@ -1439,6 +1478,39 @@ session_start();
 
     <!-- Thêm script để lấy user ID từ session -->
     <script>
+        // Hàm kiểm tra đơn quá hạn duyệt
+function isLeaveOverdue($endDate) {
+    $today = new DateTime();
+    $today->setTime(0, 0, 0); // Reset time to start of day
+    
+    $end = new DateTime($endDate);
+    $end->setTime(0, 0, 0);
+    
+    return $end < $today;
+}
+
+// Hàm đếm số lượng đơn quá hạn duyệt
+function countApprovalOverdueLeaves($conn) {
+    try {
+        // Lấy tất cả đơn nghỉ phép đang pending
+        $query = "SELECT * FROM leaves WHERE status = 'pending'";
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $leaves = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $overdueCount = 0;
+        foreach ($leaves as $leave) {
+            if (isLeaveOverdue($leave['end_date'])) {
+                $overdueCount++;
+            }
+        }
+        
+        return $overdueCount;
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return 0;
+    }
+}
         // Lấy user ID từ session và set vào biến global
         window.currentUserId = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
     </script>

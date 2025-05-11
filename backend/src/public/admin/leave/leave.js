@@ -401,6 +401,43 @@ const responsiveStyles = `
     background-color: #007bff;
     border-color: #007bff;
 }
+
+/* Statistics cards */
+.stat-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.stat-card.approval-overdue {
+    background: linear-gradient(45deg, #343a40, #495057);
+    color: white;
+}
+
+.stat-card.approval-overdue .stat-value {
+    color: #ff6b6b;
+}
+
+.stat-card.approval-overdue .stat-label {
+    color: #dee2e6;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #6c757d;
+}
 `;
 // Add styles to document
 const styleSheet = document.createElement('style');
@@ -686,6 +723,7 @@ function updateStatistics(data) {
     document.getElementById('totalLeaves').textContent = data.total_leaves || 0;
     document.getElementById('approvedLeaves').textContent = data.approved_leaves || 0;
     document.getElementById('pendingLeaves').textContent = data.pending_leaves || 0;
+    document.getElementById('approvalOverdueLeaves').textContent = data.approval_overdue_leaves || 0;
 }
 
 // Setup event listeners
@@ -912,30 +950,6 @@ function getStatusBadge(status) {
     return badges[status] || status;
 }
 
-// Load statistics
-async function loadStatistics() {
-    showLoader();
-    try {
-        const response = await fetch(STATISTICS_API);
-        const data = await response.json();
-        
-        if (data.success) {
-            updateStatistics(data.data);
-        }
-    } catch (error) {
-        showToast('error', 'Lỗi', 'Không thể tải thống kê');
-    } finally {
-        hideLoader();
-    }
-}
-
-// Update statistics cards
-function updateStatistics(data) {
-    document.getElementById('totalLeaves').textContent = data.total_leaves || 0;
-    document.getElementById('approvedLeaves').textContent = data.approved_leaves || 0;
-    document.getElementById('pendingLeaves').textContent = data.pending_leaves || 0;
-}
-
 // Add function to check if leave request is expired
 function isLeaveExpired(endDate) {
     const today = new Date();
@@ -952,7 +966,7 @@ function getStatusColor(status) {
         case 'rejected': return 'danger';
         case 'pending': return 'warning';
         case 'cancelled': return 'secondary';
-        case 'expired': return 'dark';
+        case 'approval_overdue': return 'dark';
         case 'processing': return 'info';
         case 'partially_approved': return 'primary';
         default: return 'primary';
@@ -966,7 +980,7 @@ function getStatusText(status) {
         case 'rejected': return 'Đã từ chối';
         case 'pending': return 'Đang chờ duyệt';
         case 'cancelled': return 'Đã hủy';
-        case 'expired': return 'Quá hạn duyệt';
+        case 'approval_overdue': return 'Quá hạn duyệt';
         case 'processing': return 'Đang xử lý';
         case 'partially_approved': return 'Duyệt một phần';
         default: return status;
@@ -977,9 +991,9 @@ function getStatusText(status) {
 function checkLeaveStatus(leave) {
     let status = leave.status;
     
-    // Check if expired
+    // Check if approval overdue (end date is in the past)
     if (status === 'pending' && isLeaveExpired(leave.end_date)) {
-        return 'expired';
+        return 'approval_overdue';
     }
     
     // Check if partially approved
