@@ -1,0 +1,2410 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý bằng cấp - Hệ thống quản lý nhân sự</title>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="degrees.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:700,400&display=swap" rel="stylesheet">
+    
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="lib/xlsx.full.min.js"></script>
+    <script>
+        // Verify XLSX is loaded
+        window.addEventListener('load', function() {
+            if (typeof XLSX === 'undefined') {
+                console.error('XLSX library not loaded!');
+            } else {
+                console.log('XLSX library loaded successfully');
+            }
+        });
+
+        // Hàm debounce để tránh gọi API quá nhiều lần
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        async function searchEmployeeByCode(code) {
+            const nameInput = document.getElementById('employeeName');
+            const idInput = document.getElementById('employeeId');
+            const degreesDiv = document.getElementById('employeeDegreesList');
+            if (!code || code.length < 3) {
+                nameInput.value = '';
+                idInput.value = '';
+                degreesDiv.innerHTML = '';
+                return;
+            }
+            try {
+                // Sửa đường dẫn API
+                const response = await fetch(`/qlnhansu_V3/backend/src/api/employees.php?action=quick_search&search=${encodeURIComponent(code)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log('Employee search response:', data); // Debug log
+
+                if (data.success && data.data && data.data.length > 0) {
+                    const employee = data.data[0];
+                    nameInput.value = employee.name;
+                    idInput.value = employee.id;
+
+                    // Lấy thông tin chi tiết về bằng cấp và chứng chỉ
+                    const degreesResponse = await fetch(`/qlnhansu_V3/backend/src/api/degrees.php?action=list&employee=${employee.employee_code}`);
+                    if (!degreesResponse.ok) {
+                        throw new Error(`HTTP error! status: ${degreesResponse.status}`);
+                    }
+                    const degreesData = await degreesResponse.json();
+                    console.log('Degrees response:', degreesData);
+
+                    if (degreesData.success && degreesData.data) {
+                        let html = '<div class="qualifications-info">';
+                        
+                        // Hiển thị bằng cấp
+                        if (degreesData.data.degrees && degreesData.data.degrees.length > 0) {
+                            html += `
+                                <div class="section">
+                                    <h5>Bằng cấp:</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Tên bằng</th>
+                                                    <th>Chuyên ngành</th>
+                                                    <th>Trường</th>
+                                                    <th>Ngày tốt nghiệp</th>
+                                                    <th>GPA</th>
+                                                    <th>File đính kèm</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>`;
+                            degreesData.data.degrees.forEach(degree => {
+                                html += `
+                                    <tr>
+                                        <td>${degree.name}</td>
+                                        <td>${degree.major || '-'}</td>
+                                        <td>${degree.institution}</td>
+                                        <td>${new Date(degree.graduation_date).toLocaleDateString('vi-VN')}</td>
+                                        <td>${degree.gpa || '-'}</td>
+                                        <td>${degree.attachment_url ? `<a href="${degree.attachment_url}" target="_blank" class="btn btn-sm btn-outline-primary">Xem</a>` : '-'}</td>
+                                    </tr>`;
+                            });
+                            html += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>`;
+                        }
+
+                        // Hiển thị chứng chỉ
+                        if (degreesData.data.certificates && degreesData.data.certificates.length > 0) {
+                            html += `
+                                <div class="section">
+                                    <h5>Chứng chỉ:</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Tên chứng chỉ</th>
+                                                    <th>Tổ chức cấp</th>
+                                                    <th>Ngày cấp</th>
+                                                    <th>Ngày hết hạn</th>
+                                                    <th>Mã chứng chỉ</th>
+                                                    <th>File đính kèm</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>`;
+                            degreesData.data.certificates.forEach(cert => {
+                                html += `
+                                    <tr>
+                                        <td>${cert.name}</td>
+                                        <td>${cert.issuing_organization}</td>
+                                        <td>${new Date(cert.issue_date).toLocaleDateString('vi-VN')}</td>
+                                        <td>${cert.expiry_date ? new Date(cert.expiry_date).toLocaleDateString('vi-VN') : '-'}</td>
+                                        <td>${cert.credential_id || '-'}</td>
+                                        <td>${cert.file_url ? `<a href="${cert.file_url}" target="_blank" class="btn btn-sm btn-outline-primary">Xem</a>` : '-'}</td>
+                                    </tr>`;
+                            });
+                            html += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>`;
+                        }
+
+                        if (!degreesData.data.degrees?.length && !degreesData.data.certificates?.length) {
+                            html += '<p><i>Không có thông tin bằng cấp hoặc chứng chỉ nào.</i></p>';
+                        }
+
+                        html += '</div>';
+                        degreesDiv.innerHTML = html;
+                    } else {
+                        degreesDiv.innerHTML = '<p><i>Không có thông tin bằng cấp hoặc chứng chỉ nào.</i></p>';
+                    }
+                } else {
+                    nameInput.value = '';
+                    idInput.value = '';
+                    degreesDiv.innerHTML = '<p class="text-danger">Không tìm thấy nhân viên</p>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                degreesDiv.innerHTML = `<p class="text-danger">Lỗi: ${error.message}</p>`;
+            }
+        }
+
+        // Hàm chuyển đổi trạng thái khóa học sang text
+        function getCourseStatusText(status) {
+            const statusMap = {
+                'registered': 'Đã đăng ký',
+                'attended': 'Đang tham gia',
+                'completed': 'Đã hoàn thành',
+                'cancelled': 'Đã hủy'
+            };
+            return statusMap[status] || status;
+        }
+
+        // Tạo phiên bản debounce của hàm tìm kiếm
+        const debouncedSearch = debounce((code) => {
+            searchEmployeeByCode(code);
+        }, 300);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load danh sách phòng ban
+            function loadDepartments() {
+                fetch('/qlnhansu_V3/backend/src/api/degrees.php?action=departments')
+                    .then(res => res.json())
+                    .then(data => {
+                        const select = document.getElementById('departmentFilter');
+                        if (!select) return;
+                        select.innerHTML = '<option value="">Tất cả phòng ban</option>';
+                        if (data.success && data.data) {
+                            data.data.forEach(dep => {
+                                select.innerHTML += `<option value="${dep.id}">${dep.name}</option>`;
+                            });
+                        }
+                    });
+            }
+
+            // Load danh sách nhân viên (có thể lọc theo phòng ban)
+            function loadEmployees(departmentId = '') {
+                let url = '/qlnhansu_V3/backend/src/api/degrees.php?action=employees';
+                if (departmentId) url += `&department_id=${departmentId}`;
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data => {
+                        window.employeeList = data.success && data.data ? data.data : [];
+                    });
+            }
+
+            // Gợi ý mã nhân viên khi nhập
+            const employeeCodeInput = document.getElementById('employeeCode');
+            if (employeeCodeInput) {
+                employeeCodeInput.addEventListener('input', debounce(async function(e) {
+                    const code = e.target.value.trim();
+                    if (!code) return;
+
+                    // Lấy thông tin nhân viên (giữ nguyên logic cũ)
+                    await searchEmployeeByCode(code);
+
+                    // Lấy gợi ý tổ chức cấp
+                    try {
+                        const orgRes = await fetch(`/qlnhansu_V3/backend/src/api/degrees.php?action=org_suggestions&employee=${encodeURIComponent(code)}`);
+                        const orgData = await orgRes.json();
+                        updateOrgSuggestions(orgData.data || []);
+                    } catch (err) { updateOrgSuggestions([]); }
+
+                    // Lấy gợi ý phòng ban
+                    try {
+                        const depRes = await fetch(`/qlnhansu_V3/backend/src/api/degrees.php?action=department_suggestions&employee=${encodeURIComponent(code)}`);
+                        const depData = await depRes.json();
+                        updateDepartmentSuggestions(depData.data || []);
+                    } catch (err) { updateDepartmentSuggestions([]); }
+
+                    // Lấy gợi ý khoảng thời gian
+                    try {
+                        const timeRes = await fetch(`/qlnhansu_V3/backend/src/api/degrees.php?action=time_suggestions&employee=${encodeURIComponent(code)}`);
+                        const timeData = await timeRes.json();
+                        updateTimeSuggestions(timeData.data || []);
+                    } catch (err) { updateTimeSuggestions([]); }
+                }, 300));
+            }
+
+            // Khi chọn phòng ban thì load lại danh sách nhân viên
+            const departmentSelect = document.getElementById('departmentFilter');
+            if (departmentSelect) {
+                departmentSelect.addEventListener('change', function(e) {
+                    loadEmployees(e.target.value);
+                });
+            }
+
+            // Khởi tạo dữ liệu ban đầu
+            loadDepartments();
+            loadEmployees();
+
+            // Giữ lại các logic cũ khác nếu có
+            // ...
+
+            // Add reset button handler
+            const resetBtn = document.getElementById('resetFilters');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', function() {
+                    // Reset smart search
+                    const smartSearchInput = document.getElementById('smartSearchInput');
+                    if (smartSearchInput) smartSearchInput.value = '';
+
+                    // Reset quick filters
+                    const typeFilter = document.getElementById('typeFilter');
+                    const statusFilter = document.getElementById('statusFilter');
+                    const dateFilter = document.getElementById('dateFilter');
+                    if (typeFilter) typeFilter.value = '';
+                    if (statusFilter) statusFilter.value = '';
+                    if (dateFilter) dateFilter.value = '';
+
+                    // Reset advanced search fields
+                    const employeeCode = document.getElementById('employeeCode');
+                    const employeeName = document.getElementById('employeeName');
+                    const employeeId = document.getElementById('employeeId');
+                    if (employeeCode) employeeCode.value = '';
+                    if (employeeName) employeeName.value = '';
+                    if (employeeId) employeeId.value = '';
+
+                    // Clear employee degrees list
+                    const employeeDegreesList = document.getElementById('employeeDegreesList');
+                    if (employeeDegreesList) {
+                        employeeDegreesList.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Vui lòng nhập mã nhân viên để xem thông tin</div>';
+                    }
+
+                    // Clear active filters
+                    const activeFilters = document.getElementById('activeFilters');
+                    if (activeFilters) activeFilters.innerHTML = '';
+
+                    // Reset table to show all data
+                    applyFilters();
+                });
+            }
+
+            // Add save filter preset handler
+            const saveFilterPresetBtn = document.getElementById('saveFilterPreset');
+            if (saveFilterPresetBtn) {
+                saveFilterPresetBtn.addEventListener('click', function() {
+                    // Get current filter values
+                    const filters = {
+                        type: document.getElementById('typeFilter')?.value || '',
+                        status: document.getElementById('statusFilter')?.value || '',
+                        date: document.getElementById('dateFilter')?.value || '',
+                        employeeCode: document.getElementById('employeeCode')?.value || '',
+                        employeeName: document.getElementById('employeeName')?.value || '',
+                        employeeId: document.getElementById('employeeId')?.value || '',
+                        smartSearch: document.getElementById('smartSearchInput')?.value || ''
+                    };
+
+                    // Prompt for preset name
+                    const presetName = prompt('Nhập tên cho bộ lọc này:', 'Bộ lọc mới');
+                    if (!presetName) return; // User cancelled
+
+                    // Get existing presets from localStorage
+                    let presets = JSON.parse(localStorage.getItem('degreeFilterPresets') || '[]');
+                    
+                    // Add new preset
+                    presets.push({
+                        name: presetName,
+                        filters: filters,
+                        createdAt: new Date().toISOString()
+                    });
+
+                    // Save back to localStorage
+                    localStorage.setItem('degreeFilterPresets', JSON.stringify(presets));
+
+                    // Show success message
+                    showToast(`Đã lưu bộ lọc "${presetName}" thành công`, 'success');
+
+                    // Update preset dropdown if it exists
+                    updatePresetDropdown();
+                });
+            }
+
+            // Function to update preset dropdown
+            function updatePresetDropdown() {
+                const presets = JSON.parse(localStorage.getItem('degreeFilterPresets') || '[]');
+                const dropdown = document.getElementById('filterPresets');
+                
+                if (!dropdown) {
+                    // Create dropdown if it doesn't exist
+                    const dropdownHtml = `
+                        <select class="form-select" id="filterPresets" style="max-width: 200px;">
+                            <option value="">Chọn bộ lọc đã lưu</option>
+                        </select>
+                    `;
+                    const container = document.querySelector('.advanced-search-actions');
+                    if (container) {
+                        container.insertAdjacentHTML('afterbegin', dropdownHtml);
+                    }
+                }
+
+                // Update options
+                if (dropdown) {
+                    dropdown.innerHTML = '<option value="">Chọn bộ lọc đã lưu</option>';
+                    presets.forEach((preset, index) => {
+                        dropdown.innerHTML += `
+                            <option value="${index}">
+                                ${preset.name} (${new Date(preset.createdAt).toLocaleDateString('vi-VN')})
+                            </option>
+                        `;
+                    });
+
+                    // Add change event listener
+                    dropdown.addEventListener('change', function(e) {
+                        const selectedIndex = e.target.value;
+                        if (selectedIndex === '') return;
+
+                        const preset = presets[selectedIndex];
+                        if (preset) {
+                            // Apply the saved filters
+                            if (preset.filters.type) document.getElementById('typeFilter').value = preset.filters.type;
+                            if (preset.filters.status) document.getElementById('statusFilter').value = preset.filters.status;
+                            if (preset.filters.date) document.getElementById('dateFilter').value = preset.filters.date;
+                            if (preset.filters.employeeCode) document.getElementById('employeeCode').value = preset.filters.employeeCode;
+                            if (preset.filters.employeeName) document.getElementById('employeeName').value = preset.filters.employeeName;
+                            if (preset.filters.employeeId) document.getElementById('employeeId').value = preset.filters.employeeId;
+                            if (preset.filters.smartSearch) document.getElementById('smartSearchInput').value = preset.filters.smartSearch;
+
+                            // Trigger search if needed
+                            if (preset.filters.employeeCode) {
+                                searchEmployeeByCode(preset.filters.employeeCode);
+                            }
+                            if (preset.filters.smartSearch) {
+                                const event = new Event('input');
+                                document.getElementById('smartSearchInput').dispatchEvent(event);
+                            }
+
+                            // Apply filters
+                            applyFilters();
+                        }
+                    });
+                }
+            }
+
+            // Initialize preset dropdown
+            updatePresetDropdown();
+        });
+
+        // Cập nhật datalist cho tổ chức cấp
+        function updateOrgSuggestions(list) {
+            const orgInput = document.getElementById('orgFilter');
+            if (!orgInput) return;
+            orgInput.setAttribute('list', 'orgSuggestions');
+            let datalist = document.getElementById('orgSuggestions');
+            if (!datalist) {
+                datalist = document.createElement('datalist');
+                datalist.id = 'orgSuggestions';
+                orgInput.parentNode.appendChild(datalist);
+            }
+            datalist.innerHTML = list.map(org => `<option value="${org}">`).join('');
+        }
+
+        // Cập nhật select cho phòng ban
+        function updateDepartmentSuggestions(list) {
+            const depSelect = document.getElementById('departmentFilter');
+            if (!depSelect) return;
+            depSelect.innerHTML = '<option value="">Tất cả phòng ban</option>' +
+                list.map(dep => `<option value="${dep.id}">${dep.name}</option>`).join('');
+        }
+
+        // Cập nhật gợi ý cho khoảng thời gian (ở đây sẽ cập nhật min/max cho input date)
+        function updateTimeSuggestions(list) {
+            // list dạng [{from: '2022-01-01', to: '2023-12-31'}] hoặc mảng các năm
+            const dateFrom = document.getElementById('dateFrom');
+            const dateTo = document.getElementById('dateTo');
+            if (!dateFrom || !dateTo) return;
+            if (Array.isArray(list) && list.length > 0) {
+                // Nếu là mảng các object from/to
+                if (typeof list[0] === 'object' && list[0].from && list[0].to) {
+                    dateFrom.min = list[0].from;
+                    dateFrom.max = list[0].to;
+                    dateTo.min = list[0].from;
+                    dateTo.max = list[0].to;
+                } else if (typeof list[0] === 'string' && list[0].length === 4) {
+                    // Nếu là mảng các năm
+                    const minYear = Math.min(...list.map(y => parseInt(y)));
+                    const maxYear = Math.max(...list.map(y => parseInt(y)));
+                    dateFrom.min = `${minYear}-01-01`;
+                    dateFrom.max = `${maxYear}-12-31`;
+                    dateTo.min = `${minYear}-01-01`;
+                    dateTo.max = `${maxYear}-12-31`;
+                }
+            } else {
+                dateFrom.min = '';
+                dateFrom.max = '';
+                dateTo.min = '';
+                dateTo.max = '';
+            }
+        }
+
+        // Hàm tìm kiếm nhân viên cho modal
+        async function searchEmployeeByCodeForModal(code) {
+            const nameInput = document.getElementById('employeeNameModal');
+            const idInput = document.getElementById('employeeIdModal');
+            const degreesDiv = document.getElementById('modalEmployeeDegreesList');
+            
+            if (!code || code.length < 3) {
+                if (nameInput) nameInput.value = '';
+                if (idInput) idInput.value = '';
+                if (degreesDiv) {
+                    degreesDiv.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Vui lòng nhập mã nhân viên để xem thông tin</div>';
+                }
+                return;
+            }
+
+            try {
+                // Sử dụng đường dẫn tương đối
+                const response = await fetch('/qlnhansu_V3/backend/src/api/employees.php?action=quick_search&search=' + encodeURIComponent(code));
+                const data = await response.json();
+                
+                if (data.success && data.data && data.data.length > 0) {
+                    const employee = data.data[0];
+                    if (nameInput) nameInput.value = employee.name;
+                    if (idInput) {
+                        idInput.value = employee.id;
+                        console.log('Set employee ID:', employee.id); // Debug log
+                    }
+                    
+                    // Lấy bằng cấp/chứng chỉ với đường dẫn tương đối
+                    const degreesResponse = await fetch('/qlnhansu_V3/backend/src/api/degrees.php?action=list&employee=' + employee.employee_code);
+                    const degreesData = await degreesResponse.json();
+                    
+                    if (degreesDiv) {
+                        if (degreesData.success && degreesData.data) {
+                            let html = '<div class="qualifications-info">';
+                            
+                            // Hiển thị bằng cấp
+                            if (degreesData.data.degrees && degreesData.data.degrees.length > 0) {
+                                html += `
+                                    <div class="section">
+                                        <h5>Bằng cấp:</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Tên bằng</th>
+                                                        <th>Chuyên ngành</th>
+                                                        <th>Trường</th>
+                                                        <th>Ngày tốt nghiệp</th>
+                                                        <th>GPA</th>
+                                                        <th>File đính kèm</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>`;
+                                degreesData.data.degrees.forEach(degree => {
+                                    html += `
+                                        <tr>
+                                            <td>${degree.name}</td>
+                                            <td>${degree.major || '-'}</td>
+                                            <td>${degree.institution}</td>
+                                            <td>${new Date(degree.graduation_date).toLocaleDateString('vi-VN')}</td>
+                                            <td>${degree.gpa || '-'}</td>
+                                            <td>${degree.attachment_url ? `<a href="${degree.attachment_url}" target="_blank" class="btn btn-sm btn-outline-primary">Xem</a>` : '-'}</td>
+                                        </tr>`;
+                                });
+                                html += `
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>`;
+                            }
+
+                            // Hiển thị chứng chỉ
+                            if (degreesData.data.certificates && degreesData.data.certificates.length > 0) {
+                                html += `
+                                    <div class="section">
+                                        <h5>Chứng chỉ:</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Tên chứng chỉ</th>
+                                                        <th>Tổ chức cấp</th>
+                                                        <th>Ngày cấp</th>
+                                                        <th>Ngày hết hạn</th>
+                                                        <th>Mã chứng chỉ</th>
+                                                        <th>File đính kèm</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>`;
+                                degreesData.data.certificates.forEach(cert => {
+                                    html += `
+                                        <tr>
+                                            <td>${cert.name}</td>
+                                            <td>${cert.issuing_organization}</td>
+                                            <td>${new Date(cert.issue_date).toLocaleDateString('vi-VN')}</td>
+                                            <td>${cert.expiry_date ? new Date(cert.expiry_date).toLocaleDateString('vi-VN') : '-'}</td>
+                                            <td>${cert.credential_id || '-'}</td>
+                                            <td>${cert.file_url ? `<a href="${cert.file_url}" target="_blank" class="btn btn-sm btn-outline-primary">Xem</a>` : '-'}</td>
+                                        </tr>`;
+                                });
+                                html += `
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>`;
+                            }
+
+                            // Hiển thị khóa học đã tham gia
+                            if (degreesData.data.courses && degreesData.data.courses.length > 0) {
+                                html += renderCoursesTable(degreesData.data.courses);
+                            }
+
+                            if (!degreesData.data.degrees?.length && !degreesData.data.certificates?.length && !degreesData.data.courses?.length) {
+                                html += '<p><i>Không có thông tin bằng cấp, chứng chỉ hoặc khóa học nào.</i></p>';
+                            }
+
+                            html += '</div>';
+                            degreesDiv.innerHTML = html;
+                        } else {
+                            degreesDiv.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Không có bằng cấp/chứng chỉ nào.</div>';
+                        }
+                    }
+                } else {
+                    if (nameInput) nameInput.value = '';
+                    if (idInput) idInput.value = '';
+                    if (degreesDiv) {
+                        degreesDiv.innerHTML = '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Không tìm thấy nhân viên với mã này.</div>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                if (nameInput) nameInput.value = '';
+                if (idInput) idInput.value = '';
+                if (degreesDiv) {
+                    degreesDiv.innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> Lỗi khi tìm kiếm nhân viên: ${error.message}</div>`;
+                }
+            }
+        }
+
+        // Gắn sự kiện cho input trong modal
+        document.addEventListener('DOMContentLoaded', function() {
+            const employeeCodeInputModal = document.getElementById('employeeCodeModal');
+            if (employeeCodeInputModal) {
+                employeeCodeInputModal.addEventListener('input', (e) => {
+                    const code = e.target.value.trim();
+                    searchEmployeeByCodeForModal(code);
+                });
+            }
+        });
+
+        // Hàm lấy class cho badge trạng thái
+        function getStatusBadgeClass(status) {
+            const statusMap = {
+                'registered': 'bg-secondary',
+                'attended': 'bg-primary',
+                'completed': 'bg-success',
+                'cancelled': 'bg-danger'
+            };
+            return statusMap[status] || 'bg-secondary';
+        }
+
+        // Sửa lại render bảng Khóa học đã tham gia để thêm class cho từng cột và button nhỏ lại
+        function renderCoursesTable(courses) {
+            let html = `<div class="section">
+                <h5>Khóa học đã tham gia:</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-courses">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="name-col">Tên khóa học</th>
+                                <th>Trạng thái</th>
+                                <th class="date-col">Ngày hoàn thành</th>
+                                <th class="score-col">Điểm số</th>
+                                <th class="evaluation-col">Đánh giá</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+            courses.forEach(course => {
+                // Chuẩn bị nội dung popover đánh giá
+                let evalContent = '';
+                if (course.evaluation) {
+                    let hasAny = false;
+                    evalContent += `<div style='font-weight:600;margin-bottom:4px;'>Chi tiết đánh giá</div>`;
+                    if (course.evaluation.content_rating) {
+                        evalContent += `<div>Nội dung: <b>${course.evaluation.content_rating}/5</b></div>`;
+                        hasAny = true;
+                    }
+                    if (course.evaluation.instructor_rating) {
+                        evalContent += `<div>Giảng viên: <b>${course.evaluation.instructor_rating}/5</b></div>`;
+                        hasAny = true;
+                    }
+                    if (course.evaluation.materials_rating) {
+                        evalContent += `<div>Tài liệu: <b>${course.evaluation.materials_rating}/5</b></div>`;
+                        hasAny = true;
+                    }
+                    if (course.evaluation.comments) {
+                        evalContent += `<div>Nhận xét: <i>${course.evaluation.comments}</i></div>`;
+                        hasAny = true;
+                    }
+                    if (!hasAny) {
+                        evalContent += `<div>Chưa có đánh giá chi tiết.</div>`;
+                    }
+                } else {
+                    evalContent = `<div>Chưa có đánh giá.</div>`;
+                }
+                // Escape ký tự " cho an toàn
+                const safeEvalContent = evalContent.replace(/"/g, '&quot;');
+                html += `<tr>
+                    <td class="name-col">${course.name}</td>
+                    <td><span class="badge ${getStatusBadgeClass(course.status)}">${getCourseStatusText(course.status)}</span></td>
+                    <td class="date-col">${course.completion_date ? new Date(course.completion_date).toLocaleDateString('vi-VN') : '-'}</td>
+                    <td class="score-col">${course.score || '-'}</td>
+                    <td class="evaluation-col">${
+                        course.evaluation ? `
+                        <button type="button" class="btn btn-sm btn-outline-info btn-eval-sm" data-bs-toggle="popover" 
+                            data-bs-html="true"
+                            data-bs-content="${safeEvalContent}">
+                            Xem đánh giá
+                        </button>
+                        ` : '-'
+                    }</td>
+                </tr>`;
+            });
+            html += `</tbody></table></div></div>`;
+            return html;
+        }
+    </script>
+    <script>
+        // Global variables for pagination and sorting
+        let currentPage = 1;
+        let itemsPerPage = 10;
+        let totalPages = 1;
+        let currentSort = {
+            column: 'issue_date',
+            direction: 'desc'
+        };
+
+        // Function to update table with filtered data
+        async function updateTable(data, page = 1) {
+            const tbody = document.getElementById('degreesTableBody');
+            if (!tbody) return;
+
+            // Show loading state
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="10" class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            try {
+                // Calculate pagination
+                const start = (page - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const paginatedData = data.slice(start, end);
+                totalPages = Math.ceil(data.length / itemsPerPage);
+
+                // Sort data if needed
+                if (currentSort.column) {
+                    paginatedData.sort((a, b) => {
+                        let valueA = a[currentSort.column];
+                        let valueB = b[currentSort.column];
+
+                        // Handle date sorting
+                        if (currentSort.column.includes('date')) {
+                            valueA = new Date(valueA || 0);
+                            valueB = new Date(valueB || 0);
+                        }
+
+                        // Handle string sorting
+                        if (typeof valueA === 'string') {
+                            valueA = valueA.toLowerCase();
+                            valueB = valueB.toLowerCase();
+                        }
+
+                        if (valueA < valueB) return currentSort.direction === 'asc' ? -1 : 1;
+                        if (valueA > valueB) return currentSort.direction === 'asc' ? 1 : -1;
+                        return 0;
+                    });
+                }
+
+                // Update table content
+                let html = '';
+                paginatedData.forEach((item, index) => {
+                    const rowIndex = start + index + 1;
+                    html += `
+                        <tr>
+                            <td>${rowIndex}</td>
+                            <td>${item.type === 'degree' ? 'Bằng cấp' : 'Chứng chỉ'}</td>
+                            <td>${item.name}</td>
+                            <td>${item.employee_name}</td>
+                            <td>${item.organization}</td>
+                            <td>${new Date(item.issue_date).toLocaleDateString('vi-VN')}</td>
+                            <td>${item.expiry_date ? new Date(item.expiry_date).toLocaleDateString('vi-VN') : '-'}</td>
+                            <td>${getStatusBadge(item.status)}</td>
+                            <td>${item.attachment_url ? 
+                                `<a href="${item.attachment_url}" target="_blank" class="btn btn-sm btn-outline-primary">Xem</a>` : 
+                                '-'}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info me-1" onclick="viewDegree(${item.id})">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-warning me-1" onclick="editDegree(${item.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="confirmDelete(${item.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                tbody.innerHTML = html;
+                updatePagination();
+            } catch (error) {
+                console.error('Error updating table:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="text-center text-danger py-4">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            Lỗi khi tải dữ liệu
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Function to update pagination
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            if (!pagination) return;
+
+            let html = '';
+            
+            // Previous button
+            html += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `;
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (
+                    i === 1 || // First page
+                    i === totalPages || // Last page
+                    (i >= currentPage - 2 && i <= currentPage + 2) // Pages around current
+                ) {
+                    html += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                        </li>
+                    `;
+                } else if (
+                    i === currentPage - 3 || // Before current range
+                    i === currentPage + 3 // After current range
+                ) {
+                    html += `
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    `;
+                }
+            }
+
+            // Next button
+            html += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            `;
+
+            pagination.innerHTML = html;
+        }
+
+        // Function to change page
+        function changePage(page) {
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            applyFilters();
+        }
+
+        // Function to handle sorting
+        function handleSort(column) {
+            if (currentSort.column === column) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.column = column;
+                currentSort.direction = 'asc';
+            }
+            applyFilters();
+        }
+
+        // Function to export to Excel
+        async function exportToExcel() {
+            try {
+                const filters = {
+                    type: document.getElementById('typeFilter')?.value,
+                    status: document.getElementById('statusFilter')?.value,
+                    date: document.getElementById('dateFilter')?.value,
+                    organization: document.getElementById('orgFilter')?.value,
+                    dateFrom: document.getElementById('dateFrom')?.value,
+                    dateTo: document.getElementById('dateTo')?.value,
+                    department: document.getElementById('departmentFilter')?.value,
+                    employee: document.getElementById('employeeId')?.value
+                };
+
+                const queryString = new URLSearchParams(filters).toString();
+                const response = await fetch(`../../api/degrees.php?action=export&${queryString}`);
+                const blob = await response.blob();
+                
+                // Create download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `degrees_export_${new Date().toISOString().split('T')[0]}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                showToast('Đã xuất file Excel thành công', 'success');
+            } catch (error) {
+                console.error('Export error:', error);
+                showToast('Lỗi khi xuất file Excel', 'error');
+            }
+        }
+
+        // Function to confirm delete
+        function confirmDelete(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa bằng cấp/chứng chỉ này?')) {
+                deleteDegree(id);
+            }
+        }
+
+        // Function to delete degree
+        async function deleteDegree(id) {
+            try {
+                const response = await fetch(`../../api/degrees.php?action=delete&id=${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast('Đã xóa thành công', 'success');
+                    applyFilters();
+                } else {
+                    throw new Error(data.message || 'Lỗi khi xóa');
+                }
+            } catch (error) {
+                console.error('Delete error:', error);
+                showToast(error.message || 'Lỗi khi xóa', 'error');
+            }
+        }
+
+   
+    </script>
+    <script src="degrees.js" defer></script>
+  
+    <style>
+    .header-text h2, .header-text p {
+    font-family: 'Poppins', sans-serif;
+}
+    </style>
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+    <div class="dashboard-container">
+        <!-- Nút quay lại Dashboard -->
+        <a href="../dashboard_admin_V1.php" class="btn btn-outline-primary mb-3 d-inline-flex align-items-center" style="font-weight:600;font-size:1rem;gap:8px;">
+            <i class="fa fa-arrow-left"></i> Quay lại Dashboard
+        </a>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Header -->
+            <header class="page-header" style="background: linear-gradient(135deg, #11998E, #38EF7D);">
+                <div class="header-content">
+                    <div class="header-text">
+                        <h2>Quản lý bằng cấp</h2>
+                        <p >Quản lý thông tin bằng cấp và chứng chỉ của nhân viên</p>
+                    </div>
+                    <div class="header-decoration">
+                        <div class="circle-decoration"></div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Dashboard Layout -->
+            <div class="dashboard-layout">
+                <!-- Left Side - Charts Section -->
+                <div class="charts-section">
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h5 class="text-center mb-3">Phân bố bằng cấp theo loại</h5>
+                            <div class="chart-container">
+                                <canvas id="degreeTypeChart" width="500" height="260"></canvas>
+                            </div>
+                            <div class="d-flex justify-content-end mt-2">
+                                <button class="btn btn-sm btn-outline-primary" id="toggleChartView">
+                                    <i class="fas fa-chart-bar"></i> Đổi dạng biểu đồ
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h5 class="text-center mb-3">Phân bố chứng chỉ theo tổ chức cấp</h5>
+                            <div class="chart-container">
+                                <canvas id="certificateOrgChart" width="500" height="260"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Dashboard Cards -->
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div>
+                                <h6 class="card-title">Tổng số bằng cấp không thời hạn</h6>
+                                <h3 class="card-value" id="totalDegrees">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: linear-gradient(135deg, #2ecc71, #27ae60);">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div>
+                                <h6 class="card-title">Tổng số chứng chỉ</h6>
+                                <h3 class="card-value" id="totalCertificates">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: linear-gradient(135deg, #f1c40f, #f39c12);">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h6 class="card-title">Chứng chỉ sắp hết hạn</h6>
+                                <h3 class="card-value" id="expiringCertificates">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div>
+                                <h6 class="card-title">Chứng chỉ đã hết hạn</h6>
+                                <h3 class="card-value" id="expiredCertificates">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .dashboard-layout {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 2rem;
+                    margin-bottom: 2rem;
+                    padding: 0 0.5rem;
+                    max-width: 1400px;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+
+                .charts-section {
+                    flex: 1.8;
+                    max-width: 900px;
+                }
+
+                .charts-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1.2rem;
+                }
+
+                .dashboard-cards {
+                    flex: 1;
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1rem;
+                    max-width: 500px;
+                    align-self: center;
+                }
+
+                .dashboard-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                    padding: 1rem;
+                    border: 1px solid rgba(0,0,0,0.05);
+                }
+
+                .dashboard-card:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+                }
+
+                .dashboard-card .card-header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.8rem;
+                    text-align: center;
+                }
+
+                .dashboard-card .card-icon {
+                    width: 42px;
+                    height: 42px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-size: 1.2rem;
+                    transition: transform 0.3s ease;
+                }
+
+                .dashboard-card:hover .card-icon {
+                    transform: scale(1.1);
+                }
+
+                .dashboard-card .card-title {
+                    font-size: 0.85rem;
+                    margin-bottom: 0.3rem;
+                    text-align: center;
+                    color: #6c757d;
+                }
+
+                .dashboard-card .card-value {
+                    font-size: 1.5rem;
+                    text-align: center;
+                    color: #2c3e50;
+                    font-weight: 700;
+                }
+
+                .chart-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    padding: 1.2rem;
+                    transition: all 0.3s ease;
+                    border: 1px solid rgba(0,0,0,0.05);
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                .chart-card h5 {
+                    font-size: 1rem;
+                    margin-bottom: 0.8rem;
+                    text-align: center;
+                    width: 100%;
+                }
+
+                .chart-container {
+                    height: 220px;
+                    position: relative;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                }
+
+                @media (max-width: 1399.98px) {
+                    .dashboard-layout {
+                        max-width: 1200px;
+                        gap: 1.5rem;
+                    }
+                    
+                    .charts-section {
+                        max-width: 800px;
+                    }
+
+                    .dashboard-cards {
+                        max-width: 450px;
+                    }
+                    
+                    .chart-container {
+                        height: 200px;
+                    }
+                }
+
+                @media (max-width: 1199.98px) {
+                    .dashboard-layout {
+                        max-width: 992px;
+                        gap: 1.2rem;
+                    }
+
+                    .charts-section {
+                        max-width: 700px;
+                    }
+
+                    .dashboard-cards {
+                        max-width: 400px;
+                        gap: 0.8rem;
+                    }
+
+                    .dashboard-card {
+                        padding: 0.9rem;
+                    }
+
+                    .dashboard-card .card-icon {
+                        width: 38px;
+                        height: 38px;
+                        font-size: 1.1rem;
+                    }
+
+                    .dashboard-card .card-value {
+                        font-size: 1.3rem;
+                    }
+                }
+
+                @media (max-width: 991.98px) {
+                    .dashboard-layout {
+                        flex-direction: column;
+                        align-items: center;
+                        max-width: 768px;
+                        gap: 1.5rem;
+                    }
+                    
+                    .charts-section {
+                        max-width: 100%;
+                    }
+
+                    .charts-grid {
+                        grid-template-columns: 1fr;
+                    }
+
+                    .dashboard-cards {
+                        grid-template-columns: repeat(2, 1fr);
+                        max-width: 100%;
+                        gap: 1rem;
+                    }
+                    
+                    .dashboard-card {
+                        min-width: 200px;
+                    }
+
+                    .chart-container {
+                        height: 250px;
+                    }
+                }
+
+                @media (max-width: 575.98px) {
+                    .dashboard-layout {
+                        gap: 1rem;
+                        padding: 0;
+                        max-width: 100%;
+                    }
+
+                    .dashboard-cards {
+                        grid-template-columns: 1fr;
+                        gap: 0.8rem;
+                    }
+                    
+                    .dashboard-card {
+                        min-width: 100%;
+                    }
+
+                    .chart-container {
+                        height: 200px;
+                    }
+
+                    .chart-card {
+                        padding: 1rem;
+                    }
+
+                    .chart-card h5 {
+                        font-size: 0.9rem;
+                        margin-bottom: 0.6rem;
+                    }
+                }
+
+                .dashboard-card.gradient-green {
+                    background: linear-gradient(45deg, #11998E, #38EF7D);
+                    color: #2C3E50;
+                    box-shadow: 0 4px 20px rgba(56,239,125,0.10);
+                    border: none;
+                }
+                .dashboard-card.gradient-green .card-title,
+                .dashboard-card.gradient-green .card-value {
+                    color: #2C3E50;
+                }
+            </style>
+
+            <!-- Search and Filter -->
+            <div class="search-filter">
+                <div class="filter-group d-flex align-items-center gap-3">
+                    <!-- Smart Search Box -->
+                    <div class="search-box flex-grow-1">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" class="form-control" id="smartSearchInput" 
+                                   placeholder="Tìm kiếm theo tên, nhân viên, tổ chức, mã chứng chỉ..."
+                                   autocomplete="off">
+                            <button class="btn btn-outline-secondary" type="button" id="advancedSearchToggle">
+                                <i class="fas fa-sliders-h"></i>
+                            </button>
+                        </div>
+                        <!-- Search Suggestions Dropdown -->
+                        <div id="searchSuggestions" class="search-suggestions"></div>
+                    </div>
+
+                    <!-- Quick Filters -->
+                    <div class="quick-filters d-flex gap-2">
+                        <select class="form-select filter-select" id="typeFilter">
+                            <option value="">Tất cả loại</option>
+                            <option value="degree">Bằng cấp</option>
+                            <option value="certificate">Chứng chỉ</option>
+                        </select>
+                        <select class="form-select filter-select" id="statusFilter">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="valid">Còn hiệu lực</option>
+                            <option value="expired">Hết hạn</option>
+                            <option value="expiring">Sắp hết hạn</option>
+                        </select>
+                        <select class="form-select filter-select" id="dateFilter">
+                            <option value="">Tất cả thời gian</option>
+                            <option value="today">Hôm nay</option>
+                            <option value="week">Tuần này</option>
+                            <option value="month">Tháng này</option>
+                            <option value="year">Năm nay</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Advanced Search Panel -->
+                <div id="advancedSearchPanel" class="advanced-search-panel mt-3" style="display: none;">
+                    <div class="advanced-search-grid">
+                        <!-- <div class="form-group">
+                            <label>Tổ chức cấp</label>
+                            <input type="text" class="form-control" id="orgFilter" placeholder="Nhập tên tổ chức...">
+                        </div>
+                        <div class="form-group">
+                            <label>Khoảng thời gian</label>
+                            <div class="date-range">
+                                <input type="date" class="form-control" id="dateFrom" placeholder="Từ ngày">
+                                <input type="date" class="form-control" id="dateTo" placeholder="Đến ngày">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Phòng ban</label>
+                            <select class="form-select" id="departmentFilter">
+                                <option value="">Tất cả phòng ban</option>
+                            </select>
+                        </div> -->
+                        <div class="form-group">
+                            <label for="employeeId" class="required-field">Nhân viên</label>
+                            <div class="employee-search-container">
+                                <div class="input-group">
+                                    <input type="text" id="employeeCode" class="form-control me-2" placeholder="Nhập mã nhân viên...">
+                                    <input type="text" id="employeeName" class="form-control" placeholder="Tên nhân viên" readonly>
+                                    <input type="hidden" id="employeeId">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="employeeDegreesList" class="mt-2"></div>
+                    <div class="advanced-search-actions">
+                        <!-- <button class="btn btn-outline-secondary" id="applyFilters">
+                            <i class="fas fa-check" style="color: #43a047;"></i> Áp dụng
+                        </button> -->
+                        <button class="btn btn-outline-secondary" id="resetFilters">
+                            <i class="fas fa-undo" style="color: #fbc02d;"></i> Đặt lại
+                        </button>
+                        <button class="btn btn-outline-secondary" id="saveFilterPreset">
+                            <i class="fas fa-save" style="color: #1976d2;"></i> Lưu bộ lọc
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Filters -->
+                <div id="activeFilters" class="active-filters mt-3">
+                    <!-- Active filters will be displayed here -->
+                </div>
+            </div>
+
+            <style>
+                .search-filter {
+                    background: #fff;
+                    padding: 1rem;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    margin-bottom: 1.5rem;
+                }
+
+                .filter-group {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .search-box {
+                    min-width: 300px;
+                }
+
+                .quick-filters {
+                    min-width: 400px;
+                }
+
+                .filter-select {
+                    min-width: 120px;
+                }
+
+                .search-suggestions {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    background: white;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    max-height: 200px;
+                    overflow-y: auto;
+                    z-index: 1000;
+                    display: none;
+                }
+
+                .suggestion-item {
+                    padding: 8px 12px;
+                    cursor: pointer;
+                }
+
+                .suggestion-item:hover {
+                    background: #f8f9fa;
+                }
+
+                .advanced-search-panel {
+                    margin-top: 1rem;
+                    padding: 1rem;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    background: #f8f9fa;
+                }
+
+                .advanced-search-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 1rem;
+                }
+
+                .date-range {
+                    display: flex;
+                    gap: 0.5rem;
+                }
+
+                .advanced-search-actions {
+                    display: flex;
+                    gap: 0.5rem;
+                    margin-top: 1rem;
+                    justify-content: flex-end;
+                }
+
+                .active-filters {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 0.5rem;
+                }
+
+                .filter-tag {
+                    background: #e3f2fd;
+                    color: #1976d2;
+                    border-radius: 20px;
+                    padding: 6px 14px;
+                    font-weight: 500;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 1rem;
+                    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.07);
+                    transition: box-shadow 0.2s, background 0.2s;
+                }
+                .filter-tag:hover {
+                    background: #bbdefb;
+                    box-shadow: 0 4px 16px rgba(25, 118, 210, 0.13);
+                }
+                .filter-tag i {
+                    font-size: 1.15em;
+                    margin-right: 4px;
+                    /* Hiệu ứng động */
+                    transition: transform 0.3s, color 0.3s;
+                    filter: drop-shadow(0 1px 2px rgba(25,118,210,0.15));
+                }
+                .filter-tag.type i { color: #43a047; animation: pop 0.7s; }
+                .filter-tag.status i { color: #1976d2; animation: pop 0.7s; }
+                .filter-tag.date i, .filter-tag.dateFrom i, .filter-tag.dateTo i { color: #fbc02d; animation: pop 0.7s; }
+                .filter-tag.organization i { color: #8e24aa; animation: pop 0.7s; }
+                .filter-tag.department i { color: #ff7043; animation: pop 0.7s; }
+                .filter-tag.employee i { color: #00bcd4; animation: pop 0.7s; }
+                @keyframes pop {
+                    0% { transform: scale(0.7) rotate(-10deg); }
+                    60% { transform: scale(1.2) rotate(8deg); }
+                    100% { transform: scale(1) rotate(0); }
+                }
+                .filter-tag .remove {
+                    margin-left: 6px;
+                    cursor: pointer;
+                    color: #888;
+                    font-size: 1.1em;
+                    transition: color 0.2s;
+                }
+                .filter-tag .remove:hover {
+                    color: #d32f2f;
+                }
+
+                @media (max-width: 1200px) {
+                    .filter-group {
+                        flex-direction: column;
+                        align-items: stretch;
+                    }
+                    
+                    .quick-filters {
+                        min-width: 100%;
+                    }
+                    
+                    .search-box {
+                        min-width: 100%;
+                    }
+                }
+            </style>
+
+            <!-- Degrees/Certificates Table -->
+            <div class="degrees-table">
+                <div class="table-header">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="table-title mb-0 text-dark">Danh sách bằng cấp và chứng chỉ</h5>
+                        <div class="table-actions">
+                            <button class="btn btn-outline-secondary me-2" id="refreshBtn">
+                                <i class="fas fa-sync-alt"></i> Làm mới
+                            </button>
+                            <button class="btn btn-outline-secondary me-2" id="exportBtn">
+                                <i class="fas fa-file-export"></i> Xuất Excel
+                            </button>
+                            <button class="btn btn-outline-secondary" id="addDegreeBtn">
+                                <i class="fas fa-plus"></i> Thêm mới
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>STT</th>
+                                <th>Loại</th>
+                                <th>Tên</th>
+                                <th>Nhân viên</th>
+                                <th>Tổ chức cấp</th>
+                                <th>Ngày cấp</th>
+                                <th>Ngày hết hạn</th>
+                                <th>Trạng thái</th>
+                                <th>File đính kèm</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="degreesTableBody">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul id="pagination" class="pagination justify-content-center">
+                    <!-- Pagination will be loaded here -->
+                </ul>
+            </nav>
+
+            <!-- Degree Info Modal -->
+            <div class="modal fade" id="degreeInfoModal" tabindex="-1" aria-labelledby="degreeInfoModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="degreeInfoModalLabel">Thông tin chi tiết</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="degree-info-grid">
+                                <!-- Thông tin cơ bản -->
+                                <div class="info-section">
+                                    <h6><i class="fas fa-info-circle"></i> Thông tin cơ bản</h6>
+                                    <div class="info-content">
+                                        <div class="info-item">
+                                            <span class="info-label">Loại</span>
+                                            <span class="info-value" id="infoType"></span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Tên bằng cấp/chứng chỉ</span>
+                                            <span class="info-value" id="infoName"></span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Nhân viên</span>
+                                            <span class="info-value" id="infoEmployee"></span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Tổ chức cấp</span>
+                                            <span class="info-value" id="infoOrganization"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Thông tin chi tiết -->
+                                <div class="info-section">
+                                    <h6><i class="fas fa-file-alt"></i> Thông tin chi tiết</h6>
+                                    <div class="info-content">
+                                        <div class="info-item">
+                                            <span class="info-label">Mã chứng chỉ</span>
+                                            <span class="info-value" id="infoCredentialId"></span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Ngày cấp</span>
+                                            <span class="info-value" id="infoIssueDate"></span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Ngày hết hạn</span>
+                                            <span class="info-value" id="infoExpiryDate"></span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Trạng thái</span>
+                                            <span class="info-value" id="infoStatus"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- File đính kèm -->
+                                <div class="info-section">
+                                    <h6><i class="fas fa-paperclip"></i> File đính kèm</h6>
+                                    <div class="info-content">
+                                        <div class="info-item">
+                                            <span class="info-label">Tài liệu</span>
+                                            <div id="infoAttachment"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Degree Modal -->
+    <div class="modal fade" id="degreeModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h3 id="modalTitle" class="modal-title">Thêm bằng cấp/chứng chỉ mới</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="degreeForm">
+                        <div class="form-section">
+                            <h4><i class="fas fa-info-circle"></i> Thông tin cơ bản</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="degreeType" class="required-field">Loại</label>
+                                    <select id="degreeType" class="form-select form-select-lg" required>
+                                        <option value="degree">Bằng cấp</option>
+                                        <option value="certificate">Chứng chỉ</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="employeeId" class="required-field">Nhân viên</label>
+                                    <div class="employee-search-container">
+                                        <div class="input-group mb-2">
+                                            <input type="text" id="employeeCodeModal" class="form-control form-control-lg" placeholder="Nhập mã nhân viên...">
+                                        </div>
+                                        <input type="text" id="employeeNameModal" class="form-control form-control-lg mb-2" placeholder="Tên nhân viên" readonly>
+                                        <input type="hidden" id="employeeIdModal" name="employee_id">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="degreeName" class="required-field">Tên bằng cấp/chứng chỉ</label>
+                                    <input type="text" id="degreeName" class="form-control form-control-lg" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="organization" class="required-field">Tổ chức cấp</label>
+                                    <input type="text" id="organization" class="form-control form-control-lg" required>
+                                </div>
+                                <div class="form-group degree-fields" style="display: none;">
+                                    <label for="major">Chuyên ngành</label>
+                                    <input type="text" id="major" class="form-control form-control-lg">
+                                </div>
+                                <div class="form-group degree-fields" style="display: none;">
+                                    <label for="gpa">GPA</label>
+                                    <input type="number" id="gpa" class="form-control form-control-lg" step="0.01" min="0" max="4">
+                                </div>
+                                <div class="form-group">
+                                    <label for="issueDate" class="required-field">Ngày cấp</label>
+                                    <input type="date" id="issueDate" class="form-control form-control-lg" required>
+                                </div>
+                                <div class="form-group certificate-fields" style="display: none;">
+                                    <label for="expiryDate">Ngày hết hạn</label>
+                                    <input type="date" id="expiryDate" class="form-control form-control-lg">
+                                </div>
+                                <div class="form-group certificate-fields" style="display: none;">
+                                    <label for="credentialId">Mã chứng chỉ</label>
+                                    <input type="text" id="credentialId" class="form-control form-control-lg">
+                                </div>
+                                <div class="form-group">
+                                    <label for="attachment">File đính kèm</label>
+                                    <input type="file" id="attachment" class="form-control form-control-lg" accept=".pdf,.jpg,.jpeg,.png">
+                                    <small class="form-text text-muted">Chấp nhận file PDF, JPG, JPEG, PNG (tối đa 5MB)</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Thông tin bằng cấp và chứng chỉ hiện có -->
+                        <div class="form-section mt-4">
+                            <h4><i class="fas fa-graduation-cap"></i> Thông tin bằng cấp và chứng chỉ hiện có</h4>
+                            <div id="modalEmployeeDegreesList" class="qualifications-info">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i> Vui lòng nhập mã nhân viên để xem thông tin
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" form="degreeForm" class="btn btn-primary btn-lg">
+                        <i class="fas fa-save me-2"></i>Lưu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Giảm kích thước chữ cho modal Add/Edit Degree */
+        #degreeModal .modal-title {
+            font-size: 1.4rem !important;
+        }
+        #degreeModal label,
+        #degreeModal .form-control,
+        #degreeModal .form-select,
+        #degreeModal .btn,
+        #degreeModal .modal-header,
+        #degreeModal .modal-footer,
+        #degreeModal .form-group,
+        #degreeModal .form-text {
+            font-size: 0.98rem !important;
+        }
+        #degreeModal .form-control,
+        #degreeModal .form-select {
+            padding: 0.5rem 0.75rem;
+        }
+        /* Modal full màn hình, căn giữa, không bị lệch */
+        #degreeModal .modal-dialog {
+            max-width: 100vw !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+        }
+
+        #degreeModal .modal-content {
+            width: 100vw !important;
+            height: 100vh !important;
+            min-height: 100vh !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #degreeModal .modal-header,
+        #degreeModal .modal-footer {
+            padding-left: 2.5rem !important;
+            padding-right: 2.5rem !important;
+        }
+
+        #degreeModal .modal-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        #degreeModal .modal-body {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            padding: 2.5rem !important;
+        }
+
+        #degreeModal .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        #degreeModal .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        #degreeModal .form-control,
+        #degreeModal .form-select {
+            font-size: 1.2rem;
+            padding: 0.75rem 1rem;
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+
+        #degreeModal .employee-search-container .form-control {
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 900px) {
+            #degreeModal .modal-header,
+            #degreeModal .modal-footer,
+            #degreeModal .modal-body {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            #degreeModal .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        #degreeModal .qualifications-info .table-courses th.name-col,
+        #degreeModal .qualifications-info .table-courses td.name-col {
+            min-width: 180px;
+            max-width: 350px;
+            width: 40%;
+            white-space: normal;
+            word-break: break-word;
+        }
+        #degreeModal .qualifications-info .table-courses th.date-col,
+        #degreeModal .qualifications-info .table-courses td.date-col {
+            width: 110px;
+            min-width: 90px;
+            max-width: 120px;
+            text-align: center;
+        }
+        #degreeModal .qualifications-info .table-courses th.score-col,
+        #degreeModal .qualifications-info .table-courses td.score-col {
+            width: 70px;
+            min-width: 50px;
+            max-width: 80px;
+            text-align: center;
+        }
+        #degreeModal .qualifications-info .table-courses th.evaluation-col,
+        #degreeModal .qualifications-info .table-courses td.evaluation-col {
+            width: 90px;
+            min-width: 70px;
+            max-width: 110px;
+            text-align: center;
+        }
+        #degreeModal .qualifications-info .table-courses .btn-eval-sm {
+            font-size: 0.82rem;
+            padding: 0.13rem 0.5rem;
+            border-radius: 5px;
+            min-width: 70px;
+            height: 28px;
+            line-height: 1.1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+    <style>
+    #degreeModal .qualifications-info .table-courses {
+        font-size: 0.97rem;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: #fff;
+    }
+    #degreeModal .qualifications-info .table-courses th,
+    #degreeModal .qualifications-info .table-courses td {
+        border-top: 1px solid #e9ecef;
+        border-bottom: 1px solid #e9ecef;
+        border-right: none;
+        border-left: none;
+        padding: 0.5rem 0.6rem;
+        vertical-align: middle;
+    }
+    #degreeModal .qualifications-info .table-courses th {
+        background: #f8f9fa;
+        font-weight: 600;
+        text-align: center;
+    }
+    #degreeModal .qualifications-info .table-courses td.name-col {
+        text-align: left;
+        font-weight: 500;
+        color: #222;
+        max-width: 320px;
+        white-space: normal;
+        word-break: break-word;
+    }
+    #degreeModal .qualifications-info .table-courses td,
+    #degreeModal .qualifications-info .table-courses th {
+        text-align: center;
+    }
+    #degreeModal .qualifications-info .table-courses td.name-col {
+        text-align: left;
+    }
+    #degreeModal .qualifications-info .table-courses .badge {
+        border-radius: 8px;
+        font-size: 0.85rem;
+        padding: 0.18em 0.7em;
+        background-color: #e3e8ef !important;
+        color: #5a5a5a !important;
+        font-weight: 500;
+        opacity: 0.85;
+        border: none;
+    }
+    #degreeModal .qualifications-info .table-courses .bg-success {
+        background-color: #d4f5e9 !important;
+        color: #2e7d5b !important;
+    }
+    #degreeModal .qualifications-info .table-courses .bg-primary {
+        background-color: #e3eafd !important;
+        color: #2a4d8f !important;
+    }
+    #degreeModal .qualifications-info .table-courses .bg-secondary {
+        background-color: #f0f1f3 !important;
+        color: #6c757d !important;
+    }
+    #degreeModal .qualifications-info .table-courses .bg-danger {
+        background-color: #fdeaea !important;
+        color: #b94a48 !important;
+    }
+    #degreeModal .qualifications-info .table-courses .btn-eval-sm {
+        font-size: 0.92rem;
+        padding: 0.22rem 0.7rem;
+        border-radius: 6px;
+        min-width: 90px;
+    }
+    @media (max-width: 700px) {
+        #degreeModal .qualifications-info .table-courses th,
+        #degreeModal .qualifications-info .table-courses td {
+            font-size: 0.92rem;
+            padding: 0.35rem 0.3rem;
+        }
+        #degreeModal .qualifications-info .table-courses td.name-col {
+            max-width: 120px;
+        }
+    }
+    </style>
+
+    <style>
+    #degreeModal .qualifications-info .table th,
+    #degreeModal .qualifications-info .table td {
+        white-space: normal !important;
+        word-break: break-word !important;
+        max-width: 220px;
+    }
+    </style>
+
+    <style>
+        /* Degree Info Modal Styles */
+        #degreeInfoModal .modal-content {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            pointer-events: auto !important;
+        }
+
+        #degreeInfoModal .modal-header {
+            background: linear-gradient(135deg, #11998E, #38EF7D);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            padding: 1.5rem;
+            border: none;
+        }
+
+        #degreeInfoModal .modal-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        #degreeInfoModal .modal-body {
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+            pointer-events: auto !important;
+        }
+
+        #degreeInfoModal .degree-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        #degreeInfoModal .info-section {
+            background: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+
+        #degreeInfoModal .info-section h6 {
+            color: #2c3e50;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #degreeInfoModal .info-section h6 i {
+            color: #11998E;
+        }
+
+        #degreeInfoModal .info-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        #degreeInfoModal .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        #degreeInfoModal .info-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        #degreeInfoModal .info-value {
+            color: #2c3e50;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+
+        #degreeInfoModal .badge {
+            font-size: 0.85rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        #degreeInfoModal .attachment-preview {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        #degreeInfoModal .attachment-preview .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #degreeInfoModal .attachment-preview .btn i {
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            #degreeInfoModal .modal-body {
+                padding: 1.5rem;
+            }
+
+            #degreeInfoModal .degree-info-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            #degreeInfoModal .info-section {
+                padding: 1.2rem;
+            }
+
+            #degreeInfoModal .attachment-preview {
+                flex-direction: column;
+            }
+
+            #degreeInfoModal .attachment-preview .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const smartSearchInput = document.getElementById('smartSearchInput');
+        if (smartSearchInput) {
+            smartSearchInput.addEventListener('input', debounce(async function(e) {
+                const keyword = e.target.value.trim();
+                try {
+                    const response = await fetch(`/qlnhansu_V3/backend/src/api/degrees.php?action=list&search=${encodeURIComponent(keyword)}`);
+                    const data = await response.json();
+                    if (data.success && data.data) {
+                        // Gộp degrees và certificates nếu có
+                        let result = [];
+                        if (Array.isArray(data.data.degrees)) result = result.concat(data.data.degrees);
+                        if (Array.isArray(data.data.certificates)) result = result.concat(data.data.certificates);
+                        updateTable(result);
+                    } else {
+                        updateTable([]);
+                    }
+                } catch (err) {
+                    updateTable([]);
+                }
+            }, 300));
+        }
+    });
+    </script>
+
+    <script>
+    function getStatusBadge(status) {
+        let badgeClass = 'bg-secondary';
+        let text = 'Không xác định';
+        switch (status) {
+            case 'valid':
+            case 'completed':
+                badgeClass = 'bg-success';
+                text = 'Còn hiệu lực';
+                break;
+            case 'expired':
+            case 'failed':
+                badgeClass = 'bg-danger';
+                text = 'Hết hạn';
+                break;
+            case 'expiring':
+                badgeClass = 'bg-warning text-dark';
+                text = 'Sắp hết hạn';
+                break;
+            case 'registered':
+                badgeClass = 'bg-primary';
+                text = 'Đã đăng ký';
+                break;
+            case 'attended':
+                badgeClass = 'bg-info text-dark';
+                text = 'Đang tham gia';
+                break;
+            default:
+                text = status || 'Không xác định';
+        }
+        return `<span class="badge ${badgeClass}">${text}</span>`;
+    }
+    </script>
+
+    <!-- Add this before closing body tag -->
+    <!-- Filter Presets Modal -->
+    <div class="modal fade" id="filterPresetsModal" tabindex="-1" aria-labelledby="filterPresetsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filterPresetsModalLabel">
+                        <i class="fas fa-filter me-2"></i>Quản lý bộ lọc đã lưu
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Tên bộ lọc</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Chi tiết bộ lọc</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="filterPresetsTableBody">
+                                <!-- Data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    /* Filter Presets Modal Styles */
+    #filterPresetsModal .modal-content {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    #filterPresetsModal .modal-header {
+        background: linear-gradient(135deg, #11998E, #38EF7D);
+        color: white;
+        border-radius: 12px 12px 0 0;
+        padding: 1.2rem;
+    }
+
+    #filterPresetsModal .modal-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    #filterPresetsModal .modal-body {
+        padding: 1.5rem;
+    }
+
+    #filterPresetsModal .table th {
+        font-weight: 600;
+        background: #f8f9fa;
+    }
+
+    #filterPresetsModal .filter-details {
+        max-width: 300px;
+        font-size: 0.9rem;
+    }
+
+    #filterPresetsModal .filter-details span {
+        display: block;
+        margin-bottom: 0.3rem;
+    }
+
+    #filterPresetsModal .filter-details .label {
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    #filterPresetsModal .btn-action {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    #filterPresetsModal .btn-action i {
+        font-size: 0.9rem;
+    }
+    </style>
+
+    <script>
+    // Add this to your existing JavaScript
+    function showFilterPresets() {
+        const presets = JSON.parse(localStorage.getItem('degreeFilterPresets') || '[]');
+        const tbody = document.getElementById('filterPresetsTableBody');
+        
+        if (!tbody) return;
+        
+        tbody.innerHTML = '';
+        
+        if (presets.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="text-center py-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Chưa có bộ lọc nào được lưu
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        presets.forEach((preset, index) => {
+            const filterDetails = [];
+            if (preset.filters.type) filterDetails.push(`Loại: ${preset.filters.type}`);
+            if (preset.filters.status) filterDetails.push(`Trạng thái: ${preset.filters.status}`);
+            if (preset.filters.date) filterDetails.push(`Thời gian: ${preset.filters.date}`);
+            if (preset.filters.employeeCode) filterDetails.push(`Mã NV: ${preset.filters.employeeCode}`);
+            if (preset.filters.smartSearch) filterDetails.push(`Tìm kiếm: ${preset.filters.smartSearch}`);
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>${preset.name}</td>
+                    <td>${new Date(preset.createdAt).toLocaleDateString('vi-VN')}</td>
+                    <td>
+                        <div class="filter-details">
+                            ${filterDetails.map(detail => `<span>${detail}</span>`).join('')}
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-primary btn-action me-1" onclick="applyPreset(${index})">
+                            <i class="fas fa-check"></i> Áp dụng
+                        </button>
+                        <button class="btn btn-sm btn-danger btn-action" onclick="deletePreset(${index})">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function applyPreset(index) {
+        const presets = JSON.parse(localStorage.getItem('degreeFilterPresets') || '[]');
+        const preset = presets[index];
+        
+        if (preset) {
+            // Apply the saved filters
+            if (preset.filters.type) document.getElementById('typeFilter').value = preset.filters.type;
+            if (preset.filters.status) document.getElementById('statusFilter').value = preset.filters.status;
+            if (preset.filters.date) document.getElementById('dateFilter').value = preset.filters.date;
+            if (preset.filters.employeeCode) document.getElementById('employeeCode').value = preset.filters.employeeCode;
+            if (preset.filters.employeeName) document.getElementById('employeeName').value = preset.filters.employeeName;
+            if (preset.filters.employeeId) document.getElementById('employeeId').value = preset.filters.employeeId;
+            if (preset.filters.smartSearch) document.getElementById('smartSearchInput').value = preset.filters.smartSearch;
+
+            // Trigger search if needed
+            if (preset.filters.employeeCode) {
+                searchEmployeeByCode(preset.filters.employeeCode);
+            }
+            if (preset.filters.smartSearch) {
+                const event = new Event('input');
+                document.getElementById('smartSearchInput').dispatchEvent(event);
+            }
+
+            // Apply filters
+            applyFilters();
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('filterPresetsModal'));
+            if (modal) modal.hide();
+
+            showToast(`Đã áp dụng bộ lọc "${preset.name}"`, 'success');
+        }
+    }
+
+    function deletePreset(index) {
+        if (confirm('Bạn có chắc chắn muốn xóa bộ lọc này?')) {
+            const presets = JSON.parse(localStorage.getItem('degreeFilterPresets') || '[]');
+            const deletedPreset = presets[index];
+            
+            presets.splice(index, 1);
+            localStorage.setItem('degreeFilterPresets', JSON.stringify(presets));
+            
+            showToast(`Đã xóa bộ lọc "${deletedPreset.name}"`, 'success');
+            showFilterPresets();
+            updatePresetDropdown();
+        }
+    }
+
+    // Update the saveFilterPreset click handler to show the modal
+    let filterPresetsModalInstance = null;
+    document.addEventListener('DOMContentLoaded', function() {
+        const saveFilterPresetBtn = document.getElementById('saveFilterPreset');
+        if (saveFilterPresetBtn) {
+            saveFilterPresetBtn.addEventListener('click', function() {
+                if (!filterPresetsModalInstance) {
+                    filterPresetsModalInstance = new bootstrap.Modal(document.getElementById('filterPresetsModal'), { backdrop: false });
+                }
+                filterPresetsModalInstance.show();
+                showFilterPresets();
+            });
+        }
+    });
+    </script>
+
+    <script>
+    // Add this before other JavaScript code
+    function showToast(message, type = 'info') {
+        const toastContainer = document.querySelector('.toast-container');
+        if (!toastContainer) return;
+
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-white bg-${type} border-0`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+
+        toastContainer.appendChild(toast);
+        const bsToast = new bootstrap.Toast(toast, {
+            animation: true,
+            autohide: true,
+            delay: 3000
+        });
+        bsToast.show();
+
+        // Remove toast after it's hidden
+        toast.addEventListener('hidden.bs.toast', () => {
+            toast.remove();
+        });
+    }
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const refreshBtn = document.getElementById('refreshBtn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', function() {
+                window.location.reload();
+            });
+        }
+
+        // Initialize Bootstrap modal
+        let degreeModal = null;
+        const degreeModalElement = document.getElementById('degreeModal');
+        if (degreeModalElement) {
+            degreeModal = new bootstrap.Modal(degreeModalElement);
+        }
+
+        // Add event listener for addDegreeBtn
+        const addDegreeBtn = document.getElementById('addDegreeBtn');
+        if (addDegreeBtn) {
+            addDegreeBtn.addEventListener('click', function() {
+                if (window.degreesManager) {
+                    window.degreesManager.showAddModal();
+                } else {
+                    console.error('DegreesManager not initialized');
+                    showToast('Lỗi: Hệ thống chưa sẵn sàng', 'error');
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>
