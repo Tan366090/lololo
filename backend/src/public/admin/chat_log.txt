@@ -89,3 +89,7 @@
 [2025-05-11 04:54:04] User message: Thông tin phòng ban
 [2025-05-11 04:54:13] User message: Thống kê nghỉ phép
 [2025-05-11 11:31:55] User message: Thống kê lương
+[2025-05-12 17:51:52] User message: Tổng số nhân viên
+[2025-05-12 17:51:55] User message: Thông tin phòng ban
+[2025-05-12 17:52:05] User message: Thống kê lương
+[2025-05-12 17:52:29] User message: Thống kê nghỉ phép
