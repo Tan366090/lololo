@@ -88,15 +88,47 @@
       background: linear-gradient(90deg, #6dd5ed 0%, #2193b0 100%);
       transform: translateY(-2px) scale(1.05);
     }
+    .loader, .loader:before, .loader:after {
+      border-radius: 50%;
+      width: 2.5em;
+      height: 2.5em;
+      animation-fill-mode: both;
+      animation: bblFadInOut 1.8s infinite ease-in-out;
+    }
+    .loader {
+      color: #3498db;
+      font-size: 7px;
+      position: relative;
+      text-indent: -9999em;
+      transform: translateZ(0);
+      animation-delay: -0.16s;
+      margin: 0 auto 12px auto;
+      display: block;
+    }
+    .loader:before,
+    .loader:after {
+      content: '';
+      position: absolute;
+      top: 0;
+    }
+    .loader:before {
+      left: -3.5em;
+      animation-delay: -0.32s;
+    }
+    .loader:after {
+      left: 3.5em;
+    }
+    @keyframes bblFadInOut {
+      0%, 80%, 100% { box-shadow: 0 2.5em 0 -1.3em }
+      40% { box-shadow: 0 2.5em 0 0 }
+    }
   </style>
 </head>
 <body>
   <div class="developing-container">
-    <img class="developing-gif" src="https://assets10.lottiefiles.com/packages/lf20_j1adxtyb.json.gif" alt="Đang phát triển">
-    <div class="developing-icon">
-      <i class="fas fa-tools"></i>
-    </div>
-    <div class="developing-title">Chức năng đang phát triển</div>
+    <img class="developing-gif" src="assets/developing.gif" alt="Đang phát triển">
+    <span class="loader">Đang tải...</span>
+    <div style="margin-top: 40px;" class="developing-title">Chức năng đang phát triển</div>
     <div class="developing-desc">
       Xin lỗi, chức năng này hiện đang được phát triển.<br>
       Bạn vui lòng quay lại sau để trải nghiệm nhé!<br>
