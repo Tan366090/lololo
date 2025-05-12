@@ -1,0 +1,237 @@
+CREATE TABLE `payroll` (
+  `payroll_id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `pay_period_start` date NOT NULL,
+  `pay_period_end` date NOT NULL,
+  `work_days_payable` decimal(4,1) NOT NULL COMMENT 'Days eligible for payment in period',
+  `base_salary_period` decimal(15,2) NOT NULL COMMENT 'Base salary for the pay period',
+  `allowances_total` decimal(15,2) DEFAULT 0.00,
+  `bonuses_total` decimal(15,2) DEFAULT 0.00,
+  `deductions_total` decimal(15,2) DEFAULT 0.00,
+  `gross_salary` decimal(15,2) NOT NULL,
+  `tax_deduction` decimal(15,2) DEFAULT 0.00,
+  `insurance_deduction` decimal(15,2) DEFAULT 0.00,
+  `net_salary` decimal(15,2) NOT NULL COMMENT 'Take-home pay',
+  `currency` varchar(3) NOT NULL DEFAULT 'VND',
+  `amount` decimal(15,2) DEFAULT NULL,
+  `payment_date` date DEFAULT NULL,
+  `status` enum('pending','calculated','approved','paid','rejected') DEFAULT 'pending',
+  `generated_at` datetime DEFAULT current_timestamp(),
+  `generated_by_user_id` int(11) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `payment_method` varchar(50) DEFAULT 'bank_transfer',
+  `payment_reference` varchar(100) DEFAULT NULL
+) ;
+-- Bảng payroll_allowances (Chi tiết phụ cấp của nhân viên)
+CREATE TABLE payroll_allowances (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    payroll_id INT,
+    allowance_id INT,
+    employee_id INT,
+    amount DECIMAL(15,2),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (payroll_id) REFERENCES payroll(payroll_id),
+    FOREIGN KEY (allowance_id) REFERENCES allowances(allowance_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
+
+-- Bảng payroll_bonuses (Chi tiết thưởng của nhân viên)
+CREATE TABLE payroll_bonuses (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    payroll_id INT,
+    bonus_id INT,
+    employee_id INT,
+    amount DECIMAL(15,2),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (payroll_id) REFERENCES payroll(payroll_id),
+    FOREIGN KEY (bonus_id) REFERENCES bonuses(bonus_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
+
+-- Bảng payroll_deductions (Chi tiết khấu trừ của nhân viên)
+CREATE TABLE payroll_deductions (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    payroll_id INT,
+    deduction_id INT,
+    employee_id INT,
+    amount DECIMAL(15,2),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (payroll_id) REFERENCES payroll(payroll_id),
+    FOREIGN KEY (deduction_id) REFERENCES deductions(deduction_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
+
+CREATE TABLE `payroll_approvals` (
+  `approval_id` int(11) NOT NULL,
+  `payroll_id` int(11) NOT NULL,
+  `approver_id` int(11) NOT NULL,
+  `approval_level` int(2) NOT NULL,
+  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `comments` text DEFAULT NULL,
+  `approved_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `employees` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL COMMENT 'Link to the user account',
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `employee_code` varchar(20) DEFAULT NULL,
+  `department_id` int(11) DEFAULT NULL,
+  `position_id` int(11) DEFAULT NULL,
+  `hire_date` date DEFAULT NULL,
+  `contract_type` varchar(50) DEFAULT NULL,
+  `contract_start_date` date DEFAULT NULL,
+  `contract_end_date` date DEFAULT NULL,
+  `base_salary` decimal(10,2) DEFAULT 0.00,
+  `termination_date` date DEFAULT NULL,
+  `status` enum('active','inactive','terminated','on_leave') DEFAULT 'active',
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `employees`
+--
+
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `password_salt` varchar(64) DEFAULT NULL,
+  `role_id` int(11) NOT NULL,
+  `is_active` tinyint(1) DEFAULT 1 COMMENT '0=Inactive, 1=Active',
+  `requires_password_change` tinyint(1) DEFAULT 0 COMMENT '1=Must change password on next login',
+  `last_login` datetime DEFAULT NULL,
+  `login_attempts` int(11) DEFAULT 0,
+  `last_attempt` datetime DEFAULT NULL,
+  `remember_token` varchar(64) DEFAULT NULL,
+  `remember_token_expiry` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+
+CREATE TABLE `attendance` (
+  `attendance_id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `attendance_date` date NOT NULL,
+  `check_in_time` time DEFAULT NULL,
+  `check_out_time` time DEFAULT NULL,
+  `work_duration_hours` decimal(4,2) DEFAULT NULL,
+  `attendance_symbol` varchar(10) DEFAULT NULL COMMENT 'e.g., P (Present), A (Absent), L (Leave), WFH',
+  `notes` text DEFAULT NULL,
+  `recorded_at` datetime DEFAULT current_timestamp(),
+  `source` varchar(50) DEFAULT 'manual' COMMENT 'e.g., manual, biometric, system'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE `performances` (
+  `id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `reviewer_user_id` int(11) NOT NULL COMMENT 'User performing the review',
+  `review_period_start` date NOT NULL,
+  `review_period_end` date NOT NULL,
+  `review_date` date NOT NULL,
+  `evaluation_date` date DEFAULT NULL,
+  `performance_score` decimal(4,2) DEFAULT NULL,
+  `score` decimal(4,2) DEFAULT NULL,
+  `strengths` text DEFAULT NULL,
+  `areas_for_improvement` text DEFAULT NULL,
+  `employee_comments` text DEFAULT NULL,
+  `reviewer_comments` text DEFAULT NULL,
+  `goals_for_next_period` text DEFAULT NULL,
+  `status` enum('draft','submitted','acknowledged','completed') DEFAULT 'draft',
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ;
+
+--
+-- Dumping data for table `performances`
+--
+CREATE TABLE `salary_history` (
+  `salary_history_id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `effective_date` date NOT NULL,
+  `previous_salary` decimal(15,2) DEFAULT NULL,
+  `new_salary` decimal(15,2) NOT NULL,
+  `salary_currency` varchar(3) NOT NULL DEFAULT 'VND',
+  `reason` text DEFAULT NULL COMMENT 'Reason for change (e.g., Promotion, Annual Review)',
+  `decision_attachment_url` varchar(512) DEFAULT NULL,
+  `recorded_by_user_id` int(11) DEFAULT NULL COMMENT 'User who recorded the change',
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `salary_history`
+--
+
+CREATE TABLE `bonuses` (
+  `bonus_id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `bonus_type` varchar(50) NOT NULL COMMENT 'e.g., Performance, Referral, Spot',
+  `amount` decimal(15,2) DEFAULT NULL,
+  `effective_date` date NOT NULL COMMENT 'Date bonus applies',
+  `payroll_id` int(11) DEFAULT NULL COMMENT 'FK to payroll where this bonus was included',
+  `reason` text NOT NULL,
+  `status` enum('pending','approved','paid','rejected') DEFAULT 'pending',
+  `approved_by_user_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `allowances` (
+  `allowance_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `amount` decimal(15,2) DEFAULT 0.00,
+  `is_percentage` tinyint(1) DEFAULT 0,
+  `percentage_rate` decimal(5,2) DEFAULT 0.00,
+  `is_active` tinyint(1) DEFAULT 1,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `deductions` (
+  `deduction_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `amount` decimal(15,2) DEFAULT 0.00,
+  `is_percentage` tinyint(1) DEFAULT 0,
+  `percentage_rate` decimal(5,2) DEFAULT 0.00,
+  `is_active` tinyint(1) DEFAULT 1,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- Bảng payroll_payments (Chi tiết thanh toán lương)
+CREATE TABLE payroll_payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    payroll_id INT,
+    employee_id INT,
+    payment_date DATE,
+    payment_method VARCHAR(50),
+    payment_reference VARCHAR(100),
+    amount DECIMAL(15,2),
+    status ENUM('pending', 'completed', 'failed') DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (payroll_id) REFERENCES payroll(payroll_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
+
+-- Bảng payroll_history (Lịch sử lương)
+CREATE TABLE payroll_history (
+    history_id INT PRIMARY KEY AUTO_INCREMENT,
+    payroll_id INT,
+    employee_id INT,
+    action_type ENUM('created', 'updated', 'approved', 'paid', 'rejected'),
+    action_by_user_id INT,
+    action_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    notes TEXT,
+    FOREIGN KEY (payroll_id) REFERENCES payroll(payroll_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(id),
+    FOREIGN KEY (action_by_user_id) REFERENCES users(user_id)
+);

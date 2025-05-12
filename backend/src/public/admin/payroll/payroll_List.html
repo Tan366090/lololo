@@ -3,17 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self' https: file:;
-    font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com https://*.googleapis.com https://*.gstatic.com https://*.cloudflare.com data:;
-    style-src 'self' 'unsafe-inline' https://*.googleapis.com https://*.jsdelivr.net https://*.cloudflare.com;
-    script-src 'self' 'nonce-random123' 'wasm-unsafe-eval' https://*.jsdelivr.net https://*.cloudflare.com https://*.jquery.com;
-    img-src 'self' data: blob: https: file:;
-    connect-src 'self' https: file:;
-    worker-src 'self' blob:;
-    child-src 'self' blob:;
-">
-
     <title>Quản lý lương thưởng - Hệ thống quản lý nhân sự</title>
     
     <!-- Preconnect -->
@@ -927,28 +916,39 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" nonce="random123"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" nonce="random123"></script>
-    <script src="/qlnhansu_V3/backend/src/public/assets/js/services/NotificationService.js" nonce="random123"></script>
-    <script src="/qlnhansu_V3/backend/src/public/js/modules/loading-overlay.js" nonce="random123"></script>
-    <script src="payroll.js" nonce="random123"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="random123"></script>
-    <script src="payroll-actions.js" nonce="random123"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/qlnhansu_V3/backend/src/public/assets/js/services/NotificationService.js"></script>
+    <script src="payroll.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="payroll-actions.js"></script>
     
     <!-- Thêm script xử lý nhập số -->
     <script>
         // Hàm định dạng số tiền
-        function formatCurrency(input) {
-            // Xóa tất cả ký tự không phải số
-            let value = input.value.replace(/[^\d]/g, '');
-            
-            // Định dạng số với dấu phẩy ngăn cách hàng nghìn
-            if (value !== '') {
-                value = parseInt(value, 10).toLocaleString('vi-VN');
+        function formatCurrency(value) {
+            // Nếu là input element
+            if (value instanceof HTMLInputElement) {
+                // Xóa tất cả ký tự không phải số
+                let numValue = value.value.replace(/[^\d]/g, '');
+                
+                // Định dạng số với dấu phẩy ngăn cách hàng nghìn
+                if (numValue !== '') {
+                    numValue = parseInt(numValue, 10).toLocaleString('vi-VN');
+                }
+                
+                // Cập nhật giá trị input
+                value.value = numValue;
+                return numValue;
             }
             
-            // Cập nhật giá trị input
-            input.value = value;
+            // Nếu là số hoặc chuỗi số
+            if (typeof value === 'number' || (typeof value === 'string' && !isNaN(value))) {
+                return parseInt(value, 10).toLocaleString('vi-VN');
+            }
+            
+            // Nếu là undefined hoặc null
+            return '0';
         }
 
         // Hàm lấy giá trị số từ chuỗi đã định dạng
@@ -993,18 +993,22 @@
 
             // Cập nhật tổng thu nhập và thực lĩnh
             function updateTotals() {
-                const basicSalary = getNumericValue(document.getElementById('basicSalary').value);
-                const allowance = getNumericValue(document.getElementById('allowance').value);
-                const bonus = getNumericValue(document.getElementById('bonus').value);
-                const deduction = getNumericValue(document.getElementById('deduction').value);
+                const basicSalary = getNumericValue(document.getElementById('basicSalary')?.value || '0');
+                const allowance = getNumericValue(document.getElementById('allowance')?.value || '0');
+                const bonus = getNumericValue(document.getElementById('bonus')?.value || '0');
+                const deduction = getNumericValue(document.getElementById('deduction')?.value || '0');
 
                 const totalIncome = basicSalary + allowance + bonus;
                 const netSalary = totalIncome - deduction;
 
                 // Cập nhật hiển thị
-                document.getElementById('totalIncome').textContent = totalIncome.toLocaleString('vi-VN');
-                document.getElementById('totalDeductions').textContent = deduction.toLocaleString('vi-VN');
-                document.getElementById('netSalary').textContent = netSalary.toLocaleString('vi-VN');
+                const totalIncomeEl = document.getElementById('totalIncome');
+                const totalDeductionsEl = document.getElementById('totalDeductions');
+                const netSalaryEl = document.getElementById('netSalary');
+
+                if (totalIncomeEl) totalIncomeEl.textContent = formatCurrency(totalIncome);
+                if (totalDeductionsEl) totalDeductionsEl.textContent = formatCurrency(deduction);
+                if (netSalaryEl) netSalaryEl.textContent = formatCurrency(netSalary);
             }
 
             // Thêm sự kiện cập nhật tổng khi thay đổi giá trị
@@ -1018,5 +1022,3 @@
     </script>
 </body>
 </html>
-
-

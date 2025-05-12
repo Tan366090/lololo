@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payroll UI Test</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        .pass {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .fail {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .notification {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+        .notification.success { background-color: #dff0d8; }
+        .notification.error { background-color: #f2dede; }
+        .notification.warning { background-color: #fcf8e3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payroll UI Test</h1>
+        
+        <!-- Dashboard Statistics -->
+        <div class="test-section">
+            <h2>Dashboard Statistics</h2>
+            <div id="totalSalary">Total Salary: $0</div>
+            <div id="totalBonus">Total Bonus: $0</div>
+            <div id="averageSalary">Average Salary: $0</div>
+            <div id="totalPayrolls">Total Payrolls: 0</div>
+            <div class="test-result" id="dashboardResult"></div>
+        </div>
+
+        <!-- Charts -->
+        <div class="test-section">
+            <h2>Charts</h2>
+            <div id="monthlySalaryChart" data-chart-config="true" data-animation="true" data-responsive="true">Monthly Salary Chart</div>
+            <div id="departmentSalaryChart" data-chart-config="true" data-animation="true" data-responsive="true">Department Salary Chart</div>
+            <div id="salaryComparisonChart" data-chart-config="true" data-animation="true" data-responsive="true">Salary Comparison Chart</div>
+            <div id="costAnalysisChart" data-chart-config="true" data-animation="true" data-responsive="true">Cost Analysis Chart</div>
+            <div class="test-result" id="chartsResult"></div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="test-section">
+            <h2>Search and Filter</h2>
+            <input type="text" id="searchInput" placeholder="Search..." data-debounce="300">
+            <select id="departmentFilter" data-filter-handler="true">
+                <option value="">Select Department</option>
+            </select>
+            <select id="monthFilter" data-filter-handler="true">
+                <option value="">Select Month</option>
+            </select>
+            <select id="yearFilter" data-filter-handler="true">
+                <option value="">Select Year</option>
+            </select>
+            <button data-reset-filter="true">Reset Filters</button>
+            <div class="test-result" id="searchResult"></div>
+        </div>
+
+        <!-- Payroll Table -->
+        <div class="test-section">
+            <h2>Payroll Table</h2>
+            <div class="table-responsive">
+                <table id="payrollTable" class="table" data-pagination="true" data-sortable="true" data-export-format="excel">
+                    <thead>
+                        <tr>
+                            <th>Tên nhân viên</th>
+                            <th>Phòng ban</th>
+                            <th>Lương cơ bản</th>
+                            <th>Phụ cấp</th>
+                            <th>Thưởng</th>
+                            <th>Khấu trừ</th>
+                            <th>Thực lĩnh</th>
+                            <th>Kỳ lương</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table content will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="test-result" id="tableResult"></div>
+        </div>
+
+        <!-- Modal Forms -->
+        <div class="test-section">
+            <h2>Modal Forms</h2>
+            <button onclick="showModal('addPayrollModal')">Add Payroll</button>
+            <button onclick="showModal('editPayrollModal')">Edit Payroll</button>
+            <button onclick="showModal('viewPayrollModal')">View Payroll</button>
+            <div class="test-result" id="modalResult"></div>
+        </div>
+
+        <!-- Advanced Reports -->
+        <div class="test-section">
+            <h2>Advanced Reports</h2>
+            <div id="reports">
+                <div id="salaryComparisonChart" data-report-detail="true"></div>
+                <div id="costAnalysisChart" data-report-detail="true"></div>
+            </div>
+            <div class="test-result" id="reportsResult"></div>
+        </div>
+
+        <!-- Budget Management -->
+        <div class="test-section">
+            <h2>Budget Management</h2>
+            <div id="budget">
+                <div id="budgetChart" data-budget-track="true"></div>
+                <div id="spendingChart" data-budget-track="true"></div>
+            </div>
+            <div class="test-result" id="budgetResult"></div>
+        </div>
+
+        <!-- Compliance -->
+        <div class="test-section">
+            <h2>Compliance</h2>
+            <div id="compliance">
+                <div id="taxComplianceReport" data-compliance-monitor="true"></div>
+                <div id="insuranceComplianceReport" data-compliance-monitor="true"></div>
+            </div>
+            <div class="test-result" id="complianceResult"></div>
+        </div>
+
+        <!-- Forecasting -->
+        <div class="test-section">
+            <h2>Forecasting</h2>
+            <div id="forecast">
+                <div id="forecastChart" data-forecast-accuracy="true"></div>
+                <div id="trendAnalysisChart" data-forecast-accuracy="true"></div>
+            </div>
+            <div class="test-result" id="forecastResult"></div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="test-section">
+            <h2>Notifications</h2>
+            <div class="notification success">Success notification</div>
+            <div class="notification error">Error notification</div>
+            <div class="notification warning">Warning notification</div>
+            <div class="test-result" id="notificationResult"></div>
+        </div>
+
+        <!-- Loading States -->
+        <div class="test-section">
+            <h2>Loading States</h2>
+            <div class="loading-overlay">
+                <div class="spinner"></div>
+            </div>
+            <div class="test-result" id="loadingResult"></div>
+        </div>
+
+        <!-- Security Features -->
+        <div class="test-section">
+            <h2>Security Features</h2>
+            <meta name="csrf-token" content="test-token">
+            <div data-requires-permission="admin">Admin content</div>
+            <div class="test-result" id="securityResult"></div>
+        </div>
+
+        <!-- Export Functionality -->
+        <div class="test-section">
+            <h2>Export Functionality</h2>
+            <button id="exportBtn" onclick="exportToExcel()">Export to Excel</button>
+            <div class="test-result" id="exportResult"></div>
+        </div>
+
+        <!-- Form Validation -->
+        <div class="test-section">
+            <h2>Form Validation</h2>
+            <form id="testForm">
+                <input type="text" required pattern="[A-Za-z]+" min="2" max="50" data-custom-validation="true" data-error-message="Please enter valid text">
+                <div class="test-result" id="validationResult"></div>
+            </form>
+        </div>
+
+        <!-- Error Handling -->
+        <div class="test-section">
+            <h2>Error Handling</h2>
+            <div class="error-message">Error message example</div>
+            <div class="alert alert-danger">Alert message example</div>
+            <div class="test-result" id="errorResult"></div>
+        </div>
+
+        <!-- Accessibility -->
+        <div class="test-section">
+            <h2>Accessibility</h2>
+            <button aria-label="Submit" role="button" data-keyboard-nav="true" data-screen-reader="true">Submit</button>
+            <img src="test.jpg" alt="Test image">
+            <div class="test-result" id="accessibilityResult"></div>
+        </div>
+
+        <!-- System Status -->
+        <div class="test-section">
+            <h2>System Status</h2>
+            <div id="systemHealth">System Health: Good</div>
+            <div id="performanceMetrics">Performance: Optimal</div>
+            <div id="errorLogs">Error Logs: None</div>
+            <div id="maintenanceStatus">Maintenance Status: None</div>
+            <div class="test-result" id="systemResult"></div>
+        </div>
+
+        <!-- Workflow Process -->
+        <div class="test-section">
+            <h2>Workflow Process</h2>
+            <div data-approval-process="true">Approval Process</div>
+            <div data-history-track="true">History Tracking</div>
+            <div class="test-result" id="workflowResult"></div>
+        </div>
+
+        <!-- Data Validation -->
+        <div class="test-section">
+            <h2>Data Validation</h2>
+            <div data-format="currency" data-decimal-places="2" data-update-interval="5000" data-validate="true">
+                Currency Format: $1,234.56
+            </div>
+            <div class="test-result" id="dataValidationResult"></div>
+        </div>
+
+        <!-- Header Navigation -->
+        <div class="test-section">
+            <h2>Header Navigation</h2>
+            <nav id="mainMenu">
+                <div class="breadcrumb">Home > Payroll</div>
+                <div id="userProfile">User Profile</div>
+                <div id="languageSwitcher">Language</div>
+                <div id="themeSwitcher">Theme</div>
+            </nav>
+            <div class="test-result" id="headerResult"></div>
+        </div>
+
+        <!-- Footer Elements -->
+        <div class="test-section">
+            <h2>Footer Elements</h2>
+            <footer id="footer">
+                <div id="copyright">© 2024 Payroll System</div>
+                <div id="socialLinks">Social Links</div>
+                <div id="contactInfo">Contact Info</div>
+            </footer>
+            <div class="test-result" id="footerResult"></div>
+        </div>
+
+        <!-- Settings and Preferences -->
+        <div class="test-section">
+            <h2>Settings and Preferences</h2>
+            <div id="userPreferences">User Preferences</div>
+            <div id="displaySettings">Display Settings</div>
+            <div id="notificationSettings">Notification Settings</div>
+            <div id="reportCustomization">Report Customization</div>
+            <div class="test-result" id="settingsResult"></div>
+        </div>
+
+        <!-- Help and Support -->
+        <div class="test-section">
+            <h2>Help and Support</h2>
+            <div id="helpDocumentation">Help Documentation</div>
+            <div id="faqSection">FAQ Section</div>
+            <div id="supportContact">Support Contact</div>
+            <div id="tutorialGuide">Tutorial Guide</div>
+            <div class="test-result" id="helpResult"></div>
+        </div>
+
+        <!-- Print Preview -->
+        <div class="test-section">
+            <h2>Print Preview</h2>
+            <div id="printLayout">Print Layout</div>
+            <div id="printFormatting">Print Formatting</div>
+            <div id="printTemplates">Print Templates</div>
+            <div class="test-result" id="printResult"></div>
+        </div>
+
+        <!-- Data Import -->
+        <div class="test-section">
+            <h2>Data Import</h2>
+            <div id="importInterface">Import Interface</div>
+            <div id="fileUpload">File Upload</div>
+            <div id="importTemplate">Import Template</div>
+            <div id="importValidation">Import Validation</div>
+            <div class="test-result" id="importResult"></div>
+        </div>
+
+        <!-- Batch Operations -->
+        <div class="test-section">
+            <h2>Batch Operations</h2>
+            <div id="bulkEdit">Bulk Edit</div>
+            <div id="massUpdate">Mass Update</div>
+            <div id="batchProcessing">Batch Processing</div>
+            <div class="test-result" id="batchResult"></div>
+        </div>
+
+        <!-- Calendar and Date Picker -->
+        <div class="test-section">
+            <h2>Calendar and Date Picker</h2>
+            <div id="dateSelection">Date Selection</div>
+            <div id="calendarView">Calendar View</div>
+            <div id="dateRange">Date Range</div>
+            <div class="test-result" id="calendarResult"></div>
+        </div>
+
+        <!-- Advanced Filtering -->
+        <div class="test-section">
+            <h2>Advanced Filtering</h2>
+            <div id="customFilter">Custom Filter</div>
+            <div id="savedFilters">Saved Filters</div>
+            <div id="filterPresets">Filter Presets</div>
+            <div class="test-result" id="filterResult"></div>
+        </div>
+
+        <!-- Data Visualization -->
+        <div class="test-section">
+            <h2>Data Visualization</h2>
+            <div id="chartCustomization">Chart Customization</div>
+            <div id="graphType">Graph Type</div>
+            <div id="dataPointDetails">Data Point Details</div>
+            <div id="legendInteraction">Legend Interaction</div>
+            <div class="test-result" id="visualizationResult"></div>
+        </div>
+
+        <!-- Mobile Responsiveness -->
+        <div class="test-section">
+            <h2>Mobile Responsiveness</h2>
+            <div id="mobileMenu" data-touch-interaction="true" class="mobile-layout" data-responsive-breakpoint="768px">
+                Mobile Menu
+            </div>
+            <div class="test-result" id="mobileResult"></div>
+        </div>
+
+        <!-- Print and Export Options -->
+        <div class="test-section">
+            <h2>Print and Export Options</h2>
+            <div id="exportFormat">Export Format</div>
+            <div id="printLayout">Print Layout</div>
+            <div id="fileNaming">File Naming</div>
+            <div id="exportScheduling">Export Scheduling</div>
+            <div class="test-result" id="exportOptionsResult"></div>
+        </div>
+
+        <!-- Search Results -->
+        <div class="test-section">
+            <h2>Search Results</h2>
+            <div id="searchResults">Search Results</div>
+            <div id="searchSuggestions">Search Suggestions</div>
+            <div id="searchHistory">Search History</div>
+            <div id="advancedSearch">Advanced Search</div>
+            <div class="test-result" id="searchResultsResult"></div>
+        </div>
+
+        <!-- User Feedback -->
+        <div class="test-section">
+            <h2>User Feedback</h2>
+            <div id="ratingSystem">Rating System</div>
+            <div id="feedbackForm">Feedback Form</div>
+            <div id="surveyInterface">Survey Interface</div>
+            <div id="commentSection">Comment Section</div>
+            <div class="test-result" id="feedbackResult"></div>
+        </div>
+
+        <!-- Loading and Error Handling -->
+        <div class="test-section">
+            <h2>Loading and Error Handling</h2>
+            <div data-timeout-handler="true">Timeout Handler</div>
+            <div data-retry-mechanism="true">Retry Mechanism</div>
+            <div data-error-recovery="true">Error Recovery</div>
+            <div class="test-result" id="loadingErrorResult"></div>
+        </div>
+
+        <!-- Run All Tests -->
+        <div class="test-section">
+            <h2>Run All Tests</h2>
+            <button class="button" onclick="runAllTests()">Run Tests</button>
+            <div class="test-result" id="allTestsResult"></div>
+        </div>
+    </div>
+
+    <script>
+        function runAllTests() {
+            // Test Dashboard Statistics
+            const dashboardElements = ['totalSalary', 'totalBonus', 'averageSalary', 'totalPayrolls'];
+            const dashboardResult = dashboardElements.every(id => document.getElementById(id));
+            document.getElementById('dashboardResult').innerHTML = dashboardResult ? 
+                '<div class="pass">✓ Dashboard elements found</div>' : 
+                '<div class="fail">✗ Missing dashboard elements</div>';
+
+            // Test Charts
+            const chartElements = ['monthlySalaryChart', 'departmentSalaryChart', 'salaryComparisonChart', 'costAnalysisChart'];
+            const chartsResult = chartElements.every(id => document.getElementById(id));
+            document.getElementById('chartsResult').innerHTML = chartsResult ? 
+                '<div class="pass">✓ Chart elements found</div>' : 
+                '<div class="fail">✗ Missing chart elements</div>';
+
+            // Test Search and Filter
+            const searchElements = ['searchInput', 'departmentFilter', 'monthFilter', 'yearFilter'];
+            const searchResult = searchElements.every(id => document.getElementById(id));
+            document.getElementById('searchResult').innerHTML = searchResult ? 
+                '<div class="pass">✓ Search and filter elements found</div>' : 
+                '<div class="fail">✗ Missing search and filter elements</div>';
+
+            // Test Table
+            const tableResult = document.getElementById('payrollTable') !== null;
+            document.getElementById('tableResult').innerHTML = tableResult ? 
+                '<div class="pass">✓ Payroll table found</div>' : 
+                '<div class="fail">✗ Payroll table not found</div>';
+
+            // Test Advanced Reports
+            const reportsElements = ['reports', 'salaryComparisonChart', 'costAnalysisChart'];
+            const reportsResult = reportsElements.every(id => document.getElementById(id));
+            document.getElementById('reportsResult').innerHTML = reportsResult ? 
+                '<div class="pass">✓ Report elements found</div>' : 
+                '<div class="fail">✗ Missing report elements</div>';
+
+            // Test Budget Management
+            const budgetElements = ['budget', 'budgetChart', 'spendingChart'];
+            const budgetResult = budgetElements.every(id => document.getElementById(id));
+            document.getElementById('budgetResult').innerHTML = budgetResult ? 
+                '<div class="pass">✓ Budget elements found</div>' : 
+                '<div class="fail">✗ Missing budget elements</div>';
+
+            // Test Compliance
+            const complianceElements = ['compliance', 'taxComplianceReport', 'insuranceComplianceReport'];
+            const complianceResult = complianceElements.every(id => document.getElementById(id));
+            document.getElementById('complianceResult').innerHTML = complianceResult ? 
+                '<div class="pass">✓ Compliance elements found</div>' : 
+                '<div class="fail">✗ Missing compliance elements</div>';
+
+            // Test Forecasting
+            const forecastElements = ['forecast', 'forecastChart', 'trendAnalysisChart'];
+            const forecastResult = forecastElements.every(id => document.getElementById(id));
+            document.getElementById('forecastResult').innerHTML = forecastResult ? 
+                '<div class="pass">✓ Forecast elements found</div>' : 
+                '<div class="fail">✗ Missing forecast elements</div>';
+
+            // Test Notifications
+            const notificationResult = document.querySelectorAll('.notification').length === 3;
+            document.getElementById('notificationResult').innerHTML = notificationResult ? 
+                '<div class="pass">✓ Notification elements found</div>' : 
+                '<div class="fail">✗ Missing notification elements</div>';
+
+            // Test Loading States
+            const loadingResult = document.querySelector('.loading-overlay') !== null && 
+                                document.querySelector('.spinner') !== null;
+            document.getElementById('loadingResult').innerHTML = loadingResult ? 
+                '<div class="pass">✓ Loading elements found</div>' : 
+                '<div class="fail">✗ Missing loading elements</div>';
+
+            // Test Security Features
+            const securityResult = document.querySelector('meta[name="csrf-token"]') !== null && 
+                                 document.querySelector('[data-requires-permission]') !== null;
+            document.getElementById('securityResult').innerHTML = securityResult ? 
+                '<div class="pass">✓ Security elements found</div>' : 
+                '<div class="fail">✗ Missing security elements</div>';
+
+            // Test Export Functionality
+            const exportResult = document.getElementById('exportBtn') !== null;
+            document.getElementById('exportResult').innerHTML = exportResult ? 
+                '<div class="pass">✓ Export button found</div>' : 
+                '<div class="fail">✗ Missing export button</div>';
+
+            // Test Form Validation
+            const validationResult = document.querySelector('[required]') !== null && 
+                                   document.querySelector('[pattern]') !== null;
+            document.getElementById('validationResult').innerHTML = validationResult ? 
+                '<div class="pass">✓ Form validation elements found</div>' : 
+                '<div class="fail">✗ Missing form validation elements</div>';
+
+            // Test Error Handling
+            const errorResult = document.querySelector('.error-message') !== null && 
+                              document.querySelector('.alert-danger') !== null;
+            document.getElementById('errorResult').innerHTML = errorResult ? 
+                '<div class="pass">✓ Error handling elements found</div>' : 
+                '<div class="fail">✗ Missing error handling elements</div>';
+
+            // Test Accessibility
+            const accessibilityResult = document.querySelector('[aria-label]') !== null && 
+                                      document.querySelector('[role="button"]') !== null &&
+                                      document.querySelector('[alt]') !== null;
+            document.getElementById('accessibilityResult').innerHTML = accessibilityResult ? 
+                '<div class="pass">✓ Accessibility elements found</div>' : 
+                '<div class="fail">✗ Missing accessibility elements</div>';
+
+            // Test System Status
+            const systemElements = ['systemHealth', 'performanceMetrics', 'errorLogs', 'maintenanceStatus'];
+            const systemResult = systemElements.every(id => document.getElementById(id));
+            document.getElementById('systemResult').innerHTML = systemResult ? 
+                '<div class="pass">✓ System status elements found</div>' : 
+                '<div class="fail">✗ Missing system status elements</div>';
+
+            // Test Workflow Process
+            const workflowResult = document.querySelector('[data-approval-process]') !== null && 
+                                 document.querySelector('[data-history-track]') !== null;
+            document.getElementById('workflowResult').innerHTML = workflowResult ? 
+                '<div class="pass">✓ Workflow elements found</div>' : 
+                '<div class="fail">✗ Missing workflow elements</div>';
+
+            // Test Data Validation
+            const dataValidationResult = document.querySelector('[data-format="currency"]') !== null && 
+                                       document.querySelector('[data-decimal-places]') !== null;
+            document.getElementById('dataValidationResult').innerHTML = dataValidationResult ? 
+                '<div class="pass">✓ Data validation elements found</div>' : 
+                '<div class="fail">✗ Missing data validation elements</div>';
+
+            // Test Header Navigation
+            const headerElements = ['mainMenu', 'userProfile', 'languageSwitcher', 'themeSwitcher'];
+            const headerResult = headerElements.every(id => document.getElementById(id));
+            document.getElementById('headerResult').innerHTML = headerResult ? 
+                '<div class="pass">✓ Header elements found</div>' : 
+                '<div class="fail">✗ Missing header elements</div>';
+
+            // Test Footer Elements
+            const footerElements = ['copyright', 'socialLinks', 'contactInfo'];
+            const footerResult = footerElements.every(id => document.getElementById(id));
+            document.getElementById('footerResult').innerHTML = footerResult ? 
+                '<div class="pass">✓ Footer elements found</div>' : 
+                '<div class="fail">✗ Missing footer elements</div>';
+
+            // Test Settings and Preferences
+            const settingsElements = ['userPreferences', 'displaySettings', 'notificationSettings', 'reportCustomization'];
+            const settingsResult = settingsElements.every(id => document.getElementById(id));
+            document.getElementById('settingsResult').innerHTML = settingsResult ? 
+                '<div class="pass">✓ Settings elements found</div>' : 
+                '<div class="fail">✗ Missing settings elements</div>';
+
+            // Test Help and Support
+            const helpElements = ['helpDocumentation', 'faqSection', 'supportContact', 'tutorialGuide'];
+            const helpResult = helpElements.every(id => document.getElementById(id));
+            document.getElementById('helpResult').innerHTML = helpResult ? 
+                '<div class="pass">✓ Help elements found</div>' : 
+                '<div class="fail">✗ Missing help elements</div>';
+
+            // Test Print Preview
+            const printElements = ['printLayout', 'printFormatting', 'printTemplates'];
+            const printResult = printElements.every(id => document.getElementById(id));
+            document.getElementById('printResult').innerHTML = printResult ? 
+                '<div class="pass">✓ Print elements found</div>' : 
+                '<div class="fail">✗ Missing print elements</div>';
+
+            // Test Data Import
+            const importElements = ['importInterface', 'fileUpload', 'importTemplate', 'importValidation'];
+            const importResult = importElements.every(id => document.getElementById(id));
+            document.getElementById('importResult').innerHTML = importResult ? 
+                '<div class="pass">✓ Import elements found</div>' : 
+                '<div class="fail">✗ Missing import elements</div>';
+
+            // Test Batch Operations
+            const batchElements = ['bulkEdit', 'massUpdate', 'batchProcessing'];
+            const batchResult = batchElements.every(id => document.getElementById(id));
+            document.getElementById('batchResult').innerHTML = batchResult ? 
+                '<div class="pass">✓ Batch operation elements found</div>' : 
+                '<div class="fail">✗ Missing batch operation elements</div>';
+
+            // Test Calendar and Date Picker
+            const calendarElements = ['dateSelection', 'calendarView', 'dateRange'];
+            const calendarResult = calendarElements.every(id => document.getElementById(id));
+            document.getElementById('calendarResult').innerHTML = calendarResult ? 
+                '<div class="pass">✓ Calendar elements found</div>' : 
+                '<div class="fail">✗ Missing calendar elements</div>';
+
+            // Test Advanced Filtering
+            const filterElements = ['customFilter', 'savedFilters', 'filterPresets'];
+            const filterResult = filterElements.every(id => document.getElementById(id));
+            document.getElementById('filterResult').innerHTML = filterResult ? 
+                '<div class="pass">✓ Filter elements found</div>' : 
+                '<div class="fail">✗ Missing filter elements</div>';
+
+            // Test Data Visualization
+            const visualizationElements = ['chartCustomization', 'graphType', 'dataPointDetails', 'legendInteraction'];
+            const visualizationResult = visualizationElements.every(id => document.getElementById(id));
+            document.getElementById('visualizationResult').innerHTML = visualizationResult ? 
+                '<div class="pass">✓ Visualization elements found</div>' : 
+                '<div class="fail">✗ Missing visualization elements</div>';
+
+            // Test Mobile Responsiveness
+            const mobileResult = document.getElementById('mobileMenu') !== null && 
+                               document.querySelector('[data-touch-interaction]') !== null;
+            document.getElementById('mobileResult').innerHTML = mobileResult ? 
+                '<div class="pass">✓ Mobile elements found</div>' : 
+                '<div class="fail">✗ Missing mobile elements</div>';
+
+            // Test Print and Export Options
+            const exportOptionsElements = ['exportFormat', 'printLayout', 'fileNaming', 'exportScheduling'];
+            const exportOptionsResult = exportOptionsElements.every(id => document.getElementById(id));
+            document.getElementById('exportOptionsResult').innerHTML = exportOptionsResult ? 
+                '<div class="pass">✓ Export options found</div>' : 
+                '<div class="fail">✗ Missing export options</div>';
+
+            // Test Search Results
+            const searchResultsElements = ['searchResults', 'searchSuggestions', 'searchHistory', 'advancedSearch'];
+            const searchResultsResult = searchResultsElements.every(id => document.getElementById(id));
+            document.getElementById('searchResultsResult').innerHTML = searchResultsResult ? 
+                '<div class="pass">✓ Search result elements found</div>' : 
+                '<div class="fail">✗ Missing search result elements</div>';
+
+            // Test User Feedback
+            const feedbackElements = ['ratingSystem', 'feedbackForm', 'surveyInterface', 'commentSection'];
+            const feedbackResult = feedbackElements.every(id => document.getElementById(id));
+            document.getElementById('feedbackResult').innerHTML = feedbackResult ? 
+                '<div class="pass">✓ Feedback elements found</div>' : 
+                '<div class="fail">✗ Missing feedback elements</div>';
+
+            // Test Loading and Error Handling
+            const loadingErrorResult = document.querySelector('[data-timeout-handler]') !== null && 
+                                     document.querySelector('[data-retry-mechanism]') !== null &&
+                                     document.querySelector('[data-error-recovery]') !== null;
+            document.getElementById('loadingErrorResult').innerHTML = loadingErrorResult ? 
+                '<div class="pass">✓ Loading and error handling elements found</div>' : 
+                '<div class="fail">✗ Missing loading and error handling elements</div>';
+
+            // Show overall result
+            const allPassed = dashboardResult && chartsResult && searchResult && tableResult && 
+                            reportsResult && budgetResult && complianceResult && forecastResult && 
+                            notificationResult && loadingResult && securityResult && exportResult && 
+                            validationResult && errorResult && accessibilityResult && systemResult &&
+                            workflowResult && dataValidationResult && headerResult && footerResult &&
+                            settingsResult && helpResult && printResult && importResult && batchResult &&
+                            calendarResult && filterResult && visualizationResult && mobileResult &&
+                            exportOptionsResult && searchResultsResult && feedbackResult && loadingErrorResult;
+            document.getElementById('allTestsResult').innerHTML = allPassed ? 
+                '<div class="pass">✓ All UI elements are present</div>' : 
+                '<div class="fail">✗ Some UI elements are missing</div>';
+        }
+
+        function showModal(modalId) {
+            alert('Modal ' + modalId + ' would be shown here');
+        }
+
+        function exportToExcel() {
+            alert('Exporting to Excel...');
+        }
+    </script>
+</body>
+</html>

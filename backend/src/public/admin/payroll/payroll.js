@@ -1,49 +1,287 @@
+// Loading Overlay Implementation
+const loadingOverlay = {
+    overlay: null,
+    init() {
+        this.overlay = document.createElement('div');
+        this.overlay.id = 'loadingOverlay';
+        this.overlay.className = 'loading-overlay';
+        this.overlay.innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="loading-text mt-2">Đang tải...</div>
+            </div>
+        `;
+        document.body.appendChild(this.overlay);
+
+        // Add styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .loading-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(255, 255, 255, 0.8);
+                display: none;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .loading-overlay.show {
+                opacity: 1;
+            }
+
+            .loading-spinner {
+                text-align: center;
+            }
+
+            .loading-text {
+                color: #2c3e50;
+                font-weight: 500;
+                margin-top: 10px;
+            }
+
+            .spinner-border {
+                width: 3rem;
+                height: 3rem;
+            }
+        `;
+        document.head.appendChild(style);
+    },
+    show() {
+        if (!this.overlay) this.init();
+        this.overlay.classList.add('show');
+        this.overlay.style.display = 'flex';
+    },
+    hide() {
+        if (!this.overlay) return;
+        this.overlay.classList.remove('show');
+        setTimeout(() => {
+            this.overlay.style.display = 'none';
+        }, 300);
+    }
+};
+
+// Initialize loading overlay
+loadingOverlay.init();
+
+// Global functions
+function showLoading() {
+    loadingOverlay.show();
+}
+
+function hideLoading() {
+    loadingOverlay.hide();
+}
+
 // API Object
 const api = {
     departments: {
         getAll: async () => {
-            const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/departments.php');
-            return await response.json();
+            try {
+                const response = await fetch('/qlnhansu_V3/backend/src/api/departments.php');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const text = await response.text();
+                
+                // Try to find valid JSON in the response
+                let jsonData = null;
+                try {
+                    jsonData = JSON.parse(text);
+                } catch (e) {
+                    const jsonMatches = text.match(/\{[\s\S]*?\}/g);
+                    if (jsonMatches && jsonMatches.length > 0) {
+                        for (const match of jsonMatches) {
+                            try {
+                                jsonData = JSON.parse(match);
+                                if (jsonData && typeof jsonData === 'object') {
+                                    break;
+                                }
+                            } catch (parseError) {
+                                continue;
+                            }
+                        }
+                    }
+                }
+                
+                if (!jsonData) {
+                    throw new Error('No valid JSON found in response');
+                }
+                
+                return jsonData;
+            } catch (error) {
+                console.error('Error fetching departments:', error);
+                throw error;
+            }
         }
     },
     payroll: {
         getYears: async () => {
-            const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=years');
-            return await response.json();
+            try {
+                const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=years');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const text = await response.text();
+                
+                // Log the raw response for debugging
+                console.log('Raw years response:', text);
+                
+                // Try to find valid JSON in the response
+                let jsonData = null;
+                try {
+                    jsonData = JSON.parse(text);
+                } catch (e) {
+                    const jsonMatches = text.match(/\{[\s\S]*?\}/g);
+                    if (jsonMatches && jsonMatches.length > 0) {
+                        for (const match of jsonMatches) {
+                            try {
+                                jsonData = JSON.parse(match);
+                                if (jsonData && typeof jsonData === 'object') {
+                                    break;
+                                }
+                            } catch (parseError) {
+                                continue;
+                            }
+                        }
+                    }
+                }
+                
+                if (!jsonData) {
+                    throw new Error('No valid JSON found in response');
+                }
+                
+                if (!jsonData.success) {
+                    throw new Error(jsonData.message || 'Failed to get years');
+                }
+
+                return jsonData.data || [];
+            } catch (error) {
+                console.error('Error fetching years:', error);
+                throw new Error('Failed to get years: ' + error.message);
+            }
         },
         getList: async (params) => {
-            const queryString = new URLSearchParams(params).toString();
-            const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?${queryString}`);
-            return await response.json();
+            try {
+                const queryString = new URLSearchParams(params).toString();
+                const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?${queryString}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                // Get the response text first
+                const text = await response.text();
+                
+                // Log the raw response for debugging
+                console.log('Raw payroll list response:', text);
+                
+                // Try to find valid JSON in the response
+                let jsonData = null;
+                try {
+                    jsonData = JSON.parse(text);
+                } catch (e) {
+                    const jsonMatches = text.match(/\{[\s\S]*?\}/g);
+                    if (jsonMatches && jsonMatches.length > 0) {
+                        for (const match of jsonMatches) {
+                            try {
+                                jsonData = JSON.parse(match);
+                                if (jsonData && typeof jsonData === 'object') {
+                                    break;
+                                }
+                            } catch (parseError) {
+                                continue;
+                            }
+                        }
+                    }
+                }
+                
+                if (!jsonData) {
+                    throw new Error('No valid JSON found in response');
+                }
+                
+                // Check if the response contains error messages
+                if (text.includes('<br />') || text.includes('<b>')) {
+                    console.warn('Response contains HTML error messages:', text);
+                }
+                
+                return jsonData;
+            } catch (error) {
+                console.error('Error fetching payroll list:', error);
+                throw error;
+            }
         },
         add: async (data) => {
-            const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/payroll.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            return await response.json();
+            try {
+                const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/payroll.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const contentType = response.headers.get("content-type");
+                if (!contentType || !contentType.includes("application/json")) {
+                    throw new TypeError("API response was not JSON");
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error adding payroll:', error);
+                throw error;
+            }
         },
         update: async (id, data) => {
-            const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            return await response.json();
+            try {
+                const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const contentType = response.headers.get("content-type");
+                if (!contentType || !contentType.includes("application/json")) {
+                    throw new TypeError("API response was not JSON");
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error updating payroll:', error);
+                throw error;
+            }
         },
         delete: async (id) => {
-            const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=${id}`, {
-                method: 'DELETE'
-            });
-            return await response.json();
+            try {
+                const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=${id}`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const contentType = response.headers.get("content-type");
+                if (!contentType || !contentType.includes("application/json")) {
+                    throw new TypeError("API response was not JSON");
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error deleting payroll:', error);
+                throw error;
+            }
         }
     }
 };
+
 // DOM Elements
 const searchInput = document.getElementById('searchInput');
 const departmentFilter = document.getElementById('departmentFilter');
@@ -82,8 +320,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDepartments();
     loadPayrollData();
     loadFilters();
+    initializeCharts();
 });
-
 
 // Initialize DOM elements and event listeners
 function initializeElements() {
@@ -105,7 +343,7 @@ function initializeElements() {
     if (addPayrollBtn) {
         addPayrollBtn.addEventListener('click', () => {
             showAddPayrollModal();
-            handleSalaryCalculations(); // Initialize salary calculations when modal opens
+            handleSalaryCalculations();
         });
     }
     if (calculatePayrollBtn) {
@@ -154,72 +392,76 @@ function initializeElements() {
         searchEmployeeBtn.addEventListener('click', handleSearchEmployee);
     }
 
-    // Thêm event listener cho input mã nhân viên
+    // Add event listener for employee code input
     if (employeeCodeInput) {
         employeeCodeInput.addEventListener('input', debounce(handleSearchEmployee, 500));
     }
-
-    // Xóa event listener cũ của nút tìm kiếm
-    if (searchEmployeeBtn) {
-        searchEmployeeBtn.removeEventListener('click', handleSearchEmployee);
-    }
 }
 
-// API Functions
-async function loadDepartments() {
-    try {
-        const response = await api.departments.getAll();
-        if (response.success) {
-            const departments = response.data;
-            departmentFilter.innerHTML = '<option value="">Tất cả phòng ban</option>';
-            departments.forEach(dept => {
-                departmentFilter.innerHTML += `<option value="${dept.id}">${dept.name}</option>`;
-            });
-        }
-    } catch (error) {
-        showError('Không thể tải danh sách phòng ban');
-    }
-}
-
+// Load payroll data with error handling
 async function loadPayrollData() {
-    showLoading();
     try {
-        const params = {
-            page: currentPage,
-            limit: itemsPerPage,
-            search: searchInput.value,
-            department: departmentFilter.value,
-            month: monthFilter.value,
-            year: yearFilter.value
-        };
-
-        const response = await api.payroll.getList(params);
+        showLoading();
+        const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/payroll.php');
+        const text = await response.text();
         
-        if (response.success) {
-            payrollData = response.data || [];
-            totalPages = response.totalPages || 1;
-            
-            // Update dashboard cards
-            updateDashboardCards(payrollData);
-            
-            // Create all charts
-            createMonthlySalaryChart(payrollData);
-            createDepartmentSalaryChart(payrollData);
-            createSalaryTrendChart(payrollData);
-            createSalaryComponentChart(payrollData);
-            
-            renderPayrollTable(payrollData);
-            renderPagination(response.totalItems || 0);
-
-            if (payrollData.length === 0) {
-                showInfo('Không có dữ liệu lương thưởng');
+        // Log the raw response for debugging
+        console.log('Raw API response:', text);
+        
+        // Try to find valid JSON in the response
+        let jsonData = null;
+        try {
+            // First try parsing the entire response
+            jsonData = JSON.parse(text);
+        } catch (e) {
+            // If that fails, try to find JSON objects in the text
+            const jsonMatches = text.match(/\{[\s\S]*?\}/g);
+            if (jsonMatches && jsonMatches.length > 0) {
+                // Try parsing each match until we find valid JSON
+                for (const match of jsonMatches) {
+                    try {
+                        jsonData = JSON.parse(match);
+                        if (jsonData && typeof jsonData === 'object') {
+                            break;
+                        }
+                    } catch (parseError) {
+                        continue;
+                    }
+                }
             }
-        } else {
-            showError(response.message || 'Không thể tải dữ liệu lương');
         }
+        
+        if (!jsonData) {
+            throw new Error('No valid JSON found in response');
+        }
+        
+        if (!jsonData.success) {
+            throw new Error(jsonData.message || 'Failed to load payroll data');
+        }
+
+        // Extract payroll data and pagination info
+        const payrollData = jsonData.data?.items || [];
+        const totalPages = jsonData.data?.pagination?.total_pages || 1;
+        const totalItems = jsonData.data?.pagination?.total || 0;
+
+        // Render the table with the data
+        renderPayrollTable(payrollData);
+        
+        // Update pagination
+        renderPagination(totalItems);
+
+        // Update dashboard cards
+        updateDashboardCards(payrollData);
+
+        // Update all charts
+        createMonthlySalaryChart(payrollData);
+        createDepartmentSalaryChart(payrollData);
+        createSalaryTrendChart(payrollData);
+        createSalaryComponentChart(payrollData);
+
     } catch (error) {
         console.error('Error loading payroll data:', error);
-        showError('Lỗi khi tải dữ liệu lương: ' + error.message);
+        showError('Failed to load payroll data: ' + error.message);
     } finally {
         hideLoading();
     }
@@ -227,38 +469,64 @@ async function loadPayrollData() {
 
 // Table Rendering
 function renderPayrollTable(payrolls) {
-    payrollTableBody.innerHTML = '';
+    console.log('Rendering Payroll Table with data:', payrolls);
     
+    const tableBody = document.getElementById('payrollTableBody');
+    const template = document.getElementById('payrollRowTemplate');
+    
+    if (!tableBody || !template) {
+        console.error('Required elements not found:', { tableBody, template });
+        return;
+    }
+
+    // Clear existing rows
+    tableBody.innerHTML = '';
+    
+    if (!payrolls || payrolls.length === 0) {
+        console.log('No payroll data to display');
+        const noResultsRow = document.getElementById('noResultsRow');
+        if (noResultsRow) {
+            noResultsRow.style.display = 'table-row';
+        }
+        return;
+    }
+
+    // Hide no results row if it exists
+    const noResultsRow = document.getElementById('noResultsRow');
+    if (noResultsRow) {
+        noResultsRow.style.display = 'none';
+    }
+
+    // Render each payroll row
     payrolls.forEach((payroll, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${(currentPage - 1) * itemsPerPage + index + 1}</td>
-            <td>${payroll.employee.code}</td>
-            <td>${payroll.employee.name}</td>
-            <td>${payroll.employee.department}</td>
-            <td>${payroll.period.month}</td>
-            <td>${payroll.salary.base}</td>
-            <td>${payroll.salary.allowances}</td>
-            <td>${payroll.salary.bonuses}</td>
-            <td>${payroll.salary.deductions}</td>
-            <td>${payroll.salary.net}</td>
-            <td>${payroll.created_by.username}</td>
-            <td><span class="badge ${getStatusBadgeClass(payroll.status.code)}">${payroll.status.text}</span></td>
-            <td>
-                <div class="btn-group">
-                    <button class="btn btn-sm" onclick="viewPayrollDetails(${payroll.id})" title="Xem chi tiết">
-                        <img src="pic/info.png" alt="View" style="width:16px;height:16px;filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(190deg) brightness(118%) contrast(119%);">
-                    </button>
-                    <button class="btn btn-sm" onclick="editPayroll(${payroll.id})" title="Chỉnh sửa">
-                        <img src="pic/edit.png" alt="Edit" style="width:16px;height:16px;filter: invert(67%) sepia(60%) saturate(456%) hue-rotate(358deg) brightness(104%) contrast(107%);">
-                    </button>
-                    <button class="btn btn-sm" onclick="deletePayroll(${payroll.id})" title="Xóa">
-                        <img src="pic/delete.png" alt="Delete" style="width:16px;height:16px;filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);">
-                    </button>
-                </div>
-            </td>
-        `;
-        payrollTableBody.appendChild(row);
+        console.log('Rendering payroll row:', payroll);
+        
+        const clone = template.content.cloneNode(true);
+        
+        // Fill in the data
+        clone.querySelector('.stt').textContent = index + 1;
+        clone.querySelector('.employee-code').textContent = payroll.employee.code || '';
+        clone.querySelector('.employee-name').textContent = payroll.employee.name || '';
+        clone.querySelector('.department').textContent = payroll.employee.department || '';
+        clone.querySelector('.payroll-period').textContent = payroll.period.month || '';
+        clone.querySelector('.basic-salary').textContent = payroll.salary.base || '0';
+        clone.querySelector('.allowance').textContent = payroll.salary.allowances || '0';
+        clone.querySelector('.bonus').textContent = payroll.salary.bonuses || '0';
+        clone.querySelector('.deduction').textContent = payroll.salary.deductions || '0';
+        clone.querySelector('.net-salary').textContent = payroll.salary.net || '0';
+        clone.querySelector('.created-by').textContent = payroll.created_by.username || '';
+        clone.querySelector('.status').innerHTML = `<span class="badge ${getStatusBadgeClass(payroll.status.code)}">${payroll.status.text}</span>`;
+        
+        // Add event listeners for action buttons
+        const viewBtn = clone.querySelector('.view-btn');
+        const editBtn = clone.querySelector('.edit-btn');
+        const deleteBtn = clone.querySelector('.delete-btn');
+        
+        if (viewBtn) viewBtn.onclick = () => viewPayrollDetails(payroll.id);
+        if (editBtn) editBtn.onclick = () => editPayroll(payroll.id);
+        if (deleteBtn) deleteBtn.onclick = () => deletePayroll(payroll.id);
+        
+        tableBody.appendChild(clone);
     });
 }
 
@@ -316,34 +584,19 @@ function renderPagination(totalItems) {
 }
 
 // Helper Functions
-function formatCurrency(amount) {
-    // Chuyển đổi chuỗi thành số nếu cần
-    const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
-    
-    // Kiểm tra nếu không phải số hợp lệ
-    if (isNaN(numAmount)) {
-        return '0 ₫';
-    }
-    
-    // Format số tiền với định dạng tiền tệ Việt Nam
-    return new Intl.NumberFormat('vi-VN', {
-        style: 'currency',
-        currency: 'VND',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    }).format(numAmount);
+function formatCurrency(value) {
+    if (!value) return '0';
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
 function getStatusBadgeClass(status) {
-    switch (status.toLowerCase()) {
-        case 'approved':
+    switch (status) {
+        case 'paid':
             return 'bg-success';
         case 'pending':
             return 'bg-warning';
         case 'rejected':
             return 'bg-danger';
-        case 'paid':
-            return 'bg-info';
         default:
             return 'bg-secondary';
     }
@@ -906,22 +1159,14 @@ async function viewPayrollDetails(id) {
 }
 
 function formatDate(dateString) {
+    if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('vi-VN', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-    });
+    return date.toLocaleDateString('vi-VN');
 }
 
 function updateDashboardCards(data) {
     if (!data || !Array.isArray(data)) {
         console.warn('Invalid statistics data:', data);
-        // Set default values
-        document.getElementById('totalSalary').textContent = formatCurrency(0);
-        document.getElementById('totalBonus').textContent = formatCurrency(0);
-        document.getElementById('averageSalary').textContent = formatCurrency(0);
-        document.getElementById('totalPayrolls').textContent = '0';
         return;
     }
 
@@ -929,49 +1174,51 @@ function updateDashboardCards(data) {
         // Tính toán tổng lương
         const totalSalary = data.reduce((sum, payroll) => {
             if (!payroll.salary) return sum;
-            
-            let netSalary = 0;
-            if (typeof payroll.salary.net === 'string') {
-                // Chuyển đổi chuỗi tiền tệ thành số
-                netSalary = convertCurrencyToNumber(payroll.salary.net);
-            } else if (typeof payroll.salary.net === 'number') {
-                netSalary = payroll.salary.net;
-            }
-            
-            return sum + (isNaN(netSalary) ? 0 : netSalary);
+            const netSalary = convertCurrencyToNumber(payroll.salary.net || '0');
+            return sum + netSalary;
         }, 0);
 
         // Tính toán tổng thưởng
         const totalBonus = data.reduce((sum, payroll) => {
             if (!payroll.salary) return sum;
-            
-            let bonuses = 0;
-            if (typeof payroll.salary.bonuses === 'string') {
-                bonuses = convertCurrencyToNumber(payroll.salary.bonuses);
-            } else if (typeof payroll.salary.bonuses === 'number') {
-                bonuses = payroll.salary.bonuses;
-            }
-            
-            return sum + (isNaN(bonuses) ? 0 : bonuses);
+            const bonus = convertCurrencyToNumber(payroll.salary.bonuses || '0');
+            return sum + bonus;
         }, 0);
 
         // Tính lương trung bình
         const averageSalary = data.length > 0 ? Math.round(totalSalary / data.length) : 0;
 
-        // Cập nhật các card với định dạng tiền tệ
-        document.getElementById('totalSalary').textContent = formatCurrency(totalSalary);
-        document.getElementById('totalBonus').textContent = formatCurrency(totalBonus);
-        document.getElementById('averageSalary').textContent = formatCurrency(averageSalary);
-        document.getElementById('totalPayrolls').textContent = data.length;
+        // Cập nhật các card với animation
+        animateValue('totalSalary', 0, totalSalary, 1000);
+        animateValue('totalBonus', 0, totalBonus, 1000);
+        animateValue('averageSalary', 0, averageSalary, 1000);
+        animateValue('totalPayrolls', 0, data.length, 1000);
 
     } catch (error) {
         console.error('Error updating dashboard cards:', error);
-        // Set default values if there's an error
-        document.getElementById('totalSalary').textContent = formatCurrency(0);
-        document.getElementById('totalBonus').textContent = formatCurrency(0);
-        document.getElementById('averageSalary').textContent = formatCurrency(0);
-        document.getElementById('totalPayrolls').textContent = '0';
     }
+}
+
+// Thêm hàm animation cho số
+function animateValue(elementId, start, end, duration) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    const range = end - start;
+    const increment = range / (duration / 16);
+    let current = start;
+
+    const animate = () => {
+        current += increment;
+        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+            element.textContent = formatCurrency(end);
+        } else {
+            element.textContent = formatCurrency(Math.round(current));
+            requestAnimationFrame(animate);
+        }
+    };
+
+    requestAnimationFrame(animate);
 }
 
 // Hàm chuyển đổi chuỗi tiền tệ thành số
@@ -1179,6 +1426,10 @@ function createMonthlySalaryChart(data) {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                },
                 plugins: {
                     title: {
                         display: true,
@@ -1186,14 +1437,7 @@ function createMonthlySalaryChart(data) {
                         font: {
                             size: 16,
                             weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 20
                         }
-                    },
-                    legend: {
-                        display: false
                     },
                     tooltip: {
                         backgroundColor: 'rgba(255, 255, 255, 0.95)',
@@ -1244,14 +1488,6 @@ function createMonthlySalaryChart(data) {
                             }
                         }
                     }
-                },
-                animation: {
-                    duration: 1000,
-                    easing: 'easeOutQuart'
-                },
-                interaction: {
-                    mode: 'index',
-                    intersect: false
                 }
             }
         });
@@ -1702,14 +1938,14 @@ async function loadFilters() {
         const yearResponse = await api.payroll.getYears();
         const yearSelect = document.getElementById("yearFilter");
         yearSelect.innerHTML = '<option value="">Chọn năm</option>';
-        yearResponse.data.forEach(year => {
-            let yearValue = year;
-            if (typeof year === 'object' && year !== null) {
-                yearValue = year.year || year.value || Object.values(year)[0];
-            }
+        
+        // Check if yearResponse is an array or has a data property
+        const years = Array.isArray(yearResponse) ? yearResponse : (yearResponse.data || []);
+        
+        years.forEach(year => {
             const option = document.createElement("option");
-            option.value = yearValue;
-            option.textContent = yearValue;
+            option.value = year;
+            option.textContent = year;
             yearSelect.appendChild(option);
         });
 
@@ -2087,3 +2323,141 @@ function handleSalaryCalculations() {
 document.getElementById('addPayrollBtn')?.addEventListener('click', function() {
     handleSalaryCalculations();
 });  
+
+// Initialize charts
+function initializeCharts() {
+    // Initialize monthly salary chart
+    const monthlySalaryCtx = document.getElementById('monthlySalaryChart');
+    if (monthlySalaryCtx) {
+        monthlySalaryChart = new Chart(monthlySalaryCtx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Tổng lương',
+                        data: [],
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Tổng thưởng',
+                        data: [],
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Biểu đồ lương theo tháng',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += formatCurrency(context.parsed.y);
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return formatCurrency(value);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Initialize department salary chart
+    const departmentSalaryCtx = document.getElementById('departmentSalaryChart');
+    if (departmentSalaryCtx) {
+        departmentSalaryChart = new Chart(departmentSalaryCtx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Lương trung bình',
+                        data: [],
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Phân bố lương theo phòng ban',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += formatCurrency(context.parsed.y);
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return formatCurrency(value);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+// API Functions
+async function loadDepartments() {
+    try {
+        const response = await api.departments.getAll();
+        if (response.success) {
+            const departments = response.data;
+            departmentFilter.innerHTML = '<option value="">Tất cả phòng ban</option>';
+            departments.forEach(dept => {
+                departmentFilter.innerHTML += `<option value="${dept.id}">${dept.name}</option>`;
+            });
+        }
+    } catch (error) {
+        showError('Không thể tải danh sách phòng ban');
+    }
+}

@@ -1,0 +1,32 @@
+    <!-- Add service worker for caching -->
+    <script nonce="<?php echo $nonce; ?>">
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/qlnhansu_V3/sw.js').then(registration => {
+                console.log('ServiceWorker registration successful');
+                
+                // Kiểm tra kết nối
+                window.addEventListener('online', () => {
+                    showNotification('success', 'Đã kết nối lại internet');
+                });
+                
+                window.addEventListener('offline', () => {
+                    showNotification('warning', 'Mất kết nối internet. Một số tính năng có thể không hoạt động.');
+                });
+                
+            }).catch(err => {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
+    </script>
+
+    <!-- Add offline support -->
+    <script nonce="<?php echo $nonce; ?>">
+    // Kiểm tra trạng thái kết nối khi tải trang
+    window.addEventListener('load', () => {
+        if (!navigator.onLine) {
+            showNotification('warning', 'Bạn đang offline. Một số tính năng có thể không hoạt động.');
+        }
+    });
+    </script> 
