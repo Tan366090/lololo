@@ -625,7 +625,7 @@
                     </a>
                 </li>
                 <li class="nav-item" data-menu-id="logout">
-                    <a href="logout.php" class="nav-link">
+                    <a href="developing.html" class="nav-link">
                         <span>Đăng xuất</span>
                     </a>
                 </li>
