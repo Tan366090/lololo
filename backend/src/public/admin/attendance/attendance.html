@@ -8,140 +8,231 @@
             content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com http://localhost:4000 http://localhost; object-src 'none';"
         />
         <title>Chấm công hằng ngày - VNPT</title>
-        <link rel="stylesheet" href="../assets/css/attendance.css" />
+        
+        <!-- External CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        
+        <!-- Internal CSS -->
+        <link rel="stylesheet" href="assets/css/attendance.css" />
         <link rel="stylesheet" href="/assets/css/notifications.css">
         <link rel="stylesheet" href="/assets/css/loading.css">
         <link rel="stylesheet" href="/assets/css/style.css">
-        <script
-            type="module"
-            src="https://cdn.jsdelivr.net/npm/@ionic/core@latest/dist/ionic/ionic.esm.js"
-        ></script>
-        <script
-            nomodule
-            src="https://cdn.jsdelivr.net/npm/@ionic/core@latest/dist/ionic/ionic.js"
-        ></script>
-        <script
-            type="module"
-            src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-        ></script>
-        <script
-            nomodule
-            src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
-        ></script>
-        <script src="../assets/js/common.js"></script>
-        <script src="../js/attendance.js" defer></script>
-        <script type="module" src="/assets/js/main.js"></script>
+        <link rel="stylesheet" href="assets/css/common.css">
+        
         <style>
-            /* Modern Table Styles */
+            :root {
+                /* Color Variables */
+                --primary-color: #0056b3;
+                --primary-hover: #004494;
+                --secondary-color: #6c757d;
+                --success-color: #28a745;
+                --danger-color: #dc3545;
+                --warning-color: #ffc107;
+                --info-color: #17a2b8;
+                --light-color: #f8f9fa;
+                --dark-color: #343a40;
+                --border-color: #dee2e6;
+                --text-primary: #212529;
+                --text-secondary: #495057;
+                
+                /* Spacing Variables */
+                --spacing-xs: 0.25rem;
+                --spacing-sm: 0.5rem;
+                --spacing-md: 1rem;
+                --spacing-lg: 1.5rem;
+                --spacing-xl: 2rem;
+                
+                /* Border Radius */
+                --border-radius-sm: 4px;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                
+                /* Shadows */
+                --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+                --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+                --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+                
+                /* Transitions */
+                --transition-fast: 0.2s ease;
+                --transition-normal: 0.3s ease;
+            }
+
+            /* Base Styles */
+            body {
+                font-family: 'Inter', sans-serif;
+                background-color: var(--light-color);
+                color: var(--text-primary);
+                line-height: 1.5;
+            }
+
+            /* Layout */
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: var(--spacing-lg);
+            }
+
+            .main-content {
+                background: white;
+                border-radius: var(--border-radius-lg);
+                box-shadow: var(--shadow-md);
+                padding: var(--spacing-xl);
+                min-height: calc(100vh - 40px);
+            }
+
+            /* Navigation */
+            .attendance-nav {
+                background: white;
+                border-radius: var(--border-radius-lg);
+                box-shadow: var(--shadow-sm);
+                padding: var(--spacing-lg);
+                margin-bottom: var(--spacing-lg);
+            }
+
+            .nav-buttons {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: var(--spacing-md);
+            }
+
+            .nav-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: var(--spacing-sm);
+                padding: var(--spacing-md) var(--spacing-lg);
+                background-color: var(--light-color);
+                color: var(--text-secondary);
+                border-radius: var(--border-radius-md);
+                text-decoration: none;
+                font-weight: 500;
+                transition: all var(--transition-normal);
+                border: 1px solid var(--border-color);
+            }
+
+            .nav-btn:hover {
+                background-color: var(--primary-color);
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-md);
+            }
+
+            .nav-btn ion-icon {
+                font-size: 1.2rem;
+            }
+
+            /* Header */
+            .content-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: var(--spacing-xl);
+                padding-bottom: var(--spacing-lg);
+                border-bottom: 2px solid var(--border-color);
+            }
+
+            .content-header h1 {
+                color: var(--text-primary);
+                font-size: 2rem;
+                font-weight: 600;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-sm);
+            }
+
+            /* Controls Bar */
+            .controls-bar {
+                background: white;
+                border-radius: var(--border-radius-lg);
+                box-shadow: var(--shadow-sm);
+                padding: var(--spacing-lg);
+                margin-bottom: var(--spacing-lg);
+                display: grid;
+                grid-template-columns: 1fr auto;
+                gap: var(--spacing-lg);
+                align-items: center;
+            }
+
+            .filter-controls {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: var(--spacing-md);
+            }
+
+            /* Table Styles */
             .table-container {
                 background: white;
-                border-radius: 10px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                padding: 20px;
-                margin-top: 20px;
+                border-radius: var(--border-radius-lg);
+                box-shadow: var(--shadow-sm);
+                padding: var(--spacing-lg);
+                overflow: hidden;
             }
 
             .table {
                 width: 100%;
                 border-collapse: separate;
                 border-spacing: 0;
-                margin-bottom: 0;
             }
 
             .table th {
-                background-color: #f8f9fa;
-                color: #495057;
+                background-color: var(--light-color);
+                color: var(--text-secondary);
                 font-weight: 600;
-                padding: 15px;
+                padding: var(--spacing-md) var(--spacing-lg);
                 text-align: left;
-                border-bottom: 2px solid #dee2e6;
+                border-bottom: 2px solid var(--border-color);
             }
 
             .table td {
-                padding: 12px 15px;
-                vertical-align: middle;
-                border-bottom: 1px solid #dee2e6;
+                padding: var(--spacing-md) var(--spacing-lg);
+                border-bottom: 1px solid var(--border-color);
+                color: var(--text-secondary);
             }
 
             .table tbody tr:hover {
-                background-color: #f8f9fa;
+                background-color: var(--light-color);
             }
 
-            /* Button Styles */
-            .btn {
-                padding: 8px 16px;
-                border-radius: 6px;
+            /* Status Badges */
+            .status-badge {
+                padding: var(--spacing-xs) var(--spacing-md);
+                border-radius: var(--border-radius-sm);
+                font-size: 0.875rem;
                 font-weight: 500;
                 display: inline-flex;
                 align-items: center;
-                gap: 6px;
-                transition: all 0.2s;
+                gap: var(--spacing-xs);
+            }
+
+            .status-present { background-color: #d4edda; color: #155724; }
+            .status-absent { background-color: #f8d7da; color: #721c24; }
+            .status-late { background-color: #fff3cd; color: #856404; }
+            .status-wfh { background-color: #d1ecf1; color: #0c5460; }
+
+            /* Buttons */
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: var(--spacing-sm);
+                padding: var(--spacing-sm) var(--spacing-lg);
+                border-radius: var(--border-radius-md);
+                font-weight: 500;
+                transition: all var(--transition-normal);
                 border: none;
                 cursor: pointer;
             }
 
             .btn-primary {
-                background-color: #0056b3;
+                background-color: var(--primary-color);
                 color: white;
             }
 
             .btn-primary:hover {
-                background-color: #004494;
-            }
-
-            .btn-warning {
-                background-color: #ffc107;
-                color: #212529;
-            }
-
-            .btn-warning:hover {
-                background-color: #e0a800;
-            }
-
-            .btn-danger {
-                background-color: #dc3545;
-                color: white;
-            }
-
-            .btn-danger:hover {
-                background-color: #c82333;
-            }
-
-            .btn-sm {
-                padding: 6px 12px;
-                font-size: 0.875rem;
-            }
-
-            /* Filter Controls */
-            .controls-bar {
-                background: white;
-                border-radius: 10px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                padding: 20px;
-                margin-bottom: 20px;
-            }
-
-            .filter-controls {
-                display: flex;
-                gap: 15px;
-                align-items: center;
-            }
-
-            .filter-controls input[type="date"],
-            .filter-controls select {
-                padding: 8px 12px;
-                border: 1px solid #ced4da;
-                border-radius: 6px;
-                font-size: 14px;
-                min-width: 200px;
-                transition: border-color 0.2s;
-            }
-
-            .filter-controls input[type="date"]:focus,
-            .filter-controls select:focus {
-                border-color: #0056b3;
-                outline: none;
-                box-shadow: 0 0 0 0.2rem rgba(0,86,179,0.25);
+                background-color: var(--primary-hover);
+                transform: translateY(-1px);
             }
 
             /* Modal Styles */
@@ -156,131 +247,149 @@
                 background-color: rgba(0,0,0,0.5);
                 backdrop-filter: blur(4px);
             }
-            
+
             .modal-content {
                 background-color: white;
-                margin: 10% auto;
-                padding: 25px;
-                border-radius: 12px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                margin: 5% auto;
+                padding: var(--spacing-xl);
+                border-radius: var(--border-radius-lg);
+                box-shadow: var(--shadow-lg);
                 width: 90%;
-                max-width: 500px;
+                max-width: 600px;
                 position: relative;
             }
-            
-            .modal h4 {
-                margin: 0 0 20px 0;
-                color: #212529;
-                font-size: 1.25rem;
-                font-weight: 600;
-            }
-            
-            .modal p {
-                color: #6c757d;
-                margin-bottom: 25px;
-            }
-            
-            .modal .btn-container {
-                display: flex;
-                justify-content: flex-end;
-                gap: 10px;
+
+            /* Form Styles */
+            .form-group {
+                margin-bottom: var(--spacing-lg);
             }
 
-            /* Page Header */
-            .content-header {
-                margin-bottom: 30px;
-            }
-
-            .content-header h1 {
-                color: #212529;
-                font-size: 1.75rem;
-                font-weight: 600;
-                margin: 0;
-            }
-
-            /* Container */
-            .container {
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
-            }
-
-            /* Main Content */
-            .main-content {
-                background: #f8f9fa;
-                min-height: calc(100vh - 40px);
-                padding: 20px;
-                border-radius: 15px;
-            }
-
-            /* Status Badges */
-            .status-badge {
-                padding: 4px 8px;
-                border-radius: 4px;
-                font-size: 0.875rem;
+            .form-group label {
+                display: block;
+                margin-bottom: var(--spacing-xs);
+                color: var(--text-secondary);
                 font-weight: 500;
             }
 
-            .status-present {
-                background-color: #28a745;
-                color: white;
+            .form-control {
+                width: 100%;
+                padding: var(--spacing-md);
+                border: 1px solid var(--border-color);
+                border-radius: var(--border-radius-md);
+                transition: all var(--transition-normal);
             }
 
-            .status-absent {
-                background-color: #dc3545;
-                color: white;
+            .form-control:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(0,86,179,0.15);
+                outline: none;
             }
 
-            .status-late {
-                background-color: #ffc107;
-                color: #212529;
+            /* Loading Spinner */
+            .loading-spinner {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
             }
 
-            .status-wfh {
-                background-color: #17a2b8;
-                color: white;
+            .spinner {
+                width: 40px;
+                height: 40px;
+                border: 4px solid var(--border-color);
+                border-top: 4px solid var(--primary-color);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
             }
 
             /* Responsive Design */
             @media (max-width: 768px) {
+                .container {
+                    padding: var(--spacing-md);
+                }
+
+                .main-content {
+                    padding: var(--spacing-lg);
+                }
+
                 .controls-bar {
-                    flex-direction: column;
-                    gap: 15px;
+                    grid-template-columns: 1fr;
                 }
 
                 .filter-controls {
-                    flex-direction: column;
-                    width: 100%;
-                }
-
-                .filter-controls input[type="date"],
-                .filter-controls select {
-                    width: 100%;
-                }
-
-                #addAttendanceButton {
-                    width: 100%;
-                    justify-content: center;
+                    grid-template-columns: 1fr;
                 }
 
                 .table-responsive {
                     overflow-x: auto;
                 }
+
+                .modal-content {
+                    margin: 10% auto;
+                    padding: var(--spacing-lg);
+                }
             }
         </style>
-        <link rel="stylesheet" href="shared/css/common.css">
-        <link rel="stylesheet" href="shared/css/style.css">
+
+        <!-- Scripts -->
+        <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@latest/dist/ionic/ionic.esm.js"></script>
+        <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@latest/dist/ionic/ionic.js"></script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     </head>
     <body>
         <div class="container">
             <main class="main-content">
-                <div class="content-header">
-                    <h1>Bảng chấm công hằng ngày</h1>
+                <!-- Nút quay lại Dashboard -->
+                <a href="../dashboard_admin_V1.php" class="btn btn-outline-primary mb-3 d-inline-flex align-items-center" style="font-weight:600;font-size:1rem;gap:8px;">
+                    <i class="fa fa-arrow-left"></i> Quay lại Dashboard
+                </a>
+
+                <!-- Navigation Bar -->
+                <div class="attendance-nav mb-4">
+                    <div class="nav-buttons">
+                        <a href="attendance_History.html" class="nav-btn">
+                            <ion-icon name="time-outline"></ion-icon>
+                            Lịch sử chấm công
+                        </a>
+                        <a href="history.html" class="nav-btn">
+                            <ion-icon name="calendar-outline"></ion-icon>
+                            Xem lịch sử
+                        </a>
+                        <a href="check.html" class="nav-btn">
+                            <ion-icon name="checkmark-circle-outline"></ion-icon>
+                            Chấm công
+                        </a>
+                        <a href="list.html" class="nav-btn">
+                            <ion-icon name="list-outline"></ion-icon>
+                            Danh sách chấm công
+                        </a>
+                    </div>
                 </div>
+
+                <div class="content-header">
+                    <h1>
+                        <ion-icon name="calendar-outline"></ion-icon>
+                        Bảng chấm công hằng ngày
+                    </h1>
+                </div>
+
+                <!-- Controls Bar -->
                 <div class="controls-bar">
                     <div class="filter-controls">
-                        <input type="date" id="dateFilter" class="form-control" style="width: 200px;" onchange="applyFilters()">
-                        <select id="statusFilter" class="form-control" style="width: 200px;" onchange="applyFilters()">
+                        <input type="date" id="dateFilter" class="form-control" onchange="applyFilters()">
+                        <select id="statusFilter" class="form-control" onchange="applyFilters()">
                             <option value="">Tất cả trạng thái</option>
                             <option value="P">Có mặt (P)</option>
                             <option value="A">Vắng mặt (A)</option>
@@ -288,52 +397,78 @@
                             <option value="WFH">Làm việc từ xa (WFH)</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary" id="addAttendanceButton" style="background-color: #0056b3; color: white">
-                        <ion-icon name="add-circle-outline"></ion-icon> Thêm chấm công
+                    <button class="btn btn-primary" id="addAttendanceButton">
+                        <ion-icon name="add-circle-outline"></ion-icon>
+                        Thêm chấm công
                     </button>
                 </div>
+
+                <!-- Table Container -->
                 <div class="table-container">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Mã nhân viên</th>
-                                <th>Ngày</th>
-                                <th>Trạng thái</th>
-                                <th>Ghi chú</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody id="attendanceList"></tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Mã nhân viên</th>
+                                    <th>Họ tên</th>
+                                    <th>Ngày</th>
+                                    <th>Giờ vào</th>
+                                    <th>Giờ ra</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ghi chú</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceList">
+                                <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </main>
         </div>
+
+        <!-- Delete Modal -->
         <div id="deleteModal" class="modal">
             <div class="modal-content">
-                <h2>Xác nhận xóa</h2>
+                <h2>
+                    <ion-icon name="warning-outline"></ion-icon>
+                    Xác nhận xóa
+                </h2>
                 <p>Bạn có chắc chắn muốn xóa bản ghi chấm công này?</p>
                 <div class="form-actions">
-                    <button id="confirmDeleteButton" class="btn btn-danger">Xóa</button>
-                    <button id="cancelDeleteButton" class="btn btn-secondary">Hủy</button>
+                    <button id="confirmDeleteButton" class="btn btn-danger">
+                        <ion-icon name="trash-outline"></ion-icon>
+                        Xóa
+                    </button>
+                    <button id="cancelDeleteButton" class="btn btn-secondary">
+                        <ion-icon name="close-outline"></ion-icon>
+                        Hủy
+                    </button>
                 </div>
             </div>
         </div>
+
+        <!-- Edit Modal -->
         <div id="editModal" class="modal">
             <div class="modal-content">
-                <h2>Sửa thông tin điểm danh</h2>
+                <h2>
+                    <ion-icon name="create-outline"></ion-icon>
+                    Sửa thông tin điểm danh
+                </h2>
                 <form id="editForm" onsubmit="event.preventDefault(); updateAttendance();">
                     <input type="hidden" id="attendanceId" name="attendanceId">
                     <div class="form-group">
                         <label for="employeeId">Mã nhân viên:</label>
-                        <input type="text" id="employeeId" name="employeeId" required>
+                        <input type="text" id="employeeId" name="employeeId" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="attendanceDate">Ngày điểm danh:</label>
-                        <input type="date" id="attendanceDate" name="attendanceDate" required>
+                        <input type="date" id="attendanceDate" name="attendanceDate" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="attendanceSymbol">Ký hiệu:</label>
-                        <select id="attendanceSymbol" name="attendanceSymbol" required>
+                        <select id="attendanceSymbol" name="attendanceSymbol" class="form-control" required>
                             <option value="P">P - Có mặt</option>
                             <option value="A">A - Vắng mặt</option>
                             <option value="L">L - Đi muộn</option>
@@ -342,17 +477,33 @@
                     </div>
                     <div class="form-group">
                         <label for="notes">Ghi chú:</label>
-                        <textarea id="notes" name="notes"></textarea>
+                        <textarea id="notes" name="notes" class="form-control"></textarea>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+                        <button type="submit" class="btn btn-primary">
+                            <ion-icon name="save-outline"></ion-icon>
+                            Lưu thay đổi
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">
+                            <ion-icon name="close-outline"></ion-icon>
+                            Hủy
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
-        <script src="shared/js/common.js"></script>
-        <script src="shared/js/auth_utils.js"></script>
-        <script src="shared/js/api_service.js"></script>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/js/common.js"></script>
+        <script src="assets/js/auth_utils.js"></script>
+        <script src="assets/js/api_service.js"></script>
+        <script src="js/attendance.js"></script>
     </body>
 </html>

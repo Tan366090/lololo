@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Thiết lập các sự kiện
     setupEvents();
+    setupEventListeners();
 });
 
 // Hàm kiểm tra đăng nhập
@@ -93,12 +94,74 @@ function setupEvents() {
     });
 }
 
+// Hàm thiết lập sự kiện cho nút Lưu chấm công
+function setupEventListeners() {
+    const saveButton = document.querySelector(".btn-submit");
+    if (!saveButton) {
+        console.error("Nút Lưu chấm công không tồn tại trong DOM.");
+        return;
+    }
+
+    saveButton.addEventListener("click", function () {
+        console.log("Nút Lưu chấm công đã được nhấn");
+        submitAttendance();
+    });
+}
+
 // Biến lưu trữ dữ liệu phân trang
 let currentPage = 1;
 const itemsPerPage = 10;
 
+// Hàm hiển thị modal xác nhận xóa
+function showDeleteModal(attendanceId) {
+    const modal = document.getElementById('deleteModal');
+    const confirmBtn = document.getElementById('confirmDeleteButton');
+    const cancelBtn = document.getElementById('cancelDeleteButton');
+
+    modal.style.display = 'block';
+
+    confirmBtn.onclick = async () => {
+        try {
+            const response = await fetch(`/QlNHANSU_V2/api/v1/attendance/${attendanceId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            if (result.success) {
+                alert('Xóa bản ghi thành công!');
+                loadAttendanceData(); // Tải lại danh sách sau khi xóa
+            } else {
+                alert('Lỗi khi xóa bản ghi: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi xóa bản ghi: ' + error.message);
+        } finally {
+            modal.style.display = 'none';
+        }
+    };
+
+    cancelBtn.onclick = () => {
+        modal.style.display = 'none';
+    };
+
+    // Đóng modal khi nhấn bên ngoài
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+}
+
 // Hàm tải dữ liệu chấm công
-function loadAttendanceData() {
+async function loadAttendanceData() {
     showLoading();
     
     const searchQuery = document.getElementById("searchInput").value;
@@ -172,14 +235,14 @@ function loadStatistics() {
 function renderAttendanceTable(data) {
     const tbody = document.querySelector("#attendanceTable tbody");
     tbody.innerHTML = "";
-    
+
     if (data.length === 0) {
         const tr = document.createElement("tr");
-        tr.innerHTML = "<td colspan=\"7\" class=\"text-center\">Không có dữ liệu</td>";
+        tr.innerHTML = "<td colspan=\"8\" class=\"text-center\">Không có dữ liệu</td>";
         tbody.appendChild(tr);
         return;
     }
-    
+
     data.forEach((item, index) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
@@ -194,9 +257,46 @@ function renderAttendanceTable(data) {
                 </span>
             </td>
             <td>${item.notes || "-"}</td>
+            <td>
+                <button class="btn-delete" data-id="${item.id}">Xóa</button>
+            </td>
         `;
         tbody.appendChild(tr);
     });
+
+    // Gắn sự kiện cho các nút Xóa
+    setupDeleteButtons();
+}
+
+// Hàm thiết lập sự kiện cho các nút Xóa
+function setupDeleteButtons() {
+    const deleteButtons = document.querySelectorAll(".btn-delete");
+    deleteButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const recordId = this.getAttribute("data-id");
+            showDeleteModal(recordId);
+        });
+    });
+}
+
+// Hàm xóa bản ghi chấm công
+function deleteAttendance(recordId) {
+    fetch(`/QlNHANSU_V2/api/v1/attendance/${recordId}`, {
+        method: "DELETE",
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                console.log("Xóa bản ghi thành công");
+                loadAttendanceData(); // Tải lại danh sách sau khi xóa
+            } else {
+                showError(data.message || "Lỗi khi xóa bản ghi");
+            }
+        })
+        .catch((error) => {
+            console.error("Lỗi khi xóa bản ghi:", error);
+            showError("Lỗi khi xóa bản ghi");
+        });
 }
 
 // Hàm cập nhật thống kê
@@ -264,4 +364,6 @@ function getStatusText(status) {
         default:
             return status;
     }
-} 
+}
+
+console.log("Dữ liệu gửi đi:", attendanceData);

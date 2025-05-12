@@ -8,8 +8,7 @@ $rootDir = dirname(dirname(__DIR__));
 
 // Check if required files exist
 $required_files = [
-    $rootDir . '/config/database.php',
-    $rootDir . '/middleware/auth.php'
+    $rootDir . '/config/database.php'
 ];
 
 foreach ($required_files as $file) {
@@ -19,7 +18,6 @@ foreach ($required_files as $file) {
 }
 
 require_once $rootDir . '/config/database.php';
-require_once $rootDir . '/middleware/auth.php';
 
 // Set content type to JSON
 header('Content-Type: application/json');
@@ -36,19 +34,6 @@ try {
     exit;
 }
 
-// Kiểm tra quyền truy cập
-$auth = new Auth();
-$user = $auth->getUser();
-
-if (!$user) {
-    http_response_code(401);
-    echo json_encode([
-        'success' => false,
-        'message' => 'Chưa đăng nhập'
-    ]);
-    exit;
-}
-
 // Lấy action từ request
 $action = $_GET['action'] ?? '';
 
@@ -59,11 +44,14 @@ switch ($action) {
     case 'getByEmployee':
         getAttendanceByEmployee();
         break;
-    case 'checkIn':
-        checkIn();
+    case 'add':
+        addAttendance();
         break;
-    case 'checkOut':
-        checkOut();
+    case 'update':
+        updateAttendance();
+        break;
+    case 'delete':
+        deleteAttendance();
         break;
     case 'getStatistics':
         getAttendanceStatistics();
@@ -76,60 +64,23 @@ switch ($action) {
         ]);
 }
 
-// Handle DELETE request
-if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    $urlParts = explode('/', $_SERVER['REQUEST_URI']);
-    $id = end($urlParts); // Lấy ID từ URL
-
-    if (!is_numeric($id)) {
-        http_response_code(400);
-        echo json_encode(["success" => false, "message" => "ID không hợp lệ"]);
-        exit;
-    }
-
-    $query = "DELETE FROM attendance WHERE id = :id";
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':id', $id);
-
-    if ($stmt->execute()) {
-        echo json_encode(["success" => true, "message" => "Xóa bản ghi thành công"]);
-    } else {
-        echo json_encode(["success" => false, "message" => "Lỗi khi xóa bản ghi"]);
-    }
-    exit;
-}
-
 // Hàm lấy danh sách chấm công
 function getAllAttendance() {
-    global $db, $user;
-    
-    // Chỉ admin và HR mới có quyền xem tất cả
-    if ($user['role'] !== 'admin' && $user['role'] !== 'hr') {
-        http_response_code(403);
-        echo json_encode([
-            'success' => false,
-            'message' => 'Không có quyền truy cập'
-        ]);
-        return;
-    }
+    global $db;
     
     try {
-        $sql = "SELECT a.id, a.user_id, u.username, up.full_name,
-                       a.check_in_time, a.check_out_time,
-                       a.status, a.notes, a.created_at
+        $sql = "SELECT a.attendance_id, a.employee_id, u.username, up.full_name,
+                       a.attendance_date, a.check_in_time, a.check_out_time,
+                       a.work_duration_hours, a.attendance_symbol, a.notes,
+                       a.recorded_at, a.source
                 FROM attendance a
-                JOIN users u ON a.user_id = u.id
-                JOIN user_profiles up ON u.id = up.user_id
-                ORDER BY a.created_at DESC";
+                JOIN users u ON a.employee_id = u.user_id
+                JOIN user_profiles up ON u.user_id = up.user_id
+                ORDER BY a.attendance_date DESC, a.recorded_at DESC";
         
         $stmt = $db->prepare($sql);
         $stmt->execute();
-        $result = $stmt->get_result();
-        
-        $attendance = [];
-        while ($row = $result->fetch_assoc()) {
-            $attendance[] = $row;
-        }
+        $attendance = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         echo json_encode([
             'success' => true,
@@ -146,36 +97,31 @@ function getAllAttendance() {
 
 // Hàm lấy lịch sử chấm công của nhân viên
 function getAttendanceByEmployee() {
-    global $db, $user;
+    global $db;
     
-    $employeeId = $_GET['employeeId'] ?? $user['id'];
+    $employeeId = $_GET['employeeId'] ?? null;
     
-    // Kiểm tra quyền xem
-    if ($user['role'] !== 'admin' && $user['role'] !== 'hr' && $user['id'] !== $employeeId) {
-        http_response_code(403);
+    if (!$employeeId) {
+        http_response_code(400);
         echo json_encode([
             'success' => false,
-            'message' => 'Không có quyền truy cập'
+            'message' => 'Thiếu ID nhân viên'
         ]);
         return;
     }
     
     try {
-        $sql = "SELECT a.id, a.check_in_time, a.check_out_time,
-                       a.status, a.notes, a.created_at
+        $sql = "SELECT a.attendance_id, a.attendance_date, a.check_in_time, 
+                       a.check_out_time, a.work_duration_hours, 
+                       a.attendance_symbol, a.notes, a.recorded_at, a.source
                 FROM attendance a
-                WHERE a.user_id = ?
-                ORDER BY a.created_at DESC";
+                WHERE a.employee_id = :employee_id
+                ORDER BY a.attendance_date DESC, a.recorded_at DESC";
         
         $stmt = $db->prepare($sql);
-        $stmt->bind_param('i', $employeeId);
+        $stmt->bindParam(':employee_id', $employeeId, PDO::PARAM_INT);
         $stmt->execute();
-        $result = $stmt->get_result();
-        
-        $attendance = [];
-        while ($row = $result->fetch_assoc()) {
-            $attendance[] = $row;
-        }
+        $attendance = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         echo json_encode([
             'success' => true,
@@ -190,83 +136,149 @@ function getAttendanceByEmployee() {
     }
 }
 
-// Hàm chấm công vào
-function checkIn() {
-    global $db, $user;
+// Hàm thêm bản ghi chấm công
+function addAttendance() {
+    global $db;
     
     try {
-        // Kiểm tra xem đã chấm công vào chưa
-        $today = date('Y-m-d');
-        $sql = "SELECT id FROM attendance 
-                WHERE user_id = ? AND DATE(check_in_time) = ?";
+        $data = json_decode(file_get_contents('php://input'), true);
         
-        $stmt = $db->prepare($sql);
-        $stmt->bind_param('is', $user['id'], $today);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result->num_rows > 0) {
-            throw new Exception('Bạn đã chấm công vào hôm nay');
+        // Validate required fields
+        $required_fields = ['employee_id', 'attendance_date', 'attendance_symbol'];
+        foreach ($required_fields as $field) {
+            if (!isset($data[$field])) {
+                throw new Exception("Thiếu trường bắt buộc: $field");
+            }
         }
         
-        // Thêm bản ghi chấm công
-        $sql = "INSERT INTO attendance (user_id, check_in_time, status, created_at)
-                VALUES (?, NOW(), 'present', NOW())";
-        
+        // Check if attendance record already exists
+        $sql = "SELECT attendance_id FROM attendance 
+                WHERE employee_id = :employee_id AND attendance_date = :attendance_date";
         $stmt = $db->prepare($sql);
-        $stmt->bind_param('i', $user['id']);
+        $stmt->bindParam(':employee_id', $data['employee_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':attendance_date', $data['attendance_date']);
         $stmt->execute();
         
-        echo json_encode([
-            'success' => true,
-            'message' => 'Chấm công vào thành công'
-        ]);
+        if ($stmt->rowCount() > 0) {
+            throw new Exception('Đã tồn tại bản ghi chấm công cho nhân viên này vào ngày này');
+        }
+        
+        // Insert new attendance record
+        $sql = "INSERT INTO attendance (employee_id, attendance_date, check_in_time, 
+                check_out_time, work_duration_hours, attendance_symbol, notes, source)
+                VALUES (:employee_id, :attendance_date, :check_in_time, :check_out_time,
+                        :work_duration_hours, :attendance_symbol, :notes, 'manual')";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':employee_id', $data['employee_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':attendance_date', $data['attendance_date']);
+        $stmt->bindParam(':check_in_time', $data['check_in_time'] ?? null);
+        $stmt->bindParam(':check_out_time', $data['check_out_time'] ?? null);
+        $stmt->bindParam(':work_duration_hours', $data['work_duration_hours'] ?? null);
+        $stmt->bindParam(':attendance_symbol', $data['attendance_symbol']);
+        $stmt->bindParam(':notes', $data['notes'] ?? null);
+        
+        if ($stmt->execute()) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Thêm bản ghi chấm công thành công',
+                'attendance_id' => $db->lastInsertId()
+            ]);
+        } else {
+            throw new Exception('Lỗi khi thêm bản ghi chấm công');
+        }
     } catch (Exception $e) {
         http_response_code(500);
         echo json_encode([
             'success' => false,
-            'message' => 'Lỗi khi chấm công vào: ' . $e->getMessage()
+            'message' => 'Lỗi khi thêm bản ghi chấm công: ' . $e->getMessage()
         ]);
     }
 }
 
-// Hàm chấm công ra
-function checkOut() {
-    global $db, $user;
+// Hàm cập nhật bản ghi chấm công
+function updateAttendance() {
+    global $db;
     
     try {
-        // Kiểm tra xem đã chấm công vào chưa
-        $today = date('Y-m-d');
-        $sql = "SELECT id FROM attendance 
-                WHERE user_id = ? AND DATE(check_in_time) = ? AND check_out_time IS NULL";
+        $data = json_decode(file_get_contents('php://input'), true);
         
-        $stmt = $db->prepare($sql);
-        $stmt->bind_param('is', $user['id'], $today);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result->num_rows === 0) {
-            throw new Exception('Bạn chưa chấm công vào hôm nay');
+        if (!isset($data['attendance_id'])) {
+            throw new Exception('Thiếu ID bản ghi chấm công');
         }
         
-        // Cập nhật thời gian chấm công ra
-        $sql = "UPDATE attendance 
-                SET check_out_time = NOW()
-                WHERE user_id = ? AND DATE(check_in_time) = ?";
+        // Build update query dynamically based on provided fields
+        $update_fields = [];
+        $params = [];
+        
+        $allowed_fields = [
+            'check_in_time', 'check_out_time', 'work_duration_hours',
+            'attendance_symbol', 'notes'
+        ];
+        
+        foreach ($allowed_fields as $field) {
+            if (isset($data[$field])) {
+                $update_fields[] = "$field = :$field";
+                $params[":$field"] = $data[$field];
+            }
+        }
+        
+        if (empty($update_fields)) {
+            throw new Exception('Không có trường nào được cập nhật');
+        }
+        
+        $params[':attendance_id'] = $data['attendance_id'];
+        
+        $sql = "UPDATE attendance SET " . implode(', ', $update_fields) . 
+               " WHERE attendance_id = :attendance_id";
         
         $stmt = $db->prepare($sql);
-        $stmt->bind_param('is', $user['id'], $today);
-        $stmt->execute();
         
-        echo json_encode([
-            'success' => true,
-            'message' => 'Chấm công ra thành công'
-        ]);
+        if ($stmt->execute($params)) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Cập nhật bản ghi chấm công thành công'
+            ]);
+        } else {
+            throw new Exception('Lỗi khi cập nhật bản ghi chấm công');
+        }
     } catch (Exception $e) {
         http_response_code(500);
         echo json_encode([
             'success' => false,
-            'message' => 'Lỗi khi chấm công ra: ' . $e->getMessage()
+            'message' => 'Lỗi khi cập nhật bản ghi chấm công: ' . $e->getMessage()
+        ]);
+    }
+}
+
+// Hàm xóa bản ghi chấm công
+function deleteAttendance() {
+    global $db;
+    
+    try {
+        $attendance_id = $_GET['id'] ?? null;
+        
+        if (!$attendance_id) {
+            throw new Exception('Thiếu ID bản ghi chấm công');
+        }
+        
+        $sql = "DELETE FROM attendance WHERE attendance_id = :attendance_id";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':attendance_id', $attendance_id, PDO::PARAM_INT);
+        
+        if ($stmt->execute()) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Xóa bản ghi chấm công thành công'
+            ]);
+        } else {
+            throw new Exception('Lỗi khi xóa bản ghi chấm công');
+        }
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Lỗi khi xóa bản ghi chấm công: ' . $e->getMessage()
         ]);
     }
 }
@@ -276,24 +288,39 @@ function getAttendanceStatistics() {
     global $db;
     
     try {
-        // Test data
-        $data = [
-            'totalEmployees' => 50,
-            'presentToday' => 45,
-            'absentToday' => 5,
-            'lateToday' => 3,
-            'onTimePercentage' => 84
-        ];
+        $start_date = $_GET['start_date'] ?? date('Y-m-01');
+        $end_date = $_GET['end_date'] ?? date('Y-m-t');
+        
+        $sql = "SELECT 
+                    a.employee_id,
+                    u.username,
+                    up.full_name,
+                    COUNT(CASE WHEN a.attendance_symbol = 'P' THEN 1 END) as present_days,
+                    COUNT(CASE WHEN a.attendance_symbol = 'A' THEN 1 END) as absent_days,
+                    COUNT(CASE WHEN a.attendance_symbol = 'L' THEN 1 END) as leave_days,
+                    COUNT(CASE WHEN a.attendance_symbol = 'WFH' THEN 1 END) as wfh_days,
+                    AVG(a.work_duration_hours) as avg_work_hours
+                FROM attendance a
+                JOIN users u ON a.employee_id = u.user_id
+                JOIN user_profiles up ON u.user_id = up.user_id
+                WHERE a.attendance_date BETWEEN :start_date AND :end_date
+                GROUP BY a.employee_id, u.username, up.full_name";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':start_date', $start_date);
+        $stmt->bindParam(':end_date', $end_date);
+        $stmt->execute();
+        $statistics = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         echo json_encode([
             'success' => true,
-            'data' => $data
+            'data' => $statistics
         ]);
     } catch (Exception $e) {
         http_response_code(500);
         echo json_encode([
             'success' => false,
-            'message' => 'Lỗi khi lấy thống kê: ' . $e->getMessage()
+            'message' => 'Lỗi khi lấy thống kê chấm công: ' . $e->getMessage()
         ]);
     }
 }

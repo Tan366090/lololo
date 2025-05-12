@@ -72,7 +72,7 @@
                     </a>
                 </li>
                 <li class="nav-item" data-menu-id="attendance">
-                    <a href="pages/attendance.php" class="nav-link">
+                    <a href="attendance/attendance.html" class="nav-link">
                         <span>Chấm công</span>
                     </a>
                 </li>
