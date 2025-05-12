@@ -71,6 +71,128 @@ const loadingOverlay = {
 // Initialize loading overlay
 loadingOverlay.init();
 
+// Add Payroll Details Modal
+const payrollDetailsModal = document.createElement('div');
+payrollDetailsModal.id = 'payrollDetailsModal';
+payrollDetailsModal.className = 'modal fade';
+payrollDetailsModal.setAttribute('tabindex', '-1');
+payrollDetailsModal.setAttribute('aria-labelledby', 'payrollDetailsModalLabel');
+payrollDetailsModal.setAttribute('aria-hidden', 'true');
+payrollDetailsModal.innerHTML = `
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="payrollDetailsModalLabel">Chi tiết phiếu lương</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+`;
+document.body.appendChild(payrollDetailsModal);
+
+// Add styles for payroll details modal
+const modalStyle = document.createElement('style');
+modalStyle.textContent = `
+    .modal-dialog-scrollable .modal-content {
+        max-height: 90vh;
+    }
+
+    .modal-dialog-scrollable .modal-body {
+        overflow-y: auto;
+        padding: 1rem;
+    }
+
+    .payroll-details {
+        padding: 15px;
+    }
+
+    .payroll-details .section {
+        margin-bottom: 25px;
+        background: #fff;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .payroll-details .section h4 {
+        color: #2c3e50;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .payroll-details .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .payroll-details .info-item {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 6px;
+    }
+
+    .payroll-details .info-item label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .payroll-details .info-item span {
+        color: #2c3e50;
+        font-weight: 500;
+    }
+
+    .payroll-details .info-item.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .payroll-details .badge {
+        font-size: 0.85em;
+        padding: 5px 10px;
+    }
+
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .modal-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .btn-close {
+        padding: 0.5rem;
+        margin: -0.5rem -0.5rem -0.5rem auto;
+    }
+
+    .btn-close:hover {
+        background-color: rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 768px) {
+        .payroll-details .info-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .modal-dialog {
+            margin: 0.5rem;
+        }
+    }
+`;
+document.head.appendChild(modalStyle);
+
 // Global functions
 function showLoading() {
     loadingOverlay.show();
@@ -217,6 +339,54 @@ const api = {
                 throw error;
             }
         },
+        // Lấy danh sách phụ cấp
+        getAllowances: async () => {
+            try {
+                const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=allowances');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching allowances:', error);
+                throw error;
+            }
+        },
+
+        // Lấy danh sách thưởng
+        getBonuses: async () => {
+            try {
+                const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=bonuses');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching bonuses:', error);
+                throw error;
+            }
+        },
+
+        // Lấy danh sách khấu trừ
+        getDeductions: async () => {
+            try {
+                const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=deductions');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching deductions:', error);
+                throw error;
+            }
+        },
+
+        // Lấy kỳ lương
+        getPeriods: async () => {
+            try {
+                const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=periods');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching periods:', error);
+                throw error;
+            }
+        },
+
         add: async (data) => {
             try {
                 const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/payroll.php', {
@@ -261,18 +431,13 @@ const api = {
                 throw error;
             }
         },
+        // Xóa phiếu lương
         delete: async (id) => {
             try {
-                const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?id=${id}`, {
+                const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=delete&id=${id}`, {
                     method: 'DELETE'
                 });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const contentType = response.headers.get("content-type");
-                if (!contentType || !contentType.includes("application/json")) {
-                    throw new TypeError("API response was not JSON");
-                }
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return await response.json();
             } catch (error) {
                 console.error('Error deleting payroll:', error);
@@ -468,8 +633,8 @@ async function loadPayrollData() {
 }
 
 // Table Rendering
-function renderPayrollTable(payrolls) {
-    console.log('Rendering Payroll Table with data:', payrolls);
+function renderPayrollTable(payroll) {
+    console.log('Rendering Payroll Table with data:', payroll);
     
     const tableBody = document.getElementById('payrollTableBody');
     const template = document.getElementById('payrollRowTemplate');
@@ -482,7 +647,7 @@ function renderPayrollTable(payrolls) {
     // Clear existing rows
     tableBody.innerHTML = '';
     
-    if (!payrolls || payrolls.length === 0) {
+    if (!payroll || payroll.length === 0) {
         console.log('No payroll data to display');
         const noResultsRow = document.getElementById('noResultsRow');
         if (noResultsRow) {
@@ -498,7 +663,7 @@ function renderPayrollTable(payrolls) {
     }
 
     // Render each payroll row
-    payrolls.forEach((payroll, index) => {
+    payroll.forEach((payroll, index) => {
         console.log('Rendering payroll row:', payroll);
         
         const clone = template.content.cloneNode(true);
@@ -711,13 +876,17 @@ function hideAddPayrollModal() {
 
 async function loadSalaryComponents() {
     try {
+        showLoading();
+        
         // Load allowances
-        const allowanceResponse = await fetch('/qlnhansu_V3/backend/src/public/api/payroll.php?type=allowance');
-        const allowanceData = await allowanceResponse.json();
-        if (allowanceData.success) {
+        const allowanceResponse = await api.payroll.getAllowances();
+        if (allowanceResponse.success) {
             const allowanceSelect = document.getElementById('allowance');
-            allowanceSelect.innerHTML = '';
-            allowanceData.data.forEach(item => {
+            allowanceSelect.innerHTML = '<option value="">Chọn phụ cấp</option>';
+            // Kiểm tra và chuyển đổi data thành mảng nếu cần
+            const allowances = Array.isArray(allowanceResponse.data) ? allowanceResponse.data : 
+                             allowanceResponse.data.items || [];
+            allowances.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.id;
                 option.textContent = `${item.name} (${formatCurrency(item.amount)})`;
@@ -726,12 +895,14 @@ async function loadSalaryComponents() {
         }
 
         // Load bonuses
-        const bonusResponse = await fetch('/qlnhansu_V3/backend/src/public/api/payroll.php?type=bonus');
-        const bonusData = await bonusResponse.json();
-        if (bonusData.success) {
+        const bonusResponse = await api.payroll.getBonuses();
+        if (bonusResponse.success) {
             const bonusSelect = document.getElementById('bonus');
-            bonusSelect.innerHTML = '';
-            bonusData.data.forEach(item => {
+            bonusSelect.innerHTML = '<option value="">Chọn thưởng</option>';
+            // Kiểm tra và chuyển đổi data thành mảng nếu cần
+            const bonuses = Array.isArray(bonusResponse.data) ? bonusResponse.data : 
+                          bonusResponse.data.items || [];
+            bonuses.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.id;
                 option.textContent = `${item.name} (${formatCurrency(item.amount)})`;
@@ -740,12 +911,14 @@ async function loadSalaryComponents() {
         }
 
         // Load deductions
-        const deductionResponse = await fetch('/qlnhansu_V3/backend/src/public/api/payroll.php?type=deduction');
-        const deductionData = await deductionResponse.json();
-        if (deductionData.success) {
+        const deductionResponse = await api.payroll.getDeductions();
+        if (deductionResponse.success) {
             const deductionSelect = document.getElementById('deduction');
-            deductionSelect.innerHTML = '';
-            deductionData.data.forEach(item => {
+            deductionSelect.innerHTML = '<option value="">Chọn khấu trừ</option>';
+            // Kiểm tra và chuyển đổi data thành mảng nếu cần
+            const deductions = Array.isArray(deductionResponse.data) ? deductionResponse.data : 
+                             deductionResponse.data.items || [];
+            deductions.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.id;
                 option.textContent = `${item.name} (${formatCurrency(item.amount)})`;
@@ -753,132 +926,54 @@ async function loadSalaryComponents() {
             });
         }
     } catch (error) {
+        console.error('Error loading salary components:', error);
         showError('Không thể tải danh sách thành phần lương');
+    } finally {
+        hideLoading();
     }
 }
 
 async function loadPayrollPeriods() {
     try {
-        const response = await fetch('/qlnhansu_V3/backend/src/public/api/payroll.php?action=periods');
-        const data = await response.json();
+        showLoading();
+        const response = await api.payroll.getPeriods();
         
-        if (data.success) {
+        if (response.success) {
             const periodSelect = document.getElementById('payrollPeriod');
             periodSelect.innerHTML = '<option value="">Chọn kỳ lương</option>';
-            data.data.forEach(period => {
+            
+            // Kiểm tra và chuyển đổi data thành mảng nếu cần
+            const periods = Array.isArray(response.data) ? response.data : 
+                          response.data.items || [];
+            
+            periods.forEach(period => {
                 const option = document.createElement('option');
                 option.value = period.id;
-                option.textContent = `Tháng ${period.month}/${period.year}`;
+                if (period.month) {
+                    option.textContent = `Tháng ${period.month}`;
+                } else if (period.start && period.end) {
+                    option.textContent = `${formatDate(period.start)} - ${formatDate(period.end)}`;
+                } else {
+                    option.textContent = 'Kỳ lương không xác định';
+                }
                 periodSelect.appendChild(option);
             });
+        } else {
+            showError('Không thể tải danh sách kỳ lương');
         }
     } catch (error) {
-        showError('Không thể tải danh sách kỳ lương');
+        console.error('Error loading payroll periods:', error);
+        showError('Lỗi khi tải danh sách kỳ lương');
+    } finally {
+        hideLoading();
     }
 }
 
-// Hàm tính tổng các khoản
-function calculateTotal(type) {
-    let total = 0;
-    const elements = document.querySelectorAll(`#${type} option:checked`);
-    elements.forEach(element => {
-        const amount = parseFloat(element.dataset.amount) || 0;
-        total += amount;
-    });
-    return total;
+// Hàm chuyển đổi chuỗi số tiền kiểu Việt Nam thành số nguyên
+function parseVnCurrency(str) {
+    if (!str) return 0;
+    return parseInt(str.replace(/[^\d]/g, ''), 10) || 0;
 }
-
-// Hàm tính lương thực lĩnh
-function calculateNetSalary() {
-    const basicSalary = parseFloat(document.getElementById('basicSalary').value) || 0;
-    const allowances = calculateTotal('allowance');
-    const bonuses = calculateTotal('bonus');
-    const deductions = calculateTotal('deduction');
-    
-    return basicSalary + allowances + bonuses - deductions;
-}
-
-// Hàm cập nhật hiển thị tổng
-function updateTotals() {
-    try {
-        // Lấy các elements
-        const totalAllowanceElement = document.getElementById('totalAllowance');
-        const totalBonusElement = document.getElementById('totalBonus');
-        const totalDeductionElement = document.getElementById('totalDeduction');
-        const totalIncomeElement = document.getElementById('totalIncome');
-        const totalDeductionsElement = document.getElementById('totalDeductions');
-        const netSalaryElement = document.getElementById('netSalary');
-
-        // Kiểm tra các elements tồn tại
-        if (!totalAllowanceElement || !totalBonusElement || !totalDeductionElement || 
-            !totalIncomeElement || !totalDeductionsElement || !netSalaryElement) {
-            console.warn('Some total elements not found');
-            return;
-        }
-
-        // Tính toán các tổng
-        const basicSalary = parseFloat(document.getElementById('basicSalary')?.value) || 0;
-        const allowance = parseFloat(document.getElementById('allowance')?.value) || 0;
-        const bonus = parseFloat(document.getElementById('bonus')?.value) || 0;
-        const deduction = parseFloat(document.getElementById('deduction')?.value) || 0;
-
-        // Tính tổng thu nhập và thực lĩnh
-        const totalIncome = basicSalary + allowance + bonus;
-        const netSalary = totalIncome - deduction;
-
-        // Cập nhật hiển thị với định dạng tiền tệ
-        totalAllowanceElement.textContent = formatCurrency(allowance);
-        totalBonusElement.textContent = formatCurrency(bonus);
-        totalDeductionElement.textContent = formatCurrency(deduction);
-        totalIncomeElement.textContent = formatCurrency(totalIncome);
-        totalDeductionsElement.textContent = formatCurrency(deduction);
-        netSalaryElement.textContent = formatCurrency(netSalary);
-
-    } catch (error) {
-        console.error('Error updating totals:', error);
-    }
-}
-
-// Thêm event listeners cho các trường input
-document.addEventListener('DOMContentLoaded', function() {
-    const basicSalaryInput = document.getElementById('basicSalary');
-    const allowanceInput = document.getElementById('allowance');
-    const bonusInput = document.getElementById('bonus');
-    const deductionInput = document.getElementById('deduction');
-    
-    // Thêm event listeners nếu các elements tồn tại
-    if (basicSalaryInput) {
-        basicSalaryInput.addEventListener('input', function() {
-            if (this.value < 0) this.value = 0;
-            this.value = Math.round(this.value / 1000) * 1000;
-            updateTotals();
-        });
-    }
-    
-    if (allowanceInput) {
-        allowanceInput.addEventListener('input', function() {
-            if (this.value < 0) this.value = 0;
-            this.value = Math.round(this.value / 1000) * 1000;
-            updateTotals();
-        });
-    }
-    
-    if (bonusInput) {
-        bonusInput.addEventListener('input', function() {
-            if (this.value < 0) this.value = 0;
-            this.value = Math.round(this.value / 1000) * 1000;
-            updateTotals();
-        });
-    }
-    
-    if (deductionInput) {
-        deductionInput.addEventListener('input', function() {
-            if (this.value < 0) this.value = 0;
-            this.value = Math.round(this.value / 1000) * 1000;
-            updateTotals();
-        });
-    }
-});
 
 // Hàm validate form
 function validatePayrollForm() {
@@ -898,7 +993,7 @@ function validatePayrollForm() {
     });
 
     // Validate số tiền
-    const basicSalary = parseFloat(document.getElementById('basicSalary').value);
+    const basicSalary = parseVnCurrency(document.getElementById('basicSalary').value);
     if (isNaN(basicSalary) || basicSalary < 0) {
         document.getElementById('basicSalary').classList.add('is-invalid');
         isValid = false;
@@ -923,13 +1018,14 @@ async function handleAddPayroll(event) {
         const data = {
             employee_id: formData.get('employee_id'),
             period_id: formData.get('payrollPeriod'),
-            basicSalary: parseFloat(formData.get('basicSalary')),
-            allowancesTotal: calculateTotal('allowance'),
-            bonusesTotal: calculateTotal('bonus'),
-            deductionsTotal: calculateTotal('deduction'),
+            basicSalary: parseVnCurrency(formData.get('basicSalary')),
+            allowancesTotal: parseVnCurrency(formData.get('allowance')),
+            bonusesTotal: parseVnCurrency(formData.get('bonus')),
+            deductionsTotal: parseVnCurrency(formData.get('deduction')),
             netSalary: calculateNetSalary(),
             notes: formData.get('notes')
         };
+        console.log('Dữ liệu gửi lên backend:', data);
 
         const response = await api.payroll.add(data);
 
@@ -1146,44 +1242,199 @@ function showInfo(message) {
 }
 
 // CRUD Operations
-async function viewPayrollDetails(id) {
+async function viewPayrollDetails(payrollId) {
     showLoading();
     try {
-        const response = await fetch(`/qlnhansu_V3/backend/src/public/api/payroll.php?id=${id}`);
+        const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=details&id=${payrollId}`);
         const data = await response.json();
-
-        if (data.success) {
-            currentPayrollId = id;
-            const payroll = data.data;
-            
-            // Hiển thị modal chi tiết
-            const modal = document.getElementById('approvalDetailsModal');
-            
-            // Cập nhật thông tin chi tiết
-            document.getElementById('approver1').textContent = payroll.created_by.username;
-            document.getElementById('date1').textContent = formatDate(payroll.created_at);
-            document.getElementById('comments1').textContent = payroll.notes || '-';
-
-            // Cập nhật trạng thái
-            const statusBadge = document.querySelector('.status-badge');
-            statusBadge.className = `status-badge ${payroll.status.code}`;
-            statusBadge.textContent = payroll.status.text;
-
-            modal.style.display = 'block';
-        } else {
-            showError(data.message || 'Không thể xem chi tiết phiếu lương');
+        
+        if (!data.success) {
+            throw new Error(data.message || 'Có lỗi xảy ra khi xem chi tiết phiếu lương');
         }
+        
+        const payroll = data.data;
+        if (!payroll) {
+            throw new Error('Không tìm thấy thông tin phiếu lương');
+        }
+
+        // Format số tiền
+        const formatMoney = (amount) => {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(amount);
+        };
+
+        // Format ngày tháng
+        const formatDate = (dateString) => {
+            return new Date(dateString).toLocaleDateString('vi-VN');
+        };
+
+        // Cập nhật nội dung modal
+        const modalContent = `
+            <div class="payroll-details">
+                <div class="section">
+                    <h4>Thông tin nhân viên</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Mã nhân viên:</label>
+                            <span>${payroll.employee.code || 'N/A'}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Họ tên:</label>
+                            <span>${payroll.employee.name || 'N/A'}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Phòng ban:</label>
+                            <span>${payroll.employee.department || 'N/A'}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Chức vụ:</label>
+                            <span>${payroll.employee.position || 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h4>Thông tin lương</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Kỳ lương:</label>
+                            <span>${formatDate(payroll.period.start)} - ${formatDate(payroll.period.end)}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Lương cơ bản:</label>
+                            <span>${formatMoney(payroll.salary.base)}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Phụ cấp:</label>
+                            <span>${formatMoney(payroll.salary.allowances)}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Thưởng:</label>
+                            <span>${formatMoney(payroll.salary.bonuses)}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Khấu trừ:</label>
+                            <span>${formatMoney(payroll.salary.deductions)}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Thực lĩnh:</label>
+                            <span>${formatMoney(payroll.salary.net)}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h4>Thông tin thanh toán</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Ngày thanh toán:</label>
+                            <span>${payroll.payment.date ? formatDate(payroll.payment.date) : 'N/A'}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Phương thức:</label>
+                            <span>${payroll.payment.method || 'N/A'}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Mã tham chiếu:</label>
+                            <span>${payroll.payment.reference || 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h4>Thông tin khác</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Trạng thái:</label>
+                            <span class="badge ${getStatusBadgeClass(payroll.status.code)}">${payroll.status.text}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Người tạo:</label>
+                            <span>${payroll.created_by.username || 'N/A'}</span>
+                        </div>
+                        <div class="info-item full-width">
+                            <label>Ghi chú:</label>
+                            <span>${payroll.notes || 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Lấy modal element
+        const modal = document.getElementById('payrollDetailsModal');
+        if (!modal) {
+            throw new Error('Không tìm thấy modal chi tiết phiếu lương');
+        }
+
+        // Cập nhật nội dung modal
+        const modalBody = modal.querySelector('.modal-body');
+        if (modalBody) {
+            modalBody.innerHTML = modalContent;
+        }
+
+        // Khởi tạo Bootstrap Modal với các options
+        const bsModal = new bootstrap.Modal(modal, {
+            backdrop: 'static',
+            keyboard: true,
+            focus: true
+        });
+        
+        // Thêm event listeners
+        modal.addEventListener('hidden.bs.modal', function () {
+            // Cleanup khi modal đóng
+            modalBody.innerHTML = '';
+        });
+
+        // Thêm event listener cho nút đóng
+        const closeButtons = modal.querySelectorAll('[data-bs-dismiss="modal"]');
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                bsModal.hide();
+            });
+        });
+
+        // Thêm event listener cho click bên ngoài modal
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                bsModal.hide();
+            }
+        });
+
+        // Hiển thị modal
+        bsModal.show();
+
     } catch (error) {
-        showError('Lỗi khi xem chi tiết phiếu lương');
+        console.error('Error:', error);
+        showError(error.message);
     } finally {
         hideLoading();
     }
 }
 
+// Thêm hàm helper để lấy class cho badge trạng thái
+function getStatusBadgeClass(status) {
+    const statusClasses = {
+        'pending': 'bg-warning',
+        'approved': 'bg-success',
+        'rejected': 'bg-danger',
+        'paid': 'bg-info'
+    };
+    return statusClasses[status] || 'bg-secondary';
+}
+
 function formatDate(dateString) {
-    if (!dateString) return '';
     const date = new Date(dateString);
     return date.toLocaleDateString('vi-VN');
+}
+
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    }).format(amount);
 }
 
 function updateDashboardCards(data) {
@@ -1276,23 +1527,36 @@ async function editPayroll(id) {
 }
 
 async function deletePayroll(id) {
-    if (!confirm('Bạn có chắc chắn muốn xóa phiếu lương này?')) {
-        showWarning('Đã hủy thao tác xóa');
-        return;
-    }
-
-    showLoading();
     try {
-        const response = await api.payroll.delete(id);
+        // Kiểm tra trạng thái phiếu lương
+        const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=checkStatus&id=${id}`);
+        const data = await response.json();
+        
+        if (!data.success) {
+            showError(data.message || 'Không thể kiểm tra trạng thái phiếu lương');
+            return;
+        }
 
-        if (response.success) {
+        if (data.data.status !== 'pending') {
+            showError('Chỉ có thể xóa phiếu lương ở trạng thái chờ duyệt');
+            return;
+        }
+
+        if (!confirm('Bạn có chắc chắn muốn xóa phiếu lương này?')) {
+            return;
+        }
+
+        showLoading();
+        const deleteResponse = await api.payroll.delete(id);
+
+        if (deleteResponse.success) {
             showSuccess('Xóa phiếu lương thành công');
             loadPayrollData();
         } else {
-            showError(response.message || 'Xóa phiếu lương thất bại');
+            showError(deleteResponse.message || 'Xóa phiếu lương thất bại');
         }
     } catch (error) {
-        showError('Lỗi khi xóa phiếu lương');
+        handleApiError(error, 'Lỗi khi xóa phiếu lương');
     } finally {
         hideLoading();
     }
@@ -2428,4 +2692,21 @@ async function loadDepartments() {
 // Hàm lấy giá trị số từ chuỗi đã định dạng
 function getNumericValue(formattedValue) {
     return parseInt(formattedValue.replace(/[^\d]/g, ''), 10) || 0;
+}
+
+// Hàm xử lý lỗi API
+function handleApiError(error, defaultMessage) {
+    console.error('API Error:', error);
+    
+    if (error.response) {
+        // Server trả về response với status code ngoài range 2xx
+        const errorData = error.response.data;
+        showError(errorData.message || defaultMessage);
+    } else if (error.request) {
+        // Request được gửi nhưng không nhận được response
+        showError('Không thể kết nối đến server');
+    } else {
+        // Có lỗi khi setting up request
+        showError(defaultMessage);
+    }
 }

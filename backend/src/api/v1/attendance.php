@@ -76,6 +76,29 @@ switch ($action) {
         ]);
 }
 
+// Handle DELETE request
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    $urlParts = explode('/', $_SERVER['REQUEST_URI']);
+    $id = end($urlParts); // Lấy ID từ URL
+
+    if (!is_numeric($id)) {
+        http_response_code(400);
+        echo json_encode(["success" => false, "message" => "ID không hợp lệ"]);
+        exit;
+    }
+
+    $query = "DELETE FROM attendance WHERE id = :id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $id);
+
+    if ($stmt->execute()) {
+        echo json_encode(["success" => true, "message" => "Xóa bản ghi thành công"]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Lỗi khi xóa bản ghi"]);
+    }
+    exit;
+}
+
 // Hàm lấy danh sách chấm công
 function getAllAttendance() {
     global $db, $user;
@@ -273,4 +296,4 @@ function getAttendanceStatistics() {
             'message' => 'Lỗi khi lấy thống kê: ' . $e->getMessage()
         ]);
     }
-} 
+}

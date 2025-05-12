@@ -171,7 +171,7 @@ try {
                                 ORDER BY p.pay_period_start DESC
                             ");
                             $stmt->execute([$employeeCode]);
-                            $payrolls = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            $payroll = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                             // Format dữ liệu trả về
                             $formattedPayrolls = array_map(function($payroll) {
@@ -210,7 +210,7 @@ try {
                                     ],
                                     'notes' => $payroll['notes']
                                 ];
-                            }, $payrolls);
+                            }, $payroll);
 
                             echo json_encode([
                                 'success' => true,
@@ -222,7 +222,7 @@ try {
                                         'department' => $employee['department_name'],
                                         'position' => $employee['position_name']
                                     ],
-                                    'payrolls' => $formattedPayrolls
+                                    'payroll' => $formattedPayrolls
                                 ]
                             ]);
                         } catch (PDOException $e) {
@@ -307,6 +307,108 @@ try {
                                     'message' => 'Lỗi khi lấy thông tin: ' . $e->getMessage()
                                 ]);
                             }
+                        }
+                        break;
+                    case 'periods':
+                        // Lấy danh sách các kỳ lương duy nhất (theo tháng/năm)
+                        $query = "SELECT DISTINCT DATE_FORMAT(pay_period_start, '%m/%Y') as month, 
+                                         MIN(pay_period_start) as start, 
+                                         MAX(pay_period_end) as end
+                                  FROM payroll
+                                  GROUP BY month
+                                  ORDER BY MIN(pay_period_start) DESC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->execute();
+                        $periods = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                        echo json_encode([
+                            'success' => true,
+                            'data' => $periods
+                        ]);
+                        exit;
+                        break;
+                    case 'details':
+                        if (isset($_GET['id'])) {
+                            try {
+                                $query = "SELECT 
+                                    p.*,
+                                    e.employee_code,
+                                    e.name as employee_name,
+                                    d.name as department_name,
+                                    pos.name as position_name,
+                                    u.username as created_by_name,
+                                    GROUP_CONCAT(DISTINCT pa.amount) as allowance_amounts,
+                                    GROUP_CONCAT(DISTINCT pb.amount) as bonus_amounts,
+                                    GROUP_CONCAT(DISTINCT pd.amount) as deduction_amounts
+                                FROM payroll p
+                                LEFT JOIN employees e ON p.employee_id = e.id
+                                LEFT JOIN departments d ON e.department_id = d.id
+                                LEFT JOIN positions pos ON e.position_id = pos.id
+                                LEFT JOIN users u ON p.generated_by_user_id = u.user_id
+                                LEFT JOIN payroll_allowances pa ON p.payroll_id = pa.payroll_id
+                                LEFT JOIN payroll_bonuses pb ON p.payroll_id = pb.payroll_id
+                                LEFT JOIN payroll_deductions pd ON p.payroll_id = pd.payroll_id
+                                WHERE p.payroll_id = ?
+                                GROUP BY p.payroll_id";
+
+                                $stmt = $conn->prepare($query);
+                                $stmt->execute([$_GET['id']]);
+                                $payroll = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                if ($payroll) {
+                                    $response = [
+                                        'success' => true,
+                                        'data' => [
+                                            'employee' => [
+                                                'code' => $payroll['employee_code'],
+                                                'name' => $payroll['employee_name'],
+                                                'department' => $payroll['department_name'],
+                                                'position' => $payroll['position_name']
+                                            ],
+                                            'period' => [
+                                                'start' => $payroll['pay_period_start'],
+                                                'end' => $payroll['pay_period_end']
+                                            ],
+                                            'salary' => [
+                                                'base' => $payroll['base_salary_period'],
+                                                'allowances' => $payroll['allowances_total'],
+                                                'bonuses' => $payroll['bonuses_total'],
+                                                'deductions' => $payroll['deductions_total'],
+                                                'gross' => $payroll['gross_salary'],
+                                                'net' => $payroll['net_salary']
+                                            ],
+                                            'status' => [
+                                                'code' => $payroll['status'],
+                                                'text' => getStatusText($payroll['status'])
+                                            ],
+                                            'created_by' => [
+                                                'username' => $payroll['created_by_name']
+                                            ],
+                                            'notes' => $payroll['notes'],
+                                            'payment' => [
+                                                'date' => $payroll['payment_date'],
+                                                'method' => $payroll['payment_method'],
+                                                'reference' => $payroll['payment_reference']
+                                            ]
+                                        ]
+                                    ];
+                                    echo json_encode($response);
+                                } else {
+                                    throw new Exception('Không tìm thấy thông tin phiếu lương');
+                                }
+                            } catch (Exception $e) {
+                                http_response_code(500);
+                                echo json_encode([
+                                    'success' => false,
+                                    'message' => $e->getMessage()
+                                ]);
+                            }
+                        } else {
+                            http_response_code(400);
+                            echo json_encode([
+                                'success' => false,
+                                'message' => 'Thiếu tham số id'
+                            ]);
                         }
                         break;
                     default:
@@ -430,10 +532,10 @@ function getPayrolls($conn) {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
-        $payrolls = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $payroll = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Log the raw data for debugging
-        error_log("Raw payroll data: " . print_r($payrolls, true));
+        error_log("Raw payroll data: " . print_r($payroll, true));
 
         // Format the response
         $formattedPayrolls = array_map(function($payroll) {
@@ -480,7 +582,7 @@ function getPayrolls($conn) {
                 'created_at' => $payroll['generated_at'],
                 'notes' => $payroll['notes']
             ];
-        }, $payrolls);
+        }, $payroll);
 
         // Log the formatted data for debugging
         error_log("Formatted payroll data: " . print_r($formattedPayrolls, true));
@@ -680,12 +782,12 @@ function exportPayrolls($conn) {
         } else {
             $stmt->execute();
         }
-        $payrolls = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $payroll = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Log the results
-        error_log("Export results count: " . count($payrolls));
+        error_log("Export results count: " . count($payroll));
 
-        if (empty($payrolls)) {
+        if (empty($payroll)) {
             header('Content-Type: application/json');
             echo json_encode(['error' => 'Không có dữ liệu để xuất']);
             exit;
@@ -719,7 +821,7 @@ function exportPayrolls($conn) {
 
         // Điền dữ liệu
         $row = 2;
-        foreach ($payrolls as $payroll) {
+        foreach ($payroll as $payroll) {
             $sheet->setCellValue('A' . $row, $payroll['employee_code']);
             $sheet->setCellValue('B' . $row, $payroll['employee_name']);
             $sheet->setCellValue('C' . $row, $payroll['department_name']);
@@ -796,6 +898,21 @@ function createPayroll($conn) {
             if (!isset($data[$field])) {
                 throw new Exception("Missing required field: $field");
             }
+        }
+
+        // Kiểm tra trùng kỳ lương cho nhân viên
+        $checkQuery = "SELECT COUNT(*) FROM payroll 
+                       WHERE employee_id = ? 
+                         AND pay_period_start = ? 
+                         AND pay_period_end = ?";
+        $stmt = $conn->prepare($checkQuery);
+        $stmt->execute([
+            $data['employee_id'],
+            $data['pay_period_start'],
+            $data['pay_period_end']
+        ]);
+        if ($stmt->fetchColumn() > 0) {
+            throw new Exception('Nhân viên này đã có phiếu lương cho kỳ này!');
         }
 
         // Validate dates
@@ -1294,9 +1411,9 @@ function exportDepartmentPayrollReport($conn, $departmentId, $month, $year) {
         
         $stmt = $conn->prepare($query);
         $stmt->execute([$departmentId, $month, $year]);
-        $payrolls = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $payroll = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if (empty($payrolls)) {
+        if (empty($payroll)) {
             throw new Exception('Không có dữ liệu lương cho phòng ban này');
         }
 
@@ -1333,7 +1450,7 @@ function exportDepartmentPayrollReport($conn, $departmentId, $month, $year) {
         $totalTax = 0;
         $totalNet = 0;
 
-        foreach ($payrolls as $payroll) {
+        foreach ($payroll as $payroll) {
             $sheet->setCellValue('A' . $row, $payroll['employee_code']);
             $sheet->setCellValue('B' . $row, $payroll['employee_name']);
             $sheet->setCellValue('C' . $row, $payroll['position']);

@@ -186,6 +186,77 @@
                 padding: 18px 6px 10px 6px;
             }
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 5px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-section h4 {
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-item label {
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .detail-item span {
+            color: #333;
+        }
     </style>
    
 </head>
@@ -708,6 +779,9 @@
                         <button type="button" class="btn btn-secondary" id="cancelBtn">
                             <i></i> Hủy
                         </button>
+                        <button type="button" class="btn btn-info" id="testAddPayrollBtn">
+                            <i class="fas fa-vial"></i> Test Thêm phiếu lương
+                        </button>
                     </div>
                 </form>
             </div>
@@ -909,11 +983,17 @@
                         <button type="button" class="btn btn-secondary" onclick="document.getElementById('editPayrollModal').style.display='none'">
                             <i class="fas fa-times"></i> Hủy
                         </button>
+                        <button type="button" class="btn btn-info" onclick="testAddPayroll()">
+                            <i class="fas fa-vial"></i> Test Thêm
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <!-- Modal Chi tiết phiếu lương -->
+    <!-- [REMOVED STATIC MODAL HERE] -->
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -922,5 +1002,114 @@
     <script src="payroll.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="payroll-actions.js"></script>
+    <script>
+    function testAddPayroll() {
+        // Dữ liệu test
+        const testData = {
+            employee_id: 1,
+            pay_period_start: "2024-03-01",
+            pay_period_end: "2024-03-31",
+            work_days_payable: 22.0,
+            base_salary_period: 10000000,
+            allowances_total: 2000000,
+            bonuses_total: 1000000,
+            deductions_total: 500000,
+            gross_salary: 13000000,
+            tax_deduction: 1000000,
+            insurance_deduction: 500000,
+            net_salary: 11500000,
+            currency: "VND",
+            status: "pending",
+            notes: "Test payroll creation"
+        };
+
+        // Gọi API tạo phiếu lương
+        fetch('/api/payroll/create.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(testData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Test thêm phiếu lương thành công!\nID: ' + data.payroll_id);
+                // Refresh danh sách nếu cần
+                location.reload();
+            } else {
+                alert('Lỗi: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi test thêm phiếu lương');
+        });
+    }
+
+    document.getElementById('testAddPayrollBtn').onclick = function() {
+        // Lấy dữ liệu từ form
+        const employee_id = document.getElementById('employeeCode').value;
+        const payrollPeriod = document.getElementById('payrollPeriod').value;
+        let pay_period_start = "", pay_period_end = "";
+        if (payrollPeriod && payrollPeriod.includes(' - ')) {
+            [pay_period_start, pay_period_end] = payrollPeriod.split(' - ');
+        }
+        const work_days_payable = 22.0; // hoặc lấy từ input nếu có
+        const base_salary_period = parseInt(document.getElementById('basicSalary').value) || 0;
+        const allowances_total = parseInt(document.getElementById('allowance').value) || 0;
+        const bonuses_total = parseInt(document.getElementById('bonus').value) || 0;
+        const deductions_total = parseInt(document.getElementById('deduction').value) || 0;
+        const gross_salary = base_salary_period + allowances_total + bonuses_total;
+        const tax_deduction = 0; // hoặc lấy từ input nếu có
+        const insurance_deduction = 0; // hoặc lấy từ input nếu có
+        const net_salary = gross_salary - deductions_total - tax_deduction - insurance_deduction;
+        const currency = "VND";
+        const status = "pending";
+        const notes = ""; // hoặc lấy từ input nếu có
+
+        if (!employee_id || !pay_period_start || !base_salary_period) {
+            alert('Vui lòng nhập đầy đủ thông tin bắt buộc!');
+            return;
+        }
+
+        const testData = {
+            employee_id,
+            pay_period_start,
+            pay_period_end,
+            work_days_payable,
+            base_salary_period,
+            allowances_total,
+            bonuses_total,
+            deductions_total,
+            gross_salary,
+            tax_deduction,
+            insurance_deduction,
+            net_salary,
+            currency,
+            status,
+            notes
+        };
+
+        fetch('/api/payroll/create.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(testData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Test thêm phiếu lương thành công!\nID: ' + data.payroll_id);
+                location.reload();
+            } else {
+                alert('Lỗi: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi test thêm phiếu lương');
+        });
+    };
+    </script>
 </body>
 </html>

@@ -6,12 +6,41 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header("Content-Security-Policy: default-src 'self'; font-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data: https:;");
 
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../../controllers/PayrollController.php';
 
 try {
     $db = new Database();
     $conn = $db->getConnection();
+    $payrollController = new \App\Controllers\PayrollController();
 
-    // Get query parameters
+    // Handle GET request for single payroll record
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
+        try {
+            $id = (int)$_GET['id'];
+            error_log("Fetching payroll details for ID: " . $id);
+            
+            $result = $payrollController->show($id);
+            
+            if (!$result['success']) {
+                error_log("Error in payroll details: " . $result['message']);
+                http_response_code(404);
+            }
+            
+            echo json_encode($result);
+            exit;
+        } catch (\Exception $e) {
+            error_log("Error fetching payroll details: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Lỗi khi xem chi tiết phiếu lương: ' . $e->getMessage()
+            ]);
+            exit;
+        }
+    }
+
+    // Get query parameters for list view
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
     $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -21,7 +50,7 @@ try {
 
     // Build base query
     $query = "SELECT 
-                p.id,
+                p.payroll_id as id,
                 p.employee_id,
                 e.name as employee_name,
                 e.employee_code as employee_code,
@@ -40,16 +69,16 @@ try {
                 p.currency,
                 p.payment_date,
                 p.status,
-                p.created_at,
-                p.created_by,
+                p.generated_at as created_at,
+                p.generated_by_user_id as created_by,
                 p.notes,
                 p.payment_method,
                 p.payment_reference,
                 u.username as created_by_username
-            FROM payrolls p
+            FROM payroll p
             LEFT JOIN employees e ON p.employee_id = e.id
             LEFT JOIN departments d ON e.department_id = d.id
-            LEFT JOIN users u ON p.created_by = u.id
+            LEFT JOIN users u ON p.generated_by_user_id = u.user_id
             WHERE 1=1";
 
     $params = [];
@@ -80,20 +109,28 @@ try {
     }
 
     // Get total count for pagination
-    $countQuery = str_replace("SELECT p.id,", "SELECT COUNT(*) as total", $query);
+    $countQuery = str_replace("SELECT p.payroll_id as id,", "SELECT COUNT(*) as total", $query);
     $stmt = $conn->prepare($countQuery);
     $stmt->execute($params);
     $totalItems = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     $totalPages = ceil($totalItems / $limit);
 
-    // Add pagination
-    $query .= " ORDER BY p.pay_period_start DESC, p.created_at DESC LIMIT ? OFFSET ?";
-    $params[] = $limit;
-    $params[] = ($page - 1) * $limit;
-
+    // Add pagination with named parameters
+    $query .= " ORDER BY p.pay_period_start DESC, p.generated_at DESC LIMIT :limit OFFSET :offset";
+    
     // Execute main query
     $stmt = $conn->prepare($query);
-    $stmt->execute($params);
+    
+    // Bind all existing parameters
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key + 1, $value);
+    }
+    
+    // Bind pagination parameters
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)(($page - 1) * $limit), PDO::PARAM_INT);
+    
+    $stmt->execute();
     $payrolls = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Format the data

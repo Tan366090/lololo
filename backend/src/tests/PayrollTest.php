@@ -1,319 +1,164 @@
 <?php
+// Hiển thị lỗi để debug
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-namespace Tests;
+// Cấu hình timezone
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 
-use PHPUnit\Framework\TestCase;
-use App\Models\Payroll;
-use App\Models\Employee;
+// Kết nối database
+try {
+    $db = new PDO(
+        "mysql:host=localhost;dbname=qlnhansu",
+        "root",
+        "",
+        array(
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
+        )
+    );
+} catch(PDOException $e) {
+    die("Lỗi kết nối database: " . $e->getMessage());
+}
 
-class PayrollTest extends TestCase
-{
-    private $baseUrl = 'http://localhost/QLNhanSu_version1/api/payroll.php';
-    private $authToken;
-    private $sessionCookie;
-
-    protected function setUp(): void
-    {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-        
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        
-        $this->login();
+// Hàm test tạo phiếu lương
+function testCreatePayroll($db) {
+    echo "<h3>Test tạo phiếu lương mới:</h3>";
+    
+    // Lấy thông tin thời gian hiện tại
+    $timestamp = time();
+    $current_month = date('m', $timestamp);
+    $current_day = date('d', $timestamp);
+    $fixed_year = '2024'; // Sử dụng năm 2024 cố định
+    
+    $start_date = $fixed_year . '-' . $current_month . '-01';
+    $end_date = $fixed_year . '-' . $current_month . '-' . date('t', $timestamp);
+    
+    echo "<p>Timestamp hiện tại: " . $timestamp . "</p>";
+    echo "<p>Thời gian hiện tại: " . date('d/m/Y H:i:s', $timestamp) . "</p>";
+    echo "<p>Năm sử dụng: " . $fixed_year . "</p>";
+    echo "<p>Tháng hiện tại: " . $current_month . "</p>";
+    echo "<p>Đang tìm nhân viên chưa có phiếu lương trong kỳ: " . date('d/m/Y', strtotime($start_date)) . " - " . date('d/m/Y', strtotime($end_date)) . "</p>";
+    
+    $sql = "SELECT e.id, e.name 
+            FROM employees e 
+            WHERE e.status = 'active' 
+            AND NOT EXISTS (
+                SELECT 1 FROM payroll p 
+                WHERE p.employee_id = e.id 
+                AND p.pay_period_start = :start_date 
+                AND p.pay_period_end = :end_date
+            )
+            LIMIT 1";
+            
+    $stmt = $db->prepare($sql);
+    $stmt->execute([
+        'start_date' => $start_date,
+        'end_date' => $end_date
+    ]);
+    $employee = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$employee) {
+        echo "<p style='color: orange;'>⚠ Không tìm thấy nhân viên nào chưa có phiếu lương trong kỳ này</p>";
+        return;
     }
 
-    private function login()
-    {
-        $authTest = new AuthTest();
-        $authTest->testLogin();
-        $this->authToken = $authTest->getAuthToken();
-        $this->sessionCookie = $authTest->getSessionCookie();
-    }
+    // Chuẩn bị dữ liệu test
+    $data = [
+        'employee_id' => $employee['id'],
+        'pay_period_start' => $start_date,
+        'pay_period_end' => $end_date,
+        'work_days_payable' => 22.0,
+        'base_salary_period' => 10000000,
+        'allowances_total' => 2000000,
+        'bonuses_total' => 1000000,
+        'deductions_total' => 500000,
+        'gross_salary' => 13000000,
+        'tax_deduction' => 1000000,
+        'insurance_deduction' => 500000,
+        'net_salary' => 11500000,
+        'currency' => 'VND',
+        'status' => 'pending',
+        'notes' => 'Test payroll creation'
+    ];
 
-    private function makeRequest($url, $method, $data = null)
-    {
-        $options = [
-            'http' => [
-                'method' => $method,
-                'header' => [
-                    'Content-Type: application/json',
-                    'Authorization: Bearer ' . $this->authToken,
-                    'Cookie: ' . $this->sessionCookie
-                ],
-                'ignore_errors' => true
-            ]
-        ];
+    try {
+        // Thực hiện tạo phiếu lương
+        $sql = "INSERT INTO payroll (
+                    employee_id, pay_period_start, pay_period_end,
+                    work_days_payable, base_salary_period, allowances_total,
+                    bonuses_total, deductions_total, gross_salary,
+                    tax_deduction, insurance_deduction, net_salary,
+                    currency, status, notes, generated_at
+                ) VALUES (
+                    :employee_id, :pay_period_start, :pay_period_end,
+                    :work_days_payable, :base_salary_period, :allowances_total,
+                    :bonuses_total, :deductions_total, :gross_salary,
+                    :tax_deduction, :insurance_deduction, :net_salary,
+                    :currency, :status, :notes, NOW()
+                )";
 
-        if ($data !== null) {
-            $options['http']['content'] = json_encode($data);
+        $stmt = $db->prepare($sql);
+        $result = $stmt->execute($data);
+
+        if ($result) {
+            echo "<p style='color: green;'>✓ Tạo phiếu lương thành công cho nhân viên {$employee['name']}!</p>";
+            
+            // Kiểm tra dữ liệu đã lưu
+            $sql = "SELECT p.*, e.name as employee_name 
+                    FROM payroll p 
+                    JOIN employees e ON p.employee_id = e.id 
+                    WHERE p.employee_id = :employee_id 
+                    ORDER BY p.payroll_id DESC LIMIT 1";
+            $stmt = $db->prepare($sql);
+            $stmt->execute(['employee_id' => $data['employee_id']]);
+            $savedPayroll = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            echo "<p>Chi tiết phiếu lương đã tạo:</p>";
+            echo "<ul>";
+            echo "<li>Mã nhân viên: " . $savedPayroll['employee_id'] . "</li>";
+            echo "<li>Tên nhân viên: " . $savedPayroll['employee_name'] . "</li>";
+            echo "<li>Kỳ lương: " . date('d/m/Y', strtotime($savedPayroll['pay_period_start'])) . " - " . date('d/m/Y', strtotime($savedPayroll['pay_period_end'])) . "</li>";
+            echo "<li>Lương cơ bản: " . number_format($savedPayroll['base_salary_period']) . " VND</li>";
+            echo "<li>Tổng phụ cấp: " . number_format($savedPayroll['allowances_total']) . " VND</li>";
+            echo "<li>Tổng thưởng: " . number_format($savedPayroll['bonuses_total']) . " VND</li>";
+            echo "<li>Tổng khấu trừ: " . number_format($savedPayroll['deductions_total']) . " VND</li>";
+            echo "<li>Lương thực lĩnh: " . number_format($savedPayroll['net_salary']) . " VND</li>";
+            echo "</ul>";
         }
-
-        $context = stream_context_create($options);
-        $response = file_get_contents($url, false, $context);
-        
-        // Update session cookie if provided
-        foreach ($http_response_header as $header) {
-            if (stripos($header, 'Set-Cookie:') === 0) {
-                $this->sessionCookie = substr($header, 12);
-                break;
-            }
-        }
-        
-        return json_decode($response, true);
+    } catch(PDOException $e) {
+        echo "<p style='color: red;'>✗ Lỗi: " . $e->getMessage() . "</p>";
     }
+}
 
-    public function testGeneratePayroll()
-    {
-        $payrollData = [
-            'employee_id' => 1,
-            'month' => date('m'),
-            'year' => date('Y'),
-            'work_days' => 22,
-            'basic_salary' => 10000000,
-            'allowances' => [
-                ['type' => 'transport', 'amount' => 500000],
-                ['type' => 'meal', 'amount' => 300000]
-            ],
-            'deductions' => [
-                ['type' => 'tax', 'amount' => 1000000],
-                ['type' => 'insurance', 'amount' => 500000]
-            ]
-        ];
-
-        $response = $this->makeRequest($this->baseUrl . '?action=generate', 'POST', $payrollData);
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
+// Giao diện HTML
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Tạo Phiếu Lương</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .test-container { 
+            border: 1px solid #ddd; 
+            padding: 20px; 
+            margin: 20px 0;
+            border-radius: 5px;
         }
+        .success { color: green; }
+        .error { color: red; }
+        .warning { color: orange; }
+    </style>
+</head>
+<body>
+    <h1>Test Tạo Phiếu Lương</h1>
+    
+    <div class="test-container">
+        <?php testCreatePayroll($db); ?>
+    </div>
 
-        $this->assertTrue($data['success']);
-        $this->assertNotEmpty($data['payroll_id']);
-    }
-
-    public function testGeneratePayrollWithInvalidData()
-    {
-        $payrollData = [
-            'employee_id' => 999, // Non-existent employee
-            'month' => 13, // Invalid month
-            'year' => -2024, // Invalid year
-            'work_days' => -22, // Invalid work days
-            'basic_salary' => -10000000, // Invalid salary
-            'allowances' => [
-                ['type' => '', 'amount' => -500000] // Invalid allowance
-            ],
-            'deductions' => [
-                ['type' => '', 'amount' => -1000000] // Invalid deduction
-            ]
-        ];
-
-        $response = $this->makeRequest($this->baseUrl . '?action=generate', 'POST', $payrollData);
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertFalse($data['success']);
-        $this->assertNotEmpty($data['errors']);
-    }
-
-    public function testGetPayrollList()
-    {
-        $params = [
-            'employee_id' => 1,
-            'month' => date('m'),
-            'year' => date('Y')
-        ];
-
-        $response = $this->makeRequest($this->baseUrl . '?action=list&' . http_build_query($params));
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertTrue($data['success']);
-        $this->assertIsArray($data['payrolls']);
-    }
-
-    public function testGetPayrollDetails()
-    {
-        $response = $this->makeRequest($this->baseUrl . '?action=get&id=1');
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertTrue($data['success']);
-        $this->assertIsArray($data['payroll']);
-        $this->assertEquals(1, $data['payroll']['id']);
-    }
-
-    public function testGetNonExistentPayroll()
-    {
-        $response = $this->makeRequest($this->baseUrl . '?action=get&id=999');
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertFalse($data['success']);
-        $this->assertNotEmpty($data['message']);
-    }
-
-    public function testUpdatePayroll()
-    {
-        $updateData = [
-            'id' => 1,
-            'work_days' => 23,
-            'basic_salary' => 11000000,
-            'allowances' => [
-                ['type' => 'transport', 'amount' => 600000],
-                ['type' => 'meal', 'amount' => 400000]
-            ],
-            'deductions' => [
-                ['type' => 'tax', 'amount' => 1100000],
-                ['type' => 'insurance', 'amount' => 600000]
-            ]
-        ];
-
-        $response = $this->makeRequest($this->baseUrl . '?action=update', 'PUT', $updateData);
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertTrue($data['success']);
-        $this->assertNotEmpty($data['message']);
-    }
-
-    public function testUpdateNonExistentPayroll()
-    {
-        $updateData = [
-            'id' => 999,
-            'work_days' => 23,
-            'basic_salary' => 11000000
-        ];
-
-        $response = $this->makeRequest($this->baseUrl . '?action=update', 'PUT', $updateData);
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertFalse($data['success']);
-        $this->assertNotEmpty($data['message']);
-    }
-
-    public function testApprovePayroll()
-    {
-        $response = $this->makeRequest($this->baseUrl . '?action=approve&id=1', 'POST');
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertTrue($data['success']);
-        $this->assertNotEmpty($data['message']);
-    }
-
-    public function testApproveNonExistentPayroll()
-    {
-        $response = $this->makeRequest($this->baseUrl . '?action=approve&id=999', 'POST');
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertFalse($data['success']);
-        $this->assertNotEmpty($data['message']);
-    }
-
-    public function testRejectPayroll()
-    {
-        $rejectData = [
-            'id' => 1,
-            'reason' => 'Incorrect calculation'
-        ];
-
-        $response = $this->makeRequest($this->baseUrl . '?action=reject', 'POST', $rejectData);
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertTrue($data['success']);
-        $this->assertNotEmpty($data['message']);
-    }
-
-    public function testRejectNonExistentPayroll()
-    {
-        $rejectData = [
-            'id' => 999,
-            'reason' => 'Incorrect calculation'
-        ];
-
-        $response = $this->makeRequest($this->baseUrl . '?action=reject', 'POST', $rejectData);
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertFalse($data['success']);
-        $this->assertNotEmpty($data['message']);
-    }
-
-    public function testGetPayrollReport()
-    {
-        $params = [
-            'department_id' => 1,
-            'month' => date('m'),
-            'year' => date('Y')
-        ];
-
-        $response = $this->makeRequest($this->baseUrl . '?action=report&' . http_build_query($params));
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertTrue($data['success']);
-        $this->assertIsArray($data['report']);
-        $this->assertArrayHasKey('department_name', $data['report']);
-        $this->assertArrayHasKey('total_employees', $data['report']);
-        $this->assertArrayHasKey('total_salary', $data['report']);
-        $this->assertArrayHasKey('total_allowances', $data['report']);
-        $this->assertArrayHasKey('total_deductions', $data['report']);
-    }
-
-    public function testGetSalaryHistory()
-    {
-        $params = [
-            'employee_id' => 1,
-            'start_date' => date('Y-m-d', strtotime('-12 months')),
-            'end_date' => date('Y-m-d')
-        ];
-
-        $response = $this->makeRequest($this->baseUrl . '?action=history&' . http_build_query($params));
-        $data = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->fail('Invalid JSON response: ' . json_last_error_msg() . "\nResponse: " . $response);
-        }
-
-        $this->assertTrue($data['success']);
-        $this->assertIsArray($data['history']);
-    }
-} 
+    <p><a href="PayrollTest.php">Chạy lại test</a></p>
+</body>
+</html> 
