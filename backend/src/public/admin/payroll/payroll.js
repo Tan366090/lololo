@@ -586,7 +586,29 @@ function renderPagination(totalItems) {
 // Helper Functions
 function formatCurrency(value) {
     if (!value) return '0';
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    
+    // Nếu là input element
+    if (value instanceof HTMLInputElement) {
+        // Xóa tất cả ký tự không phải số
+        let numValue = value.value.replace(/[^\d]/g, '');
+        
+        // Định dạng số với dấu phẩy ngăn cách hàng nghìn
+        if (numValue !== '') {
+            numValue = parseInt(numValue, 10).toLocaleString('vi-VN');
+        }
+        
+        // Cập nhật giá trị input
+        value.value = numValue;
+        return numValue;
+    }
+    
+    // Nếu là số hoặc chuỗi số
+    if (typeof value === 'number' || (typeof value === 'string' && !isNaN(value))) {
+        return parseInt(value, 10).toLocaleString('vi-VN');
+    }
+    
+    // Nếu là undefined hoặc null
+    return '0';
 }
 
 function getStatusBadgeClass(status) {
@@ -2199,33 +2221,33 @@ function handleSalaryCalculations() {
 
     // Hàm xử lý input
     function handleInput(input) {
-        // Chỉ cho phép nhập số và dấu chấm
-        input.value = input.value.replace(/[^\d.]/g, '');
+        if (!input) return;
+        
+        // Chỉ cho phép nhập số
+        input.value = input.value.replace(/[^\d]/g, '');
         
         // Format giá trị
-        formatInputValue(input);
+        formatCurrency(input);
         
         // Cập nhật hiển thị
         updateDisplay();
     }
 
-    // Hàm format số tiền khi nhập
-    function formatInputValue(input) {
-        if (!input) return;
-        
-        // Lấy giá trị hiện tại và xóa tất cả ký tự không phải số và dấu chấm
-        let value = input.value.replace(/[^\d.]/g, '');
-        
-        // Chuyển đổi thành số
-        let numValue = parseFloat(value) || 0;
-        
-        // Lưu giá trị số vào data attribute
-        input.dataset.numericValue = numValue;
-        
-        // Format lại với dấu phẩy ngăn cách
-        input.value = numValue.toLocaleString('vi-VN');
-        
-        return numValue;
+    // Hàm cập nhật hiển thị
+    function updateDisplay() {
+        if (!totalIncomeElement || !totalDeductionsElement || !netSalaryElement) return;
+
+        const basicSalary = getNumericValue(basicSalaryInput?.value || '0');
+        const allowance = getNumericValue(allowanceInput?.value || '0');
+        const bonus = getNumericValue(bonusInput?.value || '0');
+        const deduction = getNumericValue(deductionInput?.value || '0');
+
+        const totalIncome = basicSalary + allowance + bonus;
+        const netSalary = totalIncome - deduction;
+
+        totalIncomeElement.textContent = formatCurrency(totalIncome);
+        totalDeductionsElement.textContent = formatCurrency(deduction);
+        netSalaryElement.textContent = formatCurrency(netSalary);
     }
 
     // Thêm event listeners cho các input
@@ -2243,10 +2265,10 @@ function handleSalaryCalculations() {
         };
         input._focusHandler = function() {
             // Khi focus, hiển thị giá trị số không có định dạng
-            this.value = this.dataset.numericValue || '0';
+            this.value = this.value.replace(/[^\d]/g, '');
         };
         input._blurHandler = function() {
-            formatInputValue(this);
+            formatCurrency(this);
             updateDisplay();
         };
 
@@ -2255,65 +2277,6 @@ function handleSalaryCalculations() {
         input.addEventListener('focus', input._focusHandler);
         input.addEventListener('blur', input._blurHandler);
     });
-
-    // Hàm tính toán tổng thu nhập
-    function calculateTotalIncome() {
-        const basicSalary = parseInt(basicSalaryInput?.dataset.numericValue || '0');
-        const allowance = parseInt(allowanceInput?.dataset.numericValue || '0');
-        const bonus = parseInt(bonusInput?.dataset.numericValue || '0');
-        return basicSalary + allowance + bonus;
-    }
-
-    // Hàm tính toán thực lĩnh
-    function calculateNetSalary() {
-        const totalIncome = calculateTotalIncome();
-        const deduction = parseInt(deductionInput?.dataset.numericValue || '0');
-        return totalIncome - deduction;
-    }
-
-    // Hàm cập nhật hiển thị
-    function updateDisplay() {
-        if (!totalIncomeElement || !totalDeductionsElement || !netSalaryElement) return;
-
-        const totalIncome = calculateTotalIncome();
-        const deduction = parseInt(deductionInput?.dataset.numericValue || '0');
-        const netSalary = calculateNetSalary();
-
-        totalIncomeElement.textContent = formatCurrency(totalIncome);
-        totalDeductionsElement.textContent = formatCurrency(deduction);
-        netSalaryElement.textContent = formatCurrency(netSalary);
-    }
-
-    // Validate input khi submit form
-    const form = document.getElementById('addPayrollForm');
-    if (form) {
-        form.removeEventListener('submit', form._submitHandler);
-        form._submitHandler = function(e) {
-            e.preventDefault();
-            
-            // Kiểm tra các trường bắt buộc
-            if (!basicSalaryInput?.dataset.numericValue) {
-                basicSalaryInput?.classList.add('is-invalid');
-                return;
-            } else {
-                basicSalaryInput?.classList.remove('is-invalid');
-            }
-
-            // Tạo object chứa thông tin lương
-            const salaryData = {
-                basicSalary: parseInt(basicSalaryInput?.dataset.numericValue || '0'),
-                allowance: parseInt(allowanceInput?.dataset.numericValue || '0'),
-                bonus: parseInt(bonusInput?.dataset.numericValue || '0'),
-                deduction: parseInt(deductionInput?.dataset.numericValue || '0'),
-                totalIncome: calculateTotalIncome(),
-                netSalary: calculateNetSalary()
-            };
-
-            // Gọi API để lưu thông tin lương
-            savePayrollData(salaryData);
-        };
-        form.addEventListener('submit', form._submitHandler);
-    }
 
     // Initial update of display
     updateDisplay();
@@ -2460,4 +2423,9 @@ async function loadDepartments() {
     } catch (error) {
         showError('Không thể tải danh sách phòng ban');
     }
+}
+
+// Hàm lấy giá trị số từ chuỗi đã định dạng
+function getNumericValue(formattedValue) {
+    return parseInt(formattedValue.replace(/[^\d]/g, ''), 10) || 0;
 }
