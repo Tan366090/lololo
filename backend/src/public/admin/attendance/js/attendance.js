@@ -7,6 +7,45 @@ const dateFilter = document.getElementById('dateFilter');
 const statusFilter = document.getElementById('statusFilter');
 const addAttendanceButton = document.getElementById('addAttendanceButton');
 
+// Add filter elements
+const filterContainer = document.createElement('div');
+filterContainer.className = 'filter-container';
+filterContainer.innerHTML = `
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <input type="text" id="employeeIdFilter" class="form-control" placeholder="Mã nhân viên">
+        </div>
+        <div class="col-md-3 mb-3">
+            <input type="text" id="nameFilter" class="form-control" placeholder="Họ tên">
+        </div>
+        <div class="col-md-2 mb-3">
+            <input type="date" id="dateFilter" class="form-control">
+        </div>
+        <div class="col-md-2 mb-3">
+            <select id="statusFilter" class="form-control">
+                <option value="">Tất cả trạng thái</option>
+                <option value="P">Có mặt</option>
+                <option value="A">Vắng mặt</option>
+                <option value="L">Nghỉ phép</option>
+                <option value="WFH">Làm việc từ xa</option>
+            </select>
+        </div>
+        <div class="col-md-2 mb-3">
+            <button id="resetFilter" class="btn btn-secondary w-100">
+                <ion-icon name="refresh-outline"></ion-icon> Reset
+            </button>
+        </div>
+    </div>
+`;
+
+// Insert filter container before the table
+const tableContainer = document.querySelector('.table-container');
+tableContainer.parentNode.insertBefore(filterContainer, tableContainer);
+
+// Get filter elements
+const employeeIdFilter = document.getElementById('employeeIdFilter');
+const nameFilter = document.getElementById('nameFilter');
+
 // Add CSS styles
 const style = document.createElement('style');
 style.textContent = `
@@ -200,6 +239,12 @@ document.head.appendChild(style);
 // Set default date to today
 dateFilter.valueAsDate = new Date();
 
+// Add sorting state
+let currentSort = {
+    column: null,
+    direction: 'asc'
+};
+
 // Load attendance data when page loads
 document.addEventListener('DOMContentLoaded', () => {
     loadAttendanceData();
@@ -209,6 +254,24 @@ document.addEventListener('DOMContentLoaded', () => {
 // Setup event listeners
 function setupEventListeners() {
     addAttendanceButton.addEventListener('click', showAddAttendanceModal);
+    
+    // Add filter event listeners
+    employeeIdFilter.addEventListener('input', applyFilters);
+    nameFilter.addEventListener('input', applyFilters);
+    dateFilter.addEventListener('change', applyFilters);
+    statusFilter.addEventListener('change', applyFilters);
+    
+    // Reset filter button
+    document.getElementById('resetFilter').addEventListener('click', resetFilters);
+}
+
+// Reset all filters
+function resetFilters() {
+    employeeIdFilter.value = '';
+    nameFilter.value = '';
+    dateFilter.valueAsDate = new Date();
+    statusFilter.value = '';
+    loadAttendanceData();
 }
 
 // Load attendance data
@@ -216,11 +279,11 @@ async function loadAttendanceData() {
     try {
         const response = await fetch(`${API_URL}?action=getAll`);
         const data = await response.json();
-        
-        if (data.success) {
+        if (data.success && Array.isArray(data.data)) {
             displayAttendanceData(data.data);
         } else {
             showError('Lỗi khi tải dữ liệu chấm công');
+            console.error('API response:', data);
         }
     } catch (error) {
         showError('Lỗi kết nối server');
@@ -230,34 +293,103 @@ async function loadAttendanceData() {
 
 // Display attendance data in table
 function displayAttendanceData(attendanceData) {
+    const attendanceList = document.getElementById('attendanceList');
     attendanceList.innerHTML = '';
-    
-    attendanceData.forEach(record => {
+    console.log('DATA:', attendanceData); // Log kiểm tra dữ liệu
+    if (!Array.isArray(attendanceData) || attendanceData.length === 0) {
         const row = document.createElement('tr');
-        
-        // Format date
+        row.innerHTML = `<td colspan="8" style="text-align:center;">Không có dữ liệu chấm công</td>`;
+        attendanceList.appendChild(row);
+        return;
+    }
+    attendanceData.forEach(record => {
         const date = new Date(record.attendance_date);
         const formattedDate = date.toLocaleDateString('vi-VN');
-        
-        // Get status badge class
+        const formatTime = (time) => time ? time.substring(0, 5) : '-';
         const statusClass = getStatusBadgeClass(record.attendance_symbol);
-        
+        const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${record.employee_id} - ${record.full_name}</td>
+            <td>${record.employee_id}</td>
+            <td>${record.full_name}</td>
             <td>${formattedDate}</td>
+            <td>${formatTime(record.check_in_time)}</td>
+            <td>${formatTime(record.check_out_time)}</td>
             <td><span class="status-badge ${statusClass}">${getStatusText(record.attendance_symbol)}</span></td>
-            <td>${record.notes || '-'}</td>
+            <td>${record.notes ? record.notes : '-'}</td>
             <td>
-                <button class="btn btn-warning btn-sm" onclick="editAttendance(${record.attendance_id})">
-                    <ion-icon name="create-outline"></ion-icon>
-                </button>
-                <button class="btn btn-danger btn-sm" onclick="confirmDelete(${record.attendance_id})">
-                    <ion-icon name="trash-outline"></ion-icon>
-                </button>
+                <button class="btn btn-warning btn-sm" onclick="editAttendance(${record.attendance_id})"><ion-icon name="create-outline"></ion-icon></button>
+                <button class="btn btn-danger btn-sm" onclick="confirmDelete(${record.attendance_id})"><ion-icon name="trash-outline"></ion-icon></button>
             </td>
         `;
-        
         attendanceList.appendChild(row);
+    });
+    // Add sort event listeners
+    setupSortListeners();
+}
+
+function setupSortListeners() {
+    const sortButtons = document.querySelectorAll('.sort-btn');
+    sortButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const column = button.dataset.column;
+            const direction = button.dataset.direction;
+            sortTable(column, direction);
+        });
+    });
+}
+
+function sortTable(column, direction) {
+    const rows = Array.from(attendanceList.getElementsByTagName('tr')).slice(1); // Skip header row
+    const sortedRows = rows.sort((a, b) => {
+        const aValue = a.children[getColumnIndex(column)].textContent;
+        const bValue = b.children[getColumnIndex(column)].textContent;
+        if (column === 'date') {
+            return direction === 'asc' 
+                ? new Date(aValue) - new Date(bValue)
+                : new Date(bValue) - new Date(aValue);
+        }
+        if (column === 'check_in' || column === 'check_out') {
+            const aTime = aValue === '-' ? '00:00' : aValue;
+            const bTime = bValue === '-' ? '00:00' : bValue;
+            return direction === 'asc'
+                ? aTime.localeCompare(bTime)
+                : bTime.localeCompare(aTime);
+        }
+        return direction === 'asc'
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+    });
+    while (attendanceList.children.length > 1) {
+        attendanceList.removeChild(attendanceList.lastChild);
+    }
+    sortedRows.forEach(row => attendanceList.appendChild(row));
+    currentSort = { column, direction };
+    updateSortButtonStyles();
+}
+
+function getColumnIndex(column) {
+    switch (column) {
+        case 'employee_id': return 0;
+        case 'full_name': return 1;
+        case 'date': return 2;
+        case 'check_in': return 3;
+        case 'check_out': return 4;
+        case 'status': return 5;
+        case 'notes': return 6;
+        default: return 0;
+    }
+}
+
+function updateSortButtonStyles() {
+    const sortButtons = document.querySelectorAll('.sort-btn');
+    sortButtons.forEach(button => {
+        const column = button.dataset.column;
+        const direction = button.dataset.direction;
+        if (column === currentSort.column && direction === currentSort.direction) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
     });
 }
 
@@ -295,12 +427,28 @@ function getStatusText(symbol) {
 
 // Apply filters
 function applyFilters() {
+    const employeeId = employeeIdFilter.value.toLowerCase();
+    const name = nameFilter.value.toLowerCase();
     const date = dateFilter.value;
     const status = statusFilter.value;
     
-    // Filter logic will be implemented here
-    // For now, just reload all data
-    loadAttendanceData();
+    const rows = attendanceList.getElementsByTagName('tr');
+    
+    for (let row of rows) {
+        const cells = row.getElementsByTagName('td');
+        if (cells.length === 0) continue;
+        
+        const employeeInfo = cells[0].textContent.toLowerCase();
+        const rowDate = cells[2].textContent;
+        const rowStatus = cells[5].textContent;
+        
+        const matchEmployeeId = employeeInfo.includes(employeeId);
+        const matchName = employeeInfo.includes(name);
+        const matchDate = !date || rowDate === new Date(date).toLocaleDateString('vi-VN');
+        const matchStatus = !status || rowStatus === getStatusText(status);
+        
+        row.style.display = matchEmployeeId && matchName && matchDate && matchStatus ? '' : 'none';
+    }
 }
 
 // Show add attendance modal

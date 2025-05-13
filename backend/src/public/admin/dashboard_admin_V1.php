@@ -1112,76 +1112,118 @@
                 </div>
             </footer>
 
-            <!-- Modern Footer Section (bổ sung, không xóa code cũ) -->
-            <footer class="modern-footer" style="background: linear-gradient(120deg, #1a223f 60%, #233554 100%); color: #fff; padding: 48px 0 0 0; margin-top: 0;">
-                <div class="container-fluid px-5">
-                    <div class="row gy-4 justify-content-between">
-                        <!-- Logo & Description & System Info -->
-                        <div class="col-12 col-md-4 col-lg-3 mb-4 mb-lg-0">
-                            <div class="footer-logo mb-3" style="font-size: 1.7rem; font-weight: bold; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
-                                <img src="logo_vnpt.jpg" alt="Logo" style="width: 38px; height: 38px; border-radius: 50%; background: #fff; object-fit: cover;"> QLNS
+            <!-- Modern Footer Section V2 -->
+            <footer class="modern-footer-v2">
+                <div class="footer-waves">
+                    <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none">
+                        <defs>
+                            <path id="wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                        </defs>
+                        <g class="wave1">
+                            <use href="#wave" x="48" y="0" fill="rgba(255,255,255,0.1)" />
+                        </g>
+                        <g class="wave2">
+                            <use href="#wave" x="48" y="3" fill="rgba(255,255,255,0.2)" />
+                        </g>
+                        <g class="wave3">
+                            <use href="#wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                        </g>
+                    </svg>
+                </div>
+                
+                <div class="footer-content">
+                    <div class="footer-grid">
+                        <!-- Brand Section -->
+                        <div class="footer-brand">
+                            <div class="brand-logo">
+                                <img src="logo_vnpt.jpg" alt="QLNS Logo" class="logo-img">
+                                <span class="brand-name">QLNS</span>
                             </div>
-                            <div class="footer-desc mb-3" style="font-size: 1rem; color: #cfd8dc;">
-                                Hệ thống quản lý nhân sự hỗ trợ toàn bộ vòng đời của nhân viên, từ tuyển dụng đến phát triển sự nghiệp. Nó quản lý hồ sơ, chấm công, tính lương, khen thưởng, đào tạo và phân quyền dữ liệu để đảm bảo bảo mật. Các phân hệ chính gồm hồ sơ nhân viên, chấm công, lương thưởng, phòng ban, bằng cấp, nghỉ phép, đào tạo, tài liệu nhân sự, cùng báo cáo và phân tích dữ liệu.
-                            </div>
-                            <div class="footer-social d-flex gap-3">
-                                <a href="#" class="text-white-50" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#" class="text-white-50" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                                <a href="#" class="text-white-50" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
-                                <a href="#" class="text-white-50" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <p class="brand-description">
+                                Hệ thống quản lý nhân sự thông minh, hiện đại và chuyên nghiệp
+                            </p>
+                            <div class="social-links">
+                                <a href="#" class="social-link" data-tooltip="Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="social-link" data-tooltip="Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="social-link" data-tooltip="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="#" class="social-link" data-tooltip="YouTube">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
                             </div>
                         </div>
-                        <!-- Company Links -->
-                        <div class="col-6 col-md-2 col-lg-2">
-                            <h6 class="footer-heading mb-3" style="font-size: 1.1rem; font-weight: 600;">Công ty</h6>
-                            <ul class="footer-links list-unstyled">
-                                <li><a href="about.php" class="footer-link">Giới thiệu</a></li>
-                                <li><a href="services.php" class="footer-link">Dịch vụ</a></li>
-                                <li><a href="jobs.php" class="footer-link">Cơ hội việc làm</a></li>
-                                <li><a href="team.php" class="footer-link">Đội ngũ</a></li>
+
+                        <!-- Quick Links -->
+                        <div class="footer-links-section">
+                            <h3 class="section-title">Liên kết nhanh</h3>
+                            <ul class="footer-links-list">
+                                <li><a href="#" class="footer-link-item">Trang chủ</a></li>
+                                <li><a href="#" class="footer-link-item">Giới thiệu</a></li>
+                                <li><a href="#" class="footer-link-item">Dịch vụ</a></li>
+                                <li><a href="#" class="footer-link-item">Liên hệ</a></li>
                             </ul>
                         </div>
-                        <!-- Customer Links -->
-                        <div class="col-6 col-md-2 col-lg-2">
-                            <h6 class="footer-heading mb-3" style="font-size: 1.1rem; font-weight: 600;">Khách hàng</h6>
-                            <ul class="footer-links list-unstyled">
-                                <li><a href="support.php" class="footer-link">Hỗ trợ</a></li>
-                                <li><a href="news.php" class="footer-link">Tin tức</a></li>
-                                <li><a href="story.php" class="footer-link">Câu chuyện thành công</a></li>
-                                <li><a href="pricing.php" class="footer-link">Bảng giá</a></li>
+
+                        <!-- Services -->
+                        <div class="footer-links-section">
+                            <h3 class="section-title">Dịch vụ</h3>
+                            <ul class="footer-links-list">
+                                <li><a href="#" class="footer-link-item">Quản lý nhân sự</a></li>
+                                <li><a href="#" class="footer-link-item">Tính lương</a></li>
+                                <li><a href="#" class="footer-link-item">Chấm công</a></li>
+                                <li><a href="#" class="footer-link-item">Đào tạo</a></li>
                             </ul>
                         </div>
-                        <!-- Quick Links/Blog -->
-                        <div class="col-12 col-md-4 col-lg-3">
-                            <h6 class="footer-heading mb-3" style="font-size: 1.1rem; font-weight: 600;">Liên kết nhanh</h6>
-                            <ul class="footer-links list-unstyled">
-                                <li><a href="guide.php" class="footer-link">Hướng dẫn sử dụng</a></li>
-                                <li><a href="support.php" class="footer-link">Hỗ trợ kỹ thuật</a></li>
-                                <li><a href="report.php" class="footer-link">Báo lỗi</a></li>
-                                <li><a href="docs.php" class="footer-link">Tài liệu tham khảo</a></li>
-                            </ul>
-                            <div class="footer-blog mt-4">
-                                <h6 class="footer-heading mb-2" style="font-size: 1rem; font-weight: 500;">Tin mới</h6>
-                                <div class="d-flex align-items-center mb-2">
-                                    <img src="nhanvien_ft.jpg" alt="Blog 1" style="width:36px;height:36px;object-fit:cover;border-radius:6px;margin-right:10px;">
-                                    <a href="#" class="footer-link" style="font-size:0.95rem;">Tối ưu quy trình tuyển dụng với QLNS</a>
+
+                        <!-- Contact Info -->
+                        <div class="footer-contact">
+                            <h3 class="section-title">Liên hệ</h3>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>123 Đường ABC, Quận XYZ, TP.HCM</span>
                                 </div>
-                                <div class="d-flex align-items-center">
-                                    <img src="nhanvien_ft2.webp" alt="Blog 2" style="width:36px;height:36px;object-fit:cover;border-radius:6px;margin-right:10px;">
-                                    <a href="#" class="footer-link" style="font-size:0.95rem;">5 mẹo quản lý nhân sự hiệu quả</a>
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>+84 123 456 789</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>contact@qlns.vn</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <hr style="border-color: #2c3556; margin: 32px 0 16px 0;">
-                    <div class="row align-items-center pb-3">
-                        <div class="col-12 col-md-8 text-center text-md-start mb-2 mb-md-0" style="color:#b0b8c1;font-size:0.97rem;">
+
+                    <!-- Newsletter Section -->
+                    <div class="newsletter-section">
+                        <div class="newsletter-content">
+                            <h3>Đăng ký nhận tin</h3>
+                            <p>Nhận thông tin mới nhất về sản phẩm và dịch vụ</p>
+                            <form class="newsletter-form">
+                                <input type="email" placeholder="Nhập email của bạn" required>
+                                <button type="submit" class="subscribe-btn">
+                                    <span>Đăng ký</span>
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Copyright -->
+                    <div class="footer-bottom">
+                        <div class="copyright">
                             © 2024 QLNS. All rights reserved.
                         </div>
-                        <div class="col-12 col-md-4 text-center text-md-end">
-                            <a href="policy.php" class="footer-link mx-2">Chính sách bảo mật</a>
-                            <a href="legal.php" class="footer-link mx-2">Thông báo pháp lý</a>
-                            <a href="terms.php" class="footer-link mx-2">Điều khoản sử dụng</a>
+                        <div class="footer-bottom-links">
+                            <a href="#">Chính sách bảo mật</a>
+                            <a href="#">Điều khoản sử dụng</a>
+                            <a href="#">Sơ đồ trang</a>
                         </div>
                     </div>
                 </div>
@@ -1701,6 +1743,338 @@ document.addEventListener('DOMContentLoaded', fetchStatistics);
 // Refresh statistics every 5 minutes
 setInterval(fetchStatistics, 300000);
 </script>
+
+<style>
+/* Modern Footer V2 - Khoa học, thu hút, hiện đại */
+.modern-footer-v2 {
+    background: linear-gradient(120deg, #181f36 60%, #233554 100%);
+    color: #fff;
+    border-bottom-right-radius: 80px;
+    font-family: 'Roboto', Arial, sans-serif;
+    margin-top: 0;
+    padding-top: 48px;
+    padding-bottom: 0;
+    position: relative;
+    overflow: hidden;
+}
+.modern-footer-v2 .footer-waves {
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
+.modern-footer-v2 .footer-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 24px 24px;
+}
+.modern-footer-v2 .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-bottom: 32px;
+}
+.modern-footer-v2 .footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.modern-footer-v2 .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+.modern-footer-v2 .logo-img {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.modern-footer-v2 .brand-name {
+    font-size: 1.7rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #FFD700;
+}
+.modern-footer-v2 .brand-description {
+    font-size: 1.05rem;
+    color: #b0b8c1;
+    margin-bottom: 18px;
+    margin-top: 4px;
+}
+.modern-footer-v2 .social-links {
+    display: flex;
+    gap: 14px;
+    margin-top: 8px;
+}
+.modern-footer-v2 .social-link {
+    color: #b0b8c1;
+    font-size: 20px;
+    transition: color 0.2s, transform 0.2s;
+}
+.modern-footer-v2 .social-link:hover {
+    color: #FFD700;
+    transform: scale(1.18) translateY(-2px);
+}
+.modern-footer-v2 .footer-links-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.modern-footer-v2 .section-title {
+    font-size: 1.13rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+}
+.modern-footer-v2 .footer-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.modern-footer-v2 .footer-link-item {
+    color: #b0b8c1;
+    text-decoration: none;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 10px;
+    transition: color 0.2s;
+}
+.modern-footer-v2 .footer-link-item:hover {
+    color: #FFD700;
+    text-decoration: underline;
+}
+.modern-footer-v2 .footer-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.modern-footer-v2 .contact-info {
+    margin-top: 8px;
+}
+.modern-footer-v2 .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: #b0b8c1;
+    font-size: 1rem;
+}
+.modern-footer-v2 .contact-item i {
+    color: #FFD700;
+    font-size: 1.1rem;
+}
+.modern-footer-v2 .newsletter-section {
+    background: rgba(255,255,255,0.07);
+    border-radius: 18px;
+    padding: 24px 18px 18px 18px;
+    margin: 0 auto 18px auto;
+    max-width: 420px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    position: relative;
+    z-index: 2;
+}
+.modern-footer-v2 .newsletter-content h3 {
+    color: #FFD700;
+    font-size: 1.18rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.modern-footer-v2 .newsletter-content p {
+    color: #b0b8c1;
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+.modern-footer-v2 .newsletter-form {
+    display: flex;
+    gap: 8px;
+}
+.modern-footer-v2 .newsletter-form input[type="email"] {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    outline: none;
+    width: 180px;
+    background: #fff;
+    color: #222;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.modern-footer-v2 .subscribe-btn {
+    background: #FFD700;
+    color: #181f36;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.modern-footer-v2 .subscribe-btn:hover {
+    background: #fff;
+    color: #181f36;
+}
+.modern-footer-v2 .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #232a45;
+    padding: 18px 0 0 0;
+    margin-top: 18px;
+    font-size: 0.98rem;
+    color: #b0b8c1;
+}
+.modern-footer-v2 .footer-bottom-links {
+    display: flex;
+    gap: 18px;
+}
+.modern-footer-v2 .footer-bottom-links a {
+    color: #b0b8c1;
+    text-decoration: none;
+    font-size: 0.98rem;
+    transition: color 0.2s;
+}
+.modern-footer-v2 .footer-bottom-links a:hover {
+    color: #FFD700;
+    text-decoration: underline;
+}
+@media (max-width: 1200px) {
+    .modern-footer-v2 .footer-content { padding-left: 12px; padding-right: 12px; }
+    .modern-footer-v2 .footer-grid { gap: 18px; }
+}
+@media (max-width: 992px) {
+    .modern-footer-v2 .footer-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+    .modern-footer-v2 .footer-grid { grid-template-columns: 1fr; gap: 12px; }
+    .modern-footer-v2 { border-bottom-right-radius: 32px; }
+}
+@media (max-width: 500px) {
+    .modern-footer-v2 { border-bottom-right-radius: 12px; padding-top: 24px; }
+    .modern-footer-v2 .brand-name { font-size: 1.1rem; }
+    .modern-footer-v2 .footer-content { padding: 0 4px 12px 4px; }
+}
+
+/* Hiệu ứng chuyển động cho sóng footer */
+.modern-footer-v2 .waves {
+    width: 100%;
+    height: 60px;
+    min-height: 40px;
+    max-height: 80px;
+    display: block;
+}
+.modern-footer-v2 .wave1 {
+    animation: waveMove1 10s linear infinite;
+}
+.modern-footer-v2 .wave2 {
+    animation: waveMove2 16s linear infinite;
+}
+.modern-footer-v2 .wave3 {
+    animation: waveMove3 22s linear infinite;
+}
+@keyframes waveMove1 {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-80px); }
+}
+@keyframes waveMove2 {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-120px); }
+}
+@keyframes waveMove3 {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-200px); }
+}
+
+/* Responsive tối ưu cho modern-footer-v2 */
+@media (max-width: 992px) {
+  .modern-footer-v2 .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+}
+@media (max-width: 768px) {
+  .modern-footer-v2 .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .modern-footer-v2 .footer-brand,
+  .modern-footer-v2 .footer-links-section,
+  .modern-footer-v2 .footer-contact {
+    align-items: center;
+    text-align: center;
+  }
+  .modern-footer-v2 .brand-logo {
+    justify-content: center;
+  }
+  .modern-footer-v2 .social-links {
+    justify-content: center;
+  }
+  .modern-footer-v2 .newsletter-section {
+    max-width: 100%;
+    margin: 18px 0;
+    padding: 18px 8px 14px 8px;
+  }
+  .modern-footer-v2 .newsletter-form {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .modern-footer-v2 .newsletter-form input[type="email"],
+  .modern-footer-v2 .subscribe-btn {
+    width: 100%;
+    font-size: 1rem;
+  }
+  .modern-footer-v2 .footer-bottom {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 12px 0 0 0;
+  }
+  .modern-footer-v2 .footer-bottom-links {
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 500px) {
+  .modern-footer-v2 {
+    border-bottom-right-radius: 8px;
+    padding-top: 16px;
+  }
+  .modern-footer-v2 .footer-content {
+    padding: 0 2px 8px 2px;
+  }
+  .modern-footer-v2 .brand-name {
+    font-size: 1rem;
+  }
+  .modern-footer-v2 .logo-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+  }
+  .modern-footer-v2 .section-title {
+    font-size: 1rem;
+  }
+  .modern-footer-v2 .footer-link-item,
+  .modern-footer-v2 .contact-item {
+    font-size: 0.97rem;
+  }
+  .modern-footer-v2 .newsletter-content h3 {
+    font-size: 1rem;
+  }
+}
+</style>
 
 </body>
 </html>
