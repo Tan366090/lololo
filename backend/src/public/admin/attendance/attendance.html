@@ -24,18 +24,18 @@
         <style>
             :root {
                 /* Color Variables */
-                --primary-color: #0056b3;
-                --primary-hover: #004494;
-                --secondary-color: #6c757d;
-                --success-color: #28a745;
-                --danger-color: #dc3545;
-                --warning-color: #ffc107;
-                --info-color: #17a2b8;
-                --light-color: #f8f9fa;
-                --dark-color: #343a40;
-                --border-color: #dee2e6;
-                --text-primary: #212529;
-                --text-secondary: #495057;
+                --primary-color: #2563eb;
+                --primary-hover: #1d4ed8;
+                --secondary-color: #64748b;
+                --success-color: #22c55e;
+                --danger-color: #ef4444;
+                --warning-color: #f59e0b;
+                --info-color: #3b82f6;
+                --light-color: #f8fafc;
+                --dark-color: #1e293b;
+                --border-color: #e2e8f0;
+                --text-primary: #1e293b;
+                --text-secondary: #475569;
                 
                 /* Spacing Variables */
                 --spacing-xs: 0.25rem;
@@ -45,26 +45,26 @@
                 --spacing-xl: 2rem;
                 
                 /* Border Radius */
-                --border-radius-sm: 4px;
-                --border-radius-md: 8px;
-                --border-radius-lg: 12px;
+                --border-radius-sm: 0.375rem;
+                --border-radius-md: 0.5rem;
+                --border-radius-lg: 0.75rem;
                 
                 /* Shadows */
-                --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-                --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-                --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+                --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+                --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+                --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
                 
                 /* Transitions */
-                --transition-fast: 0.2s ease;
-                --transition-normal: 0.3s ease;
+                --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+                --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
             }
 
             /* Base Styles */
             body {
-                font-family: 'Inter', sans-serif;
-                background-color: var(--light-color);
+                font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                background-color: #f1f5f9;
                 color: var(--text-primary);
-                line-height: 1.5;
+                line-height: 1.6;
             }
 
             /* Layout */
@@ -135,8 +135,8 @@
 
             .content-header h1 {
                 color: var(--text-primary);
-                font-size: 2rem;
-                font-weight: 600;
+                font-size: 1.875rem;
+                font-weight: 700;
                 margin: 0;
                 display: flex;
                 align-items: center;
@@ -178,54 +178,51 @@
             }
 
             .table th {
-                background-color: var(--light-color);
+                background-color: #f8fafc;
                 color: var(--text-secondary);
                 font-weight: 600;
-                padding: var(--spacing-md) var(--spacing-lg);
+                padding: 1rem;
                 text-align: left;
                 border-bottom: 2px solid var(--border-color);
+                font-size: 0.875rem;
             }
 
             .table td {
-                padding: var(--spacing-md) var(--spacing-lg);
+                padding: 1rem;
                 border-bottom: 1px solid var(--border-color);
                 color: var(--text-secondary);
+                font-size: 0.875rem;
             }
 
             .table tbody tr:hover {
-                background-color: var(--light-color);
+                background-color: #f8fafc;
             }
 
             /* Status Badges */
             .status-badge {
-                display: inline-block;
-                padding: 2px 10px;
-                border-radius: 8px;
-                font-size: 13px;
+                display: inline-flex;
+                align-items: center;
+                padding: 0.25rem 0.75rem;
+                border-radius: 9999px;
+                font-size: 0.75rem;
                 font-weight: 600;
                 text-align: center;
                 margin: 2px 0;
-                color: #333;
-                background: #f3f3f3;
-                letter-spacing: 0.2px;
             }
 
             .status-expired {
-                background: #fdeaea;
-                color: #d32f2f;
-                border: 1px solid #f5c6cb;
+                background: #fee2e2;
+                color: #dc2626;
             }
 
             .status-active {
-                background: #e6f4ea;
-                color: #388e3c;
-                border: 1px solid #b7dfc8;
+                background: #dcfce7;
+                color: #16a34a;
             }
 
             .status-warning {
-                background: #fff8e1;
-                color: #bfa100;
-                border: 1px solid #ffe082;
+                background: #fef3c7;
+                color: #d97706;
             }
 
             /* Buttons */
@@ -233,9 +230,10 @@
                 display: inline-flex;
                 align-items: center;
                 gap: var(--spacing-sm);
-                padding: var(--spacing-sm) var(--spacing-lg);
+                padding: 0.625rem 1.25rem;
                 border-radius: var(--border-radius-md);
                 font-weight: 500;
+                font-size: 0.875rem;
                 transition: all var(--transition-normal);
                 border: none;
                 cursor: pointer;
@@ -248,6 +246,16 @@
 
             .btn-primary:hover {
                 background-color: var(--primary-hover);
+                transform: translateY(-1px);
+            }
+
+            .btn-success {
+                background-color: var(--success-color);
+                color: white;
+            }
+
+            .btn-success:hover {
+                background-color: #16a34a;
                 transform: translateY(-1px);
             }
 
@@ -275,6 +283,15 @@
                 position: relative;
             }
 
+            .modal-content h2 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-bottom: var(--spacing-lg);
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-sm);
+            }
+
             /* Form Styles */
             .form-group {
                 margin-bottom: var(--spacing-lg);
@@ -289,15 +306,16 @@
 
             .form-control {
                 width: 100%;
-                padding: var(--spacing-md);
+                padding: 0.625rem 1rem;
                 border: 1px solid var(--border-color);
                 border-radius: var(--border-radius-md);
                 transition: all var(--transition-normal);
+                font-size: 0.875rem;
             }
 
             .form-control:focus {
                 border-color: var(--primary-color);
-                box-shadow: 0 0 0 3px rgba(0,86,179,0.15);
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
                 outline: none;
             }
 
@@ -309,6 +327,7 @@
                 width: 100%;
                 height: 100%;
                 background: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(4px);
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -318,8 +337,8 @@
             .spinner {
                 width: 40px;
                 height: 40px;
-                border: 4px solid var(--border-color);
-                border-top: 4px solid var(--primary-color);
+                border: 3px solid var(--border-color);
+                border-top: 3px solid var(--primary-color);
                 border-radius: 50%;
                 animation: spin 1s linear infinite;
             }
@@ -327,6 +346,32 @@
             @keyframes spin {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
+            }
+
+            /* Pagination */
+            .pagination {
+                margin-top: var(--spacing-lg);
+            }
+
+            .page-link {
+                color: var(--primary-color);
+                padding: 0.5rem 1rem;
+                border: 1px solid var(--border-color);
+                margin: 0 0.25rem;
+                border-radius: var(--border-radius-md);
+                transition: all var(--transition-normal);
+            }
+
+            .page-link:hover {
+                background-color: var(--primary-color);
+                color: white;
+                border-color: var(--primary-color);
+            }
+
+            .page-item.active .page-link {
+                background-color: var(--primary-color);
+                border-color: var(--primary-color);
+                color: white;
             }
 
             /* Responsive Design */
@@ -354,6 +399,249 @@
                 .modal-content {
                     margin: 10% auto;
                     padding: var(--spacing-lg);
+                    width: 95%;
+                }
+            }
+
+            .hero-header {
+                background: linear-gradient(120deg, #22c1c3 0%, #29d397 100%);
+                border-radius: 2rem;
+                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+                padding: 2.5rem 3rem;
+                margin-bottom: 2rem;
+                color: #fff;
+                position: relative;
+                overflow: hidden;
+                min-height: 180px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+            }
+
+            .hero-header h1 {
+                font-size: 2.5rem;
+                font-weight: 800;
+                margin-bottom: 0.5rem;
+                color: #fff;
+                text-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            }
+
+            .hero-header p {
+                font-size: 1.25rem;
+                font-weight: 400;
+                color: #e0f7fa;
+                margin-bottom: 0;
+            }
+
+            @media (max-width: 768px) {
+                .hero-header {
+                    padding: 1.5rem 1rem;
+                    min-height: 120px;
+                }
+                .hero-header h1 {
+                    font-size: 1.5rem;
+                }
+                .hero-header p {
+                    font-size: 1rem;
+                }
+            }
+
+            .stat-card {
+                background: #fff;
+                border-radius: 1.25rem;
+                box-shadow: 0 2px 12px 0 rgba(31, 38, 135, 0.07);
+                padding: 1.25rem 1rem;
+                text-align: center;
+                transition: box-shadow 0.2s;
+                min-height: 110px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .stat-card:hover {
+                box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.13);
+            }
+            .stat-label {
+                font-size: 1rem;
+                color: #64748b;
+                margin-bottom: 0.25rem;
+            }
+            .stat-value {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #2563eb;
+            }
+            .stat-total .stat-value { color: #2563eb; }
+            .stat-present .stat-value { color: #22c55e; }
+            .stat-absent .stat-value { color: #ef4444; }
+            .stat-wfh .stat-value { color: #3b82f6; }
+            .stat-late .stat-value { color: #f59e0b; }
+            .chart-container {
+                background: #fff;
+                border-radius: 1.25rem;
+                box-shadow: 0 2px 12px 0 rgba(31, 38, 135, 0.07);
+                padding: 1.5rem;
+                min-height: 320px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            @media (max-width: 768px) {
+                .stat-card { min-height: 80px; padding: 0.75rem 0.5rem; }
+                .stat-value { font-size: 1.25rem; }
+                .chart-container { padding: 0.5rem; min-height: 200px; }
+            }
+
+            .custom-stat-card {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                background: #f8fafc;
+                border-radius: 18px;
+                box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.10);
+                padding: 1.25rem 1rem;
+                min-height: 90px;
+                transition: box-shadow 0.2s;
+                border: none;
+                margin-bottom: 0;
+            }
+            .custom-stat-card:hover {
+                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+                background: #f1f5fe;
+            }
+            .stat-card-icon {
+                background: #2563eb;
+                color: #fff;
+                border-radius: 12px;
+                width: 48px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2rem;
+                box-shadow: 0 2px 8px 0 rgba(37,99,235,0.10);
+            }
+            .custom-stat-card .stat-label {
+                font-size: 1.05rem;
+                color: #334155;
+                font-weight: 600;
+                margin-bottom: 0.15rem;
+                text-align: left;
+            }
+            .custom-stat-card .stat-value {
+                font-size: 2.1rem;
+                font-weight: 700;
+                color: #1e293b;
+                text-align: left;
+            }
+            @media (max-width: 768px) {
+                .custom-stat-card {
+                    min-height: 60px;
+                    padding: 0.75rem 0.5rem;
+                    gap: 10px;
+                }
+                .stat-card-icon {
+                    width: 36px;
+                    height: 36px;
+                    font-size: 1.3rem;
+                }
+                .custom-stat-card .stat-value {
+                    font-size: 1.2rem;
+                }
+            }
+
+            .attendance-stats-cards {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 24px;
+                margin-bottom: 2rem;
+            }
+
+            .attendance-stats-cards .custom-stat-card {
+                min-width: 210px;
+                max-width: 240px;
+                flex: 1 1 210px;
+                margin: 0;
+                background: #f8fafc;
+                border-radius: 18px;
+                box-shadow: 0 2px 12px 0 rgba(31, 38, 135, 0.08);
+                border: 1px solid #e2e8f0;
+                transition: box-shadow 0.18s, transform 0.18s;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 1.1rem 1rem;
+                height: 100px;
+            }
+
+            .attendance-stats-cards .custom-stat-card:hover {
+                box-shadow: 0 6px 24px 0 rgba(31, 38, 135, 0.16);
+                background: #e0e7ff;
+                transform: translateY(-2px) scale(1.03);
+            }
+
+            .attendance-stats-cards .stat-card-icon {
+                width: 52px;
+                height: 52px;
+                font-size: 2.2rem;
+                border-radius: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 1px 6px 0 rgba(37,99,235,0.10);
+            }
+
+            .attendance-stats-cards .stat-label {
+                font-size: 0.98rem;
+                color: #64748b;
+                font-weight: 500;
+                margin-bottom: 0.18rem;
+                text-align: left;
+                letter-spacing: 0.01em;
+            }
+
+            .attendance-stats-cards .stat-value {
+                font-size: 2.2rem;
+                font-weight: 800;
+                color: #1e293b;
+                text-align: left;
+                line-height: 1.1;
+            }
+
+            @media (max-width: 900px) {
+                .attendance-stats-cards {
+                    gap: 14px;
+                }
+                .attendance-stats-cards .custom-stat-card {
+                    min-width: 160px;
+                    max-width: 100%;
+                    height: 80px;
+                    padding: 0.7rem 0.5rem;
+                }
+                .attendance-stats-cards .stat-card-icon {
+                    width: 36px;
+                    height: 36px;
+                    font-size: 1.3rem;
+                }
+                .attendance-stats-cards .stat-value {
+                    font-size: 1.2rem;
+                }
+            }
+            @media (max-width: 600px) {
+                .attendance-stats-cards {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 10px;
+                }
+                .attendance-stats-cards .custom-stat-card {
+                    width: 100%;
+                    min-width: 0;
+                    max-width: 100%;
+                    height: auto;
+                    justify-content: flex-start;
                 }
             }
         </style>
@@ -371,33 +659,65 @@
                 <a href="../dashboard_admin_V1.php" class="btn btn-outline-primary mb-3 d-inline-flex align-items-center" style="font-weight:600;font-size:1rem;gap:8px;">
                     <i class="fa fa-arrow-left"></i> Quay lại Dashboard
                 </a>
-
-                <!-- Navigation Bar -->
-                <div class="attendance-nav mb-4">
-                    <div class="nav-buttons">
-                        <a href="attendance_History.html" class="nav-btn">
+                <div class="hero-header mb-4">
+                    <h1>Quản lý chấm công</h1>
+                    <p>Quản lý thông tin chấm công của nhân viên</p>
+                </div>
+                <!-- Card thống kê tổng quan -->
+                <div class="attendance-stats-cards mb-4" id="attendanceStatsCards">
+                    <div class="custom-stat-card stat-total">
+                        <div class="stat-card-icon">
+                            <ion-icon name="calendar-clear-outline"></ion-icon>
+                        </div>
+                        <div>
+                            <div class="stat-label">Tổng lượt chấm công</div>
+                            <div class="stat-value" id="statTotal">0</div>
+                        </div>
+                    </div>
+                    <div class="custom-stat-card stat-present">
+                        <div class="stat-card-icon" style="background:#22c55e;">
+                            <ion-icon name="calendar-checkmark-outline"></ion-icon>
+                        </div>
+                        <div>
+                            <div class="stat-label">Có mặt (P)</div>
+                            <div class="stat-value" id="statPresent">0</div>
+                        </div>
+                    </div>
+                    <div class="custom-stat-card stat-absent">
+                        <div class="stat-card-icon" style="background:#ef4444;">
+                            <ion-icon name="calendar-outline"></ion-icon>
+                        </div>
+                        <div>
+                            <div class="stat-label">Vắng mặt (A)</div>
+                            <div class="stat-value" id="statAbsent">0</div>
+                        </div>
+                    </div>
+                    <div class="custom-stat-card stat-wfh">
+                        <div class="stat-card-icon" style="background:#3b82f6;">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </div>
+                        <div>
+                            <div class="stat-label">Làm từ xa (WFH)</div>
+                            <div class="stat-value" id="statWFH">0</div>
+                        </div>
+                    </div>
+                    <div class="custom-stat-card stat-late">
+                        <div class="stat-card-icon" style="background:#f59e0b;">
                             <ion-icon name="time-outline"></ion-icon>
-                            Lịch sử chấm công
-                        </a>
-                        <a href="check.html" class="nav-btn">
-                            <ion-icon name="checkmark-circle-outline"></ion-icon>
-                            Chấm công
-                        </a>
+                        </div>
+                        <div>
+                            <div class="stat-label">Đi muộn (L)</div>
+                            <div class="stat-value" id="statLate">0</div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="content-header">
-                    <h1>
-                        <ion-icon name="calendar-outline"></ion-icon>
-                        Bảng chấm công hằng ngày
-                    </h1>
-                </div>
-
                 <!-- Controls Bar -->
                 <div class="controls-bar">
                     <div class="filter-controls">
-                        <input type="date" id="dateFilter" class="form-control" onchange="applyFilters()">
-                        <select id="statusFilter" class="form-control" onchange="applyFilters()">
+                        <input type="text" id="searchCode" class="form-control" placeholder="Tìm mã nhân viên...">
+                        <input type="text" id="searchName" class="form-control" placeholder="Tìm tên nhân viên...">
+                        <input type="date" id="dateFilter" class="form-control">
+                        <select id="statusFilter" class="form-control">
                             <option value="">Tất cả trạng thái</option>
                             <option value="P">Có mặt (P)</option>
                             <option value="A">Vắng mặt (A)</option>
@@ -405,10 +725,16 @@
                             <option value="WFH">Làm việc từ xa (WFH)</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary" id="addAttendanceButton">
-                        <ion-icon name="add-circle-outline"></ion-icon>
-                        Thêm chấm công
-                    </button>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-primary" id="addAttendanceButton">
+                            <ion-icon name="add-circle-outline"></ion-icon>
+                            Thêm chấm công
+                        </button>
+                        <button class="btn btn-success" id="exportExcelButton">
+                            <ion-icon name="download-outline"></ion-icon>
+                            Xuất Excel
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Table Container -->
@@ -432,6 +758,9 @@
                             </tbody>
                         </table>
                     </div>
+                    <nav aria-label="Attendance pagination" style="margin-top:16px;">
+                        <ul class="pagination justify-content-center" id="attendancePagination"></ul>
+                    </nav>
                 </div>
             </main>
         </div>
@@ -513,15 +842,29 @@
         <script src="js/auth_utils.js"></script>
         <script src="js/api_service.js"></script>
         <script src="js/attendance-display.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <script>
+        let currentAttendanceData = [];
+        let deleteAttendanceId = null;
+        let currentPage = 1;
+        const pageSize = 10;
+        let filterCode = '';
+        let filterName = '';
+        let filterDate = '';
+        let filterStatus = '';
+
         async function loadAttendanceData() {
             try {
                 const response = await fetch('/qlnhansu_V3/backend/src/api/v1/attendance.php?action=getAll');
                 const data = await response.json();
                 console.log('API DATA:', data);
                 if (data.success && Array.isArray(data.data)) {
-                    displayAttendanceData(data.data);
+                    currentAttendanceData = data.data;
+                    currentPage = 1;
+                    updateAttendanceTable();
+                    updateStatsAndChart(currentAttendanceData);
                 } else {
                     alert('Lỗi khi tải dữ liệu chấm công');
                 }
@@ -577,8 +920,8 @@
                     statusText = record.attendance_symbol || '-';
                 }
                 row.innerHTML = `
-                    <td>${record.employee_id}</td>
-                    <td>${record.full_name}</td>
+                    <td>${record.employee_code || '-'}</td>
+                    <td>${record.employee_name || '-'}</td>
                     <td>${record.attendance_date}</td>
                     <td>${record.check_in_time || '-'}</td>
                     <td>${record.check_out_time || '-'}</td>
@@ -597,12 +940,208 @@
             });
         }
 
-        // Dummy functions for demo
         function editAttendance(id) {
-            alert('Sửa bản ghi: ' + id);
+            const record = currentAttendanceData.find(r => r.attendance_id == id);
+            if (!record) return;
+            document.getElementById('attendanceId').value = record.attendance_id;
+            document.getElementById('employeeId').value = record.employee_id;
+            document.getElementById('attendanceDate').value = record.attendance_date;
+            document.getElementById('attendanceSymbol').value = record.attendance_symbol;
+            document.getElementById('notes').value = record.notes || '';
+            document.getElementById('editModal').style.display = 'block';
         }
+
         function confirmDelete(id) {
-            alert('Xóa bản ghi: ' + id);
+            deleteAttendanceId = id;
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        document.getElementById('cancelDeleteButton').onclick = closeModal;
+        document.getElementById('confirmDeleteButton').onclick = function() {
+            if (!deleteAttendanceId) return;
+            // Gọi API xóa ở đây, ví dụ:
+            fetch(`/qlnhansu_V3/backend/src/api/v1/attendance.php?action=delete&id=${deleteAttendanceId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        loadAttendanceData();
+                    } else {
+                        alert('Xóa thất bại!');
+                    }
+                    closeModal();
+                })
+                .catch(() => {
+                    alert('Lỗi khi xóa!');
+                    closeModal();
+                });
+        };
+
+        document.getElementById('addAttendanceButton').onclick = function() {
+            // Reset form
+            document.getElementById('editForm').reset();
+            document.getElementById('attendanceId').value = '';
+            // Đặt tiêu đề modal
+            document.querySelector('#editModal h2').innerHTML = '<ion-icon name="create-outline"></ion-icon> Thêm chấm công mới';
+            // Hiện modal
+            document.getElementById('editModal').style.display = 'block';
+        };
+
+        document.getElementById('exportExcelButton').onclick = function() {
+            if (!currentAttendanceData || currentAttendanceData.length === 0) {
+                alert('Không có dữ liệu để xuất!');
+                return;
+            }
+            // Chuyển đổi dữ liệu sang mảng object cho Excel
+            const exportData = currentAttendanceData.map(record => ({
+                'Mã nhân viên': record.employee_code || '-',
+                'Họ tên': record.employee_name || '-',
+                'Ngày': record.attendance_date,
+                'Giờ vào': record.check_in_time || '-',
+                'Giờ ra': record.check_out_time || '-',
+                'Trạng thái': (record.attendance_symbol === 'A' ? 'Hết hạn' : (record.attendance_symbol === 'P' ? 'Còn hiệu lực' : (record.status_text || record.attendance_symbol || '-'))),
+                'Ghi chú': record.notes || '-'
+            }));
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'ChamCong');
+            XLSX.writeFile(wb, 'danh_sach_cham_cong.xlsx');
+        };
+
+        document.getElementById('searchCode').oninput = function(e) {
+            filterCode = e.target.value.trim().toLowerCase();
+            currentPage = 1;
+            updateAttendanceTable();
+        };
+        document.getElementById('searchName').oninput = function(e) {
+            filterName = e.target.value.trim().toLowerCase();
+            currentPage = 1;
+            updateAttendanceTable();
+        };
+        document.getElementById('dateFilter').onchange = function(e) {
+            filterDate = e.target.value;
+            currentPage = 1;
+            updateAttendanceTable();
+        };
+        document.getElementById('statusFilter').onchange = function(e) {
+            filterStatus = e.target.value;
+            currentPage = 1;
+            updateAttendanceTable();
+        };
+
+        function updateAttendanceTable() {
+            let data = currentAttendanceData.slice();
+            // Lọc theo mã nhân viên
+            if (filterCode) {
+                data = data.filter(r => (r.employee_code || '').toLowerCase().includes(filterCode));
+            }
+            // Lọc theo tên nhân viên
+            if (filterName) {
+                data = data.filter(r => (r.employee_name || '').toLowerCase().includes(filterName));
+            }
+            // Lọc theo ngày
+            if (filterDate) {
+                data = data.filter(r => r.attendance_date === filterDate);
+            }
+            // Lọc theo trạng thái
+            if (filterStatus) {
+                data = data.filter(r => r.attendance_symbol === filterStatus);
+            }
+            // Sắp xếp và phân trang như cũ
+            data.sort((a, b) => {
+                const dateA = new Date(a.attendance_date);
+                const dateB = new Date(b.attendance_date);
+                if (dateA.getTime() !== dateB.getTime()) return dateB - dateA;
+                const getStatusPriority = (r) => {
+                    if (r.attendance_symbol === 'A' || r.status_text === 'Hết hạn') return 1;
+                    if (r.status_text === 'Sắp hết hạn') return 2;
+                    if (r.attendance_symbol === 'P' || r.status_text === 'Còn hiệu lực') return 3;
+                    return 4;
+                };
+                const priA = getStatusPriority(a);
+                const priB = getStatusPriority(b);
+                if (priA !== priB) return priA - priB;
+                return a.employee_name.localeCompare(b.employee_name, 'vi', {sensitivity: 'base'});
+            });
+            const start = (currentPage - 1) * pageSize;
+            const end = start + pageSize;
+            displayAttendanceData(data.slice(start, end));
+            renderPagination(data.length);
+        }
+
+        function renderPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / pageSize);
+            const pagination = document.getElementById('attendancePagination');
+            pagination.innerHTML = '';
+            if (totalPages <= 1) return;
+            // Previous
+            const prevLi = document.createElement('li');
+            prevLi.className = 'page-item' + (currentPage === 1 ? ' disabled' : '');
+            prevLi.innerHTML = `<a class="page-link" href="#">&laquo;</a>`;
+            prevLi.onclick = function(e) { e.preventDefault(); if (currentPage > 1) { currentPage--; updateAttendanceTable(); } };
+            pagination.appendChild(prevLi);
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement('li');
+                li.className = 'page-item' + (i === currentPage ? ' active' : '');
+                li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                li.onclick = function(e) { e.preventDefault(); if (currentPage !== i) { currentPage = i; updateAttendanceTable(); } };
+                pagination.appendChild(li);
+            }
+            // Next
+            const nextLi = document.createElement('li');
+            nextLi.className = 'page-item' + (currentPage === totalPages ? ' disabled' : '');
+            nextLi.innerHTML = `<a class="page-link" href="#">&raquo;</a>`;
+            nextLi.onclick = function(e) { e.preventDefault(); if (currentPage < totalPages) { currentPage++; updateAttendanceTable(); } };
+            pagination.appendChild(nextLi);
+        }
+
+        function updateStatsAndChart(attendanceData) {
+            // Đếm số lượng theo trạng thái
+            let present = 0, absent = 0, wfh = 0, late = 0;
+            if (Array.isArray(attendanceData)) {
+                attendanceData.forEach(r => {
+                    if (r && r.attendance_symbol) {
+                        if (r.attendance_symbol === 'P') present++;
+                        else if (r.attendance_symbol === 'A') absent++;
+                        else if (r.attendance_symbol === 'WFH') wfh++;
+                        else if (r.attendance_symbol === 'L') late++;
+                    }
+                });
+            }
+            const total = present + absent + wfh + late;
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statPresent').textContent = present;
+            document.getElementById('statAbsent').textContent = absent;
+            document.getElementById('statWFH').textContent = wfh;
+            document.getElementById('statLate').textContent = late;
+            // Pie Chart
+            if (window.attendancePieChart) window.attendancePieChart.destroy();
+            const ctx = document.getElementById('attendancePieChart').getContext('2d');
+            window.attendancePieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Có mặt (P)', 'Vắng mặt (A)', 'Làm từ xa (WFH)', 'Đi muộn (L)'],
+                    datasets: [{
+                        data: [present, absent, wfh, late],
+                        backgroundColor: [
+                            '#22c55e', '#ef4444', '#3b82f6', '#f59e0b'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        title: { display: true, text: 'Tỷ lệ trạng thái chấm công' }
+                    }
+                }
+            });
         }
 
         document.addEventListener('DOMContentLoaded', loadAttendanceData);

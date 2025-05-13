@@ -72,10 +72,12 @@ function getAllAttendance() {
         $sql = "SELECT a.attendance_id, a.employee_id, u.username, up.full_name,
                        a.attendance_date, a.check_in_time, a.check_out_time,
                        a.work_duration_hours, a.attendance_symbol, a.notes,
-                       a.recorded_at, a.source
+                       a.recorded_at, a.source,
+                       e.employee_code, e.name AS employee_name
                 FROM attendance a
                 JOIN users u ON a.employee_id = u.user_id
                 JOIN user_profiles up ON u.user_id = up.user_id
+                LEFT JOIN employees e ON a.employee_id = e.id
                 ORDER BY a.attendance_date DESC, a.recorded_at DESC";
         
         $stmt = $db->prepare($sql);
