@@ -1313,6 +1313,57 @@ document.addEventListener('DOMContentLoaded', function() {
             chatOverlay.style.display = 'none';
         }
     });
+
+    // Quick Actions redirects
+    document.querySelectorAll('.feature-card').forEach(card => {
+        card.addEventListener('click', function() {
+            window.location.href = 'developing.html';
+        });
+    });
+
+    // Language switch redirect
+    document.getElementById('languageSwitch').addEventListener('change', function() {
+        window.location.href = 'developing.html';
+    });
+
+    // Dark mode toggle redirect
+    document.getElementById('darkModeToggle').addEventListener('click', function() {
+        window.location.href = 'developing.html';
+    });
+
+    // Search box redirect
+    document.querySelector('.search-box').addEventListener('focus', function() {
+        window.location.href = 'developing.html';
+    });
+
+    // Notification bell redirect
+    document.getElementById('notificationsDropdown').addEventListener('click', function() {
+        window.location.href = 'developing.html';
+    });
+
+    // Footer links redirects
+    document.querySelectorAll('.footer-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'developing.html';
+        });
+    });
+
+    // Footer section links redirects
+    document.querySelectorAll('.footer-section a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'developing.html';
+        });
+    });
+
+    // Modern footer links redirects
+    document.querySelectorAll('.modern-footer .footer-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'developing.html';
+        });
+    });
 });
 </script>
 
@@ -1572,6 +1623,79 @@ const statsSwiper = new Swiper('.stats-swiper', {
     border-radius: 4px;
 }
 </style>
+
+<script>
+// Function to fetch statistics data
+async function fetchStatistics() {
+    try {
+        // Show loading state
+        document.querySelectorAll('.stat-number').forEach(el => {
+            el.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        });
+
+        const response = await fetch('Statistics_Cards.php?action=general-stats');
+        const data = await response.json();
+        
+        // Update total employees card
+        document.getElementById('totalEmployees').textContent = data.totalEmployees;
+        const employeeChange = document.querySelector('#totalEmployees').nextElementSibling;
+        employeeChange.textContent = `Đang làm việc: ${data.employeeStatus.active} | Nghỉ phép: ${data.employeeStatus.onLeave}`;
+        
+        // Update new employees card
+        document.getElementById('newEmployees').textContent = data.newEmployees.count;
+        const newEmployeeChange = document.querySelector('#newEmployees').nextElementSibling;
+        newEmployeeChange.textContent = `Lương trung bình: ${data.newEmployees.avgSalary} VNĐ`;
+        
+        // Update terminated employees card
+        document.getElementById('resignedEmployees').textContent = data.terminatedEmployees.total;
+        const terminatedChange = document.querySelector('#resignedEmployees').nextElementSibling;
+        terminatedChange.textContent = `Tỷ lệ thôi việc: ${((data.terminatedEmployees.total / data.totalEmployees) * 100).toFixed(1)}%`;
+        
+        // Update salary fund card
+        document.getElementById('totalSalary').textContent = data.salaryInfo.total + ' VNĐ';
+        const salaryChange = document.querySelector('#totalSalary').nextElementSibling;
+        salaryChange.textContent = `Tổng lương cơ bản của ${data.employeeStatus.active} nhân viên`;
+        
+        // Update departments card
+        document.getElementById('totalDepartments').textContent = data.departmentInfo.total;
+        const deptChange = document.querySelector('#totalDepartments').nextElementSibling;
+        deptChange.textContent = `Số quản lý: ${data.departmentInfo.managers}`;
+        
+        // Update leave card
+        document.getElementById('onLeave').textContent = data.leaveInfo.total;
+        const leaveChange = document.querySelector('#onLeave').nextElementSibling;
+        leaveChange.textContent = `Nghỉ phép: ${data.leaveInfo.annual} | Nghỉ ốm: ${data.leaveInfo.sick} | Khác: ${data.leaveInfo.other}`;
+        
+        // Update performance card
+        document.getElementById('avgPerformance').textContent = data.performanceInfo.avgScore + '/5';
+        const perfChange = document.querySelector('#avgPerformance').nextElementSibling;
+        perfChange.textContent = `Xuất sắc: ${data.performanceInfo.highPerformers} | Cần cải thiện: ${data.performanceInfo.lowPerformers}`;
+        
+        // Update training card
+        document.getElementById('activeTrainings').textContent = data.trainingInfo.activeSessions;
+        const trainingChange = document.querySelector('#activeTrainings').nextElementSibling;
+        trainingChange.textContent = `Khóa học: ${data.trainingInfo.uniqueCourses} | Người tham gia: ${data.trainingInfo.participants}`;
+        
+        // Update recruitment card
+        document.getElementById('openPositions').textContent = data.recruitmentInfo.openPositions;
+        const recruitmentChange = document.querySelector('#openPositions').nextElementSibling;
+        recruitmentChange.textContent = `Vị trí đang tuyển: ${data.recruitmentInfo.openPositions}`;
+        
+    } catch (error) {
+        console.error('Lỗi khi tải dữ liệu thống kê:', error);
+        // Show error state
+        document.querySelectorAll('.stat-number').forEach(el => {
+            el.innerHTML = '<i class="fas fa-exclamation-circle text-danger"></i>';
+        });
+    }
+}
+
+// Fetch statistics when page loads
+document.addEventListener('DOMContentLoaded', fetchStatistics);
+
+// Refresh statistics every 5 minutes
+setInterval(fetchStatistics, 300000);
+</script>
 
 </body>
 </html>
