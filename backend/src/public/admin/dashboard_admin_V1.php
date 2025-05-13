@@ -778,121 +778,63 @@
             </div>
 
             <!-- Charts Section -->
-            <div class="row mt-4">
-                <style>
-                    :root {
-                        --turquoise: #1ABC9C;
-                        --bright-yellow: #F1C40F;
-                        --coral: #FF6F61;
-                        --sky-blue: #3498DB;
-                        --lime-green: #2ECC71;
-                        --light-turquoise: rgba(26, 188, 156, 0.2);
-                        --light-yellow: rgba(241, 196, 15, 0.2);
-                        --light-coral: rgba(255, 111, 97, 0.2);
-                        --light-sky-blue: rgba(52, 152, 219, 0.2);
-                        --light-lime: rgba(46, 204, 113, 0.2);
-                    }
-
-                    .chart-card {
-                        border: 1px solid #e3e6f0;
-                        border-radius: 8px;
-                        transition: all 0.3s ease;
-                        height: 400px;
-                        margin-bottom: 24px;
-                    }
-                    .chart-card:hover {
-                        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-                        transform: translateY(-2px);
-                    }
-                    .chart-header {
-                        padding: 1rem;
-                        border-bottom: 1px solid #e3e6f0;
-                        background-color: #f8f9fc;
-                        border-radius: 8px 8px 0 0;
-                    }
-                    .chart-body {
-                        padding: 1rem;
-                        height: calc(100% - 60px);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    }
-                    .chart-title {
-                        margin: 0;
-                        color: var(--sky-blue);
-                        font-weight: 600;
-                        font-size: 1rem;
-                    }
-                </style>
-
-                <!-- Biểu đồ tròn: Phân bố nhân viên -->
-                <div class="col-xl-6 col-lg-6">
+            <div class="row">
+                <!-- Department Overview -->
+                <div class="col-md-6 mb-4">
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h6 class="chart-title">Phân bố nhân viên theo phòng ban</h6>
+                            <h5 class="chart-title">Tổng Quan Phòng Ban</h5>
                         </div>
                         <div class="chart-body">
-                            <canvas id="employeeDistributionChart"></canvas>
+                            <canvas id="departmentChart"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <!-- Biểu đồ cột: Xu hướng nhân sự -->
-                <div class="col-xl-6 col-lg-6">
+                <!-- Employee Trends -->
+                <div class="col-md-6 mb-4">
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h6 class="chart-title">Xu hướng nhân sự</h6>
+                            <h5 class="chart-title">Xu Hướng Nhân Viên</h5>
                         </div>
                         <div class="chart-body">
-                            <canvas id="employeeTrendChart"></canvas>
+                            <canvas id="trendsChart"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <!-- Biểu đồ đường: Chi phí lương -->
-                <div class="col-xl-6 col-lg-6">
+                <!-- Monthly Salary Costs -->
+                <div class="col-md-12 mb-4">
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h6 class="chart-title">Chi phí lương theo tháng</h6>
+                            <h5 class="chart-title">Chi Phí Lương Hàng Tháng</h5>
                         </div>
                         <div class="chart-body">
-                            <canvas id="salaryCostChart"></canvas>
+                            <canvas id="salaryChart"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <!-- Biểu đồ miền: Phân bố độ tuổi -->
-                <div class="col-xl-6 col-lg-6">
+                <!-- Age and Gender Distribution -->
+                <div class="col-md-6 mb-4">
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h6 class="chart-title">Phân bố độ tuổi</h6>
+                            <h5 class="chart-title">Phân Bố Tuổi và Giới Tính</h5>
                         </div>
                         <div class="chart-body">
-                            <canvas id="ageDistributionChart"></canvas>
+                            <canvas id="demographicChart"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <!-- Biểu đồ radar: Đánh giá năng lực -->
-                <div class="col-xl-6 col-lg-6">
+                <!-- Performance Overview -->
+                <div class="col-md-6 mb-4">
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h6 class="chart-title">Đánh giá năng lực</h6>
+                            <h5 class="chart-title">Tổng Quan Hiệu Suất</h5>
                         </div>
                         <div class="chart-body">
-                            <canvas id="performanceRadarChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Biểu đồ thanh ngang: Top phòng ban -->
-                <div class="col-xl-6 col-lg-6">
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h6 class="chart-title">Top 5 phòng ban</h6>
-                        </div>
-                        <div class="chart-body">
-                            <canvas id="topDepartmentsChart"></canvas>
+                            <canvas id="performanceChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -1368,206 +1310,269 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-// Cập nhật options chung cho tất cả biểu đồ
-const commonOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
-            position: 'bottom',
-            labels: {
-                padding: 20,
-                font: {
-                    size: 12
-                }
-            }
-        }
-    }
+// Function to format currency
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    }).format(amount);
+}
+
+// Define chart colors
+const chartColors = {
+    yellow: '#FFD700',    // Vàng chanh
+    coral: '#FF6F61',     // Cam san hô
+    neonPink: '#FF1493',  // Hồng neon
+    turquoise: '#00CED1', // Xanh ngọc
+    neonGreen: '#39FF14', // Xanh lá neon
+    purple: '#BA55D3',    // Tím hoa cà
+    red: '#FF0000',       // Đỏ tươi
+    blue: '#1E90FF',      // Xanh biển sáng
+    pink: '#FFB6C1',      // Hồng đào
+    orange: '#FFA500'     // Vàng nghệ
 };
 
-// Biểu đồ tròn: Phân bố nhân viên
-const employeeDistributionCtx = document.getElementById('employeeDistributionChart').getContext('2d');
-new Chart(employeeDistributionCtx, {
-    type: 'pie',
-    data: {
-        labels: ['Phòng Kỹ thuật', 'Phòng Kinh doanh', 'Phòng Nhân sự', 'Phòng Tài chính'],
-        datasets: [{
-            data: [30, 25, 20, 25],
-            backgroundColor: [
-                '#1ABC9C', // Turquoise
-                '#F1C40F', // Bright Yellow
-                '#FF6F61', // Coral
-                '#3498DB'  // Sky Blue
-            ]
-        }]
-    },
-    options: commonOptions
-});
+// Function to load data from API
+async function loadChartData() {
+    try {
+        // Load Department Overview
+        const deptResponse = await fetch('Charts_Section_api.php?action=top-departments');
+        const deptData = await deptResponse.json();
+        renderDepartmentChart(deptData);
 
-// Biểu đồ cột: Xu hướng nhân sự
-const employeeTrendCtx = document.getElementById('employeeTrendChart').getContext('2d');
-new Chart(employeeTrendCtx, {
-    type: 'bar',
-    data: {
-        labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'],
-        datasets: [{
-            label: 'Tuyển mới',
-            data: [5, 8, 3, 6, 4, 7],
-            backgroundColor: '#2ECC71' // Lime Green
-        }, {
-            label: 'Thôi việc',
-            data: [2, 3, 1, 4, 2, 3],
-            backgroundColor: '#FF6F61' // Coral
-        }]
-    },
-    options: {
-        ...commonOptions,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
+        // Load Employee Trends
+        const trendResponse = await fetch('Charts_Section_api.php?action=employee-trend');
+        const trendData = await trendResponse.json();
+        renderTrendsChart(trendData.data);
+
+        // Load Monthly Salary Costs
+        const salaryResponse = await fetch('Charts_Section_api.php?action=monthly-salary-costs');
+        const salaryData = await salaryResponse.json();
+        renderSalaryChart(salaryData);
+
+        // Load Age Distribution
+        const ageResponse = await fetch('Charts_Section_api.php?action=age-distribution');
+        const ageData = await ageResponse.json();
+        renderDemographicChart(ageData);
+
+        // Load Performance Overview
+        const perfResponse = await fetch('Charts_Section_api.php?action=performance-evaluation');
+        const perfData = await perfResponse.json();
+        renderPerformanceChart(perfData);
+    } catch (error) {
+        console.error('Error loading chart data:', error);
     }
-});
+}
 
-// Biểu đồ đường: Chi phí lương
-const salaryCostCtx = document.getElementById('salaryCostChart').getContext('2d');
-new Chart(salaryCostCtx, {
-    type: 'line',
-    data: {
-        labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'],
-        datasets: [{
-            label: 'Chi phí thực tế',
-            data: [100, 120, 115, 130, 125, 140],
-            borderColor: '#1ABC9C', // Turquoise
-            backgroundColor: 'rgba(26, 188, 156, 0.1)',
-            tension: 0.1,
-            fill: true
-        }, {
-            label: 'Ngân sách',
-            data: [110, 110, 110, 110, 110, 110],
-            borderColor: '#F1C40F', // Bright Yellow
-            borderDash: [5, 5],
-            tension: 0.1
-        }]
-    },
-    options: {
-        ...commonOptions,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
-
-// Biểu đồ miền: Phân bố độ tuổi
-const ageDistributionCtx = document.getElementById('ageDistributionChart').getContext('2d');
-new Chart(ageDistributionCtx, {
-    type: 'line',
-    data: {
-        labels: ['20-25', '26-30', '31-35', '36-40', '41-45', '46-50'],
-        datasets: [{
-            label: 'Nam',
-            data: [15, 25, 20, 15, 10, 5],
-            backgroundColor: 'rgba(52, 152, 219, 0.2)', // Light Sky Blue
-            borderColor: '#3498DB', // Sky Blue
-            fill: true
-        }, {
-            label: 'Nữ',
-            data: [10, 20, 15, 10, 5, 3],
-            backgroundColor: 'rgba(255, 111, 97, 0.2)', // Light Coral
-            borderColor: '#FF6F61', // Coral
-            fill: true
-        }]
-    },
-    options: {
-        ...commonOptions,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
-
-// Biểu đồ radar: Đánh giá năng lực
-const performanceRadarCtx = document.getElementById('performanceRadarChart').getContext('2d');
-new Chart(performanceRadarCtx, {
-    type: 'radar',
-    data: {
-        labels: ['Chuyên môn', 'Kỹ năng mềm', 'Sáng tạo', 'Làm việc nhóm', 'Quản lý thời gian'],
-        datasets: [{
-            label: 'Đánh giá hiện tại',
-            data: [8, 7, 6, 8, 7],
-            backgroundColor: 'rgba(46, 204, 113, 0.2)', // Light Lime
-            borderColor: '#2ECC71', // Lime Green
-            pointBackgroundColor: '#2ECC71'
-        }, {
-            label: 'Mục tiêu',
-            data: [9, 8, 7, 9, 8],
-            backgroundColor: 'rgba(241, 196, 15, 0.2)', // Light Yellow
-            borderColor: '#F1C40F', // Bright Yellow
-            pointBackgroundColor: '#F1C40F'
-        }]
-    },
-    options: {
-        ...commonOptions,
-        scales: {
-            r: {
-                beginAtZero: true,
-                max: 10,
-                ticks: {
-                    color: '#666'
+// Render Department Chart
+function renderDepartmentChart(data) {
+    const ctx = document.getElementById('departmentChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: data.map(item => item.department),
+            datasets: [{
+                label: 'Số lượng nhân viên',
+                data: data.map(item => item.employeeCount),
+                backgroundColor: chartColors.blue,
+                borderColor: chartColors.blue,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Số lượng'
+                    }
                 },
-                grid: {
-                    color: 'rgba(0, 0, 0, 0.1)'
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Phòng ban'
+                    }
                 }
             }
         }
-    }
-});
-
-// Biểu đồ thanh ngang: Top phòng ban
-const topDepartmentsCtx = document.getElementById('topDepartmentsChart').getContext('2d');
-new Chart(topDepartmentsCtx, {
-    type: 'bar',
-    data: {
-        labels: ['Phòng A', 'Phòng B', 'Phòng C', 'Phòng D', 'Phòng E'],
-        datasets: [{
-            label: 'KPI',
-            data: [85, 82, 80, 78, 75],
-            backgroundColor: '#1ABC9C' // Turquoise
-        }]
-    },
-    options: {
-        ...commonOptions,
-        indexAxis: 'y',
-        scales: {
-            x: {
-                beginAtZero: true,
-                max: 100,
-                grid: {
-                    color: 'rgba(0, 0, 0, 0.1)'
-                }
-            },
-            y: {
-                grid: {
-                    display: false
-                }
-            }
-        }
-    }
-});
-
-// Xử lý sự kiện cho các nút tác vụ nhanh
-document.querySelectorAll('.quick-action-button').forEach(button => {
-    button.addEventListener('click', function() {
-        const action = this.closest('.quick-action-card').querySelector('.quick-action-title').textContent;
-        // TODO: Thêm xử lý cho từng action
-        console.log('Action clicked:', action);
     });
-});
+}
+
+// Render Trends Chart
+function renderTrendsChart(data) {
+    const ctx = document.getElementById('trendsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.map(item => `Tháng ${item.month}`),
+            datasets: [{
+                label: 'Nhân viên mới',
+                data: data.map(item => item.new_hires),
+                borderColor: chartColors.neonGreen,
+                backgroundColor: chartColors.neonGreen + '20',
+                tension: 0.1,
+                fill: true
+            }, {
+                label: 'Nhân viên nghỉ việc',
+                data: data.map(item => item.terminated),
+                borderColor: chartColors.coral,
+                backgroundColor: chartColors.coral + '20',
+                tension: 0.1,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Số lượng'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Thời gian'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Render Salary Chart
+function renderSalaryChart(data) {
+    const ctx = document.getElementById('salaryChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: data.map(item => `Tháng ${item.month}`),
+            datasets: [{
+                label: 'Lương cơ bản',
+                data: data.map(item => item.base_salary),
+                backgroundColor: chartColors.yellow
+            }, {
+                label: 'Phụ cấp',
+                data: data.map(item => item.allowances),
+                backgroundColor: chartColors.orange
+            }, {
+                label: 'Thưởng',
+                data: data.map(item => item.bonuses),
+                backgroundColor: chartColors.turquoise
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return formatCurrency(value);
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Số tiền (VNĐ)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Thời gian'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Render Demographic Chart
+function renderDemographicChart(data) {
+    const ctx = document.getElementById('demographicChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [...new Set(data.map(item => item.ageGroup))],
+            datasets: [{
+                label: 'Nam',
+                data: data.filter(item => item.gender === 'Male').map(item => item.count),
+                backgroundColor: chartColors.blue
+            }, {
+                label: 'Nữ',
+                data: data.filter(item => item.gender === 'Female').map(item => item.count),
+                backgroundColor: chartColors.pink
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Số lượng'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Nhóm tuổi'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Render Performance Chart
+function renderPerformanceChart(data) {
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Hiệu suất cao', 'Hiệu suất thấp', 'Trung bình'],
+            datasets: [{
+                data: [
+                    data.highPerformers,
+                    data.lowPerformers,
+                    data.totalEvaluations - data.highPerformers - data.lowPerformers
+                ],
+                backgroundColor: [
+                    chartColors.neonGreen,
+                    chartColors.red,
+                    chartColors.purple
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Phân bố hiệu suất nhân viên',
+                    font: {
+                        size: 14
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Load chart data when page loads
+document.addEventListener('DOMContentLoaded', loadChartData);
 </script>
 
 <!-- Swiper JS -->
