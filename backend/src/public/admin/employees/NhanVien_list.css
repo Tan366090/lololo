@@ -1125,3 +1125,59 @@ body {
 .action-buttons .btn-action {
     font-size: 14px;
 }
+
+/* Delete Confirmation Modal Styles */
+.employee-info {
+    margin-top: 20px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.info-item label {
+    font-weight: 600;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.info-item span {
+    color: #333;
+    font-size: 1rem;
+}
+
+#deleteConfirmModal .modal-content {
+    max-width: 600px;
+    margin: 50px auto;
+}
+
+#deleteConfirmModal .alert-warning {
+    margin-bottom: 20px;
+}
+
+#deleteConfirmModal .modal-footer {
+    border-top: 1px solid #dee2e6;
+    padding: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+#deleteConfirmModal .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+#deleteConfirmModal .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}

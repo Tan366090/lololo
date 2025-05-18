@@ -82,7 +82,7 @@ const DepartmentService = {
     async load() {
         try {
             const data = await ApiService.get(
-                "/qlnhansu_V2/backend/src/api/departments.php"
+                "/qlnhansu_V3/backend/src/api/departments.php"
             );
             this.departments = Array.isArray(data) ? data : data.data || [];
             return this.departments;
@@ -214,7 +214,7 @@ const EmployeeService = {
             });
 
             const data = await ApiService.get(
-                `/qlnhansu_V2/backend/src/api/employees.php?${params.toString()}`
+                `/qlnhansu_V3/backend/src/api/employees.php?${params.toString()}`
             );
 
             if (data.success && data.data) {
@@ -243,7 +243,7 @@ const EmployeeService = {
         try {
             loadingOverlay.show();
             const result = await ApiService.post(
-                "/qlnhansu_V2/backend/src/api/employees.php",
+                "/qlnhansu_V3/backend/src/api/employees.php",
                 employeeData
             );
             return result;
@@ -259,7 +259,7 @@ const EmployeeService = {
         try {
             loadingOverlay.show();
             const result = await ApiService.put(
-                `/qlnhansu_V2/backend/src/api/employees.php?id=${id}`,
+                `/qlnhansu_V3/backend/src/api/employees.php?id=${id}`,
                 employeeData
             );
             return result;
@@ -275,7 +275,7 @@ const EmployeeService = {
         try {
             loadingOverlay.show();
             const result = await ApiService.delete(
-                `/qlnhansu_V2/backend/src/api/employees.php?id=${id}`
+                `/qlnhansu_V3/backend/src/api/employees.php?id=${id}`
             );
             return result;
         } catch (error) {
@@ -724,7 +724,7 @@ async function loadPositionsByDepartment(departmentId) {
 
         // Gọi API lấy chức vụ theo phòng ban
         const data = await ApiService.get(
-            `/qlnhansu_V2/backend/src/api/positions.php?department_id=${departmentId}`
+            `/qlnhansu_V3/backend/src/api/positions.php?department_id=${departmentId}`
         );
 
         if (data.success && data.data) {
@@ -756,7 +756,7 @@ async function loadFilters() {
     try {
         // Tải danh sách phòng ban
         const deptData = await ApiService.get(
-            "/qlnhansu_V2/backend/src/api/departments.php"
+            "/qlnhansu_V3/backend/src/api/departments.php"
         );
 
         if (deptData.success && deptData.data) {
@@ -912,7 +912,7 @@ async function loadDashboardStats() {
     try {
         // Lấy tổng số nhân viên
         const empRes = await fetch(
-            "/qlnhansu_V2/backend/src/api/employees.php?page=1&per_page=1",
+            "/qlnhansu_V3/backend/src/api/employees.php?page=1&per_page=1",
             {
                 method: "GET",
                 headers: {
@@ -933,7 +933,7 @@ async function loadDashboardStats() {
 
         // Lấy tổng số phòng ban
         const deptRes = await fetch(
-            "/qlnhansu_V2/backend/src/api/departments.php",
+            "/qlnhansu_V3/backend/src/api/departments.php",
             {
                 method: "GET",
                 headers: {
@@ -1019,26 +1019,37 @@ window.saveEditEmployee = saveEditEmployee;
 window.cancelEditEmployee = cancelEditEmployee;
 
 // Hàm xóa nhân viên
-async function deleteEmployee(id) {
-    if (confirm("Bạn có chắc chắn muốn xóa nhân viên này?")) {
-        try {
-            const result = await EmployeeService.delete(id);
+async function deleteEmployee(employeeId) {
+    try {
+        // Hiển thị loading
+        showLoading();
 
-            if (result.success) {
-                NotificationService.showSuccess("Xóa nhân viên thành công");
-                await loadEmployees();
-            } else {
-                let errorMessage = result.message || "Không thể xóa nhân viên";
-                if (errorMessage.includes("tài sản")) {
-                    errorMessage +=
-                        '<br><a href="../assets/index.html" class="alert-link">Quản lý tài sản</a>';
-                }
-                NotificationService.showError(errorMessage);
+        // Xóa mạnh nhân viên và tất cả dữ liệu liên quan
+        const response = await fetch(`/qlnhansu_V3/backend/src/api/employees.php?id=${employeeId}/force`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
             }
-        } catch (error) {
-            console.error("Lỗi xóa nhân viên:", error);
-            NotificationService.showError("Có lỗi xảy ra khi xóa nhân viên");
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Không thể xóa nhân viên');
         }
+
+        // Hiển thị thông báo thành công
+        showSuccess('Đã xóa nhân viên và tất cả dữ liệu liên quan thành công');
+        
+        // Reload lại trang
+        setTimeout(() => {
+            window.location.reload();
+        }, 1500);
+
+    } catch (error) {
+        console.error('Error deleting employee:', error);
+        showError('Không thể xóa nhân viên: ' + error.message);
+    } finally {
+        hideLoading();
     }
 }
 
@@ -1050,7 +1061,7 @@ async function loadDepartments() {
         showLoading();
 
         const response = await fetch(
-            "/qlnhansu_V2/backend/src/api/departments.php",
+            "/qlnhansu_V3/backend/src/api/departments.php",
             {
                 method: "GET",
                 headers: {
@@ -1254,7 +1265,7 @@ function handlePositionChange() {
 async function loadPositions(departmentId) {
     try {
         const response = await fetch(
-            `/qlnhansu_V2/backend/src/api/positions.php?department_id=${departmentId}`,
+            `/qlnhansu_V3/backend/src/api/positions.php?department_id=${departmentId}`,
             {
                 method: "GET",
                 headers: {
@@ -2103,152 +2114,34 @@ function showNotification(message, type = "info") {
 
 // Hàm xóa nhân viên
 async function deleteEmployee(employeeId) {
-    if (!employeeId) {
-        showNotification("Không tìm thấy ID nhân viên", "error");
-        return;
-    }
-
-    // Hiển thị hộp thoại xác nhận
-    if (
-        !confirm(
-            "Bạn có chắc chắn muốn xóa nhân viên này? Hành động này sẽ xóa tất cả thông tin liên quan đến nhân viên."
-        )
-    ) {
-        return;
-    }
-
     try {
+        // Hiển thị loading
         showLoading();
 
-        // 1. Kiểm tra trạng thái nhân viên
-        const statusCheck = await fetch(
-            `/qlnhansu_V2/backend/src/api/employees.php?id=${employeeId}/status`,
-            {
-                method: "GET",
-                headers: {
-                    Accept: "application/json",
-                },
+        // Xóa mạnh nhân viên và tất cả dữ liệu liên quan
+        const response = await fetch(`/qlnhansu_V3/backend/src/api/employees.php?id=${employeeId}/force`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
             }
-        );
-
-        if (!statusCheck.ok) {
-            throw new Error("Không thể kiểm tra trạng thái nhân viên");
-        }
-
-        const statusData = await statusCheck.json();
-
-        if (statusData.isProcessing) {
-            throw new Error(
-                "Nhân viên đang trong quá trình xử lý khác. Vui lòng thử lại sau."
-            );
-        }
-
-        if (statusData.hasActiveContract) {
-            throw new Error(
-                "Nhân viên đang có hợp đồng còn hiệu lực. Vui lòng kết thúc hợp đồng trước khi xóa."
-            );
-        }
-
-        // 2. Khóa tài nguyên
-        const lockResponse = await fetch(
-            `/qlnhansu_V2/backend/src/api/locks.php`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    resource_type: "employee",
-                    resource_id: employeeId,
-                    action: "delete",
-                }),
-            }
-        );
-
-        if (!lockResponse.ok) {
-            throw new Error(
-                "Không thể khóa tài nguyên. Có thể nhân viên đang được xử lý bởi người khác."
-            );
-        }
-
-        // 3. Lưu trữ dữ liệu gốc để rollback nếu cần
-        const backupResponse = await fetch(
-            `/qlnhansu_V2/backend/src/api/employees.php?id=${employeeId}/backup`,
-            {
-                method: "GET",
-                headers: {
-                    Accept: "application/json",
-                },
-            }
-        );
-
-        if (!backupResponse.ok) {
-            throw new Error("Không thể sao lưu dữ liệu nhân viên");
-        }
-
-        const backupData = await backupResponse.json();
-
-        // 4. Thực hiện xóa
-        const response = await fetch(
-            `/qlnhansu_V2/backend/src/api/employees.php?id=${employeeId}`,
-            {
-                method: "DELETE",
-                headers: {
-                    Accept: "application/json",
-                },
-            }
-        );
-
-        const result = await response.json();
+        });
 
         if (!response.ok) {
-            // Rollback nếu xóa thất bại
-            await fetch(`/qlnhansu_V2/backend/src/api/employees.php/rollback`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(backupData),
-            });
-            throw new Error(
-                result.message || "Xóa thất bại. Đã khôi phục dữ liệu."
-            );
+            const error = await response.json();
+            throw new Error(error.message || 'Không thể xóa nhân viên');
         }
 
-        if (result.success) {
-            // 5. Mở khóa tài nguyên
-            await fetch(`/qlnhansu_V2/backend/src/api/locks.php`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    resource_type: "employee",
-                    resource_id: employeeId,
-                }),
-            });
+        // Hiển thị thông báo thành công
+        showSuccess('Đã xóa nhân viên và tất cả dữ liệu liên quan thành công');
+        
+        // Reload lại trang
+        setTimeout(() => {
+            window.location.reload();
+        }, 1500);
 
-            showNotification("Đã xóa nhân viên thành công", "success");
-            // Load lại danh sách nhân viên
-            loadEmployees(1);
-        } else {
-            throw new Error(result.message || "Không thể xóa nhân viên");
-        }
     } catch (error) {
-        console.error("Error deleting employee:", error);
-
-        // Xử lý lỗi ràng buộc khóa ngoại
-        if (error.message.includes("Integrity constraint violation")) {
-            showNotification(
-                "Không thể xóa nhân viên. Vui lòng tịch thu tất cả tài sản đang được gán cho nhân viên này trước khi xóa.",
-                "error"
-            );
-        } else {
-            showNotification(
-                `Lỗi khi xóa nhân viên: ${error.message}`,
-                "error"
-            );
-        }
+        console.error('Error deleting employee:', error);
+        showError('Không thể xóa nhân viên: ' + error.message);
     } finally {
         hideLoading();
     }
@@ -2297,7 +2190,7 @@ async function updateEmployeeStatus(employeeId, newStatus) {
     try {
         showLoading();
         const response = await fetch(
-            `/qlnhansu_V2/backend/src/api/employees.php?id=${employeeId}`,
+            `/qlnhansu_V3/backend/src/api/employees.php?id=${employeeId}`,
             {
                 method: "PUT",
                 headers: {
@@ -2496,7 +2389,7 @@ function startEditEmployee(employeeId) {
                     // Gửi request cập nhật
                     console.log("Gửi request cập nhật với dữ liệu:", formData);
                     const response = await fetch(
-                        `/qlnhansu_V2/backend/src/api/employees.php?id=${employeeId}`,
+                        `/qlnhansu_V3/backend/src/api/employees.php?id=${employeeId}`,
                         {
                             method: "POST",
                             headers: {
@@ -2690,7 +2583,7 @@ async function saveEditEmployee(employeeId) {
 
         // Gửi request cập nhật
         const response = await fetch(
-            `/qlnhansu_V2/backend/src/api/employees.php?id=${employeeId}`,
+            `/qlnhansu_V3/backend/src/api/employees.php?id=${employeeId}`,
             {
                 method: "PUT",
                 headers: {
@@ -2820,7 +2713,7 @@ let allPositions = [];
 async function loadAllPositions() {
     try {
         const response = await fetch(
-            "/qlnhansu_V2/backend/src/api/positions.php"
+            "/qlnhansu_V3/backend/src/api/positions.php"
         );
         if (!response.ok) throw new Error("Failed to load positions");
         const data = await response.json();
@@ -2917,7 +2810,7 @@ async function saveEmployeeData(employeeData) {
         };
 
         // Gửi request đến API
-        const response = await fetch('/qlnhansu_V2/backend/src/api/employees.php', {
+        const response = await fetch('/qlnhansu_V3/backend/src/api/employees.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -2947,4 +2840,103 @@ async function saveEmployeeData(employeeData) {
         showError(error.message || 'Đã xảy ra lỗi khi kết nối đến máy chủ');
     }
 }
+
+// Biến lưu trữ ID nhân viên đang xóa
+let currentDeleteEmployeeId = null;
+
+// Hàm hiển thị modal xác nhận xóa
+function showDeleteConfirmModal(employeeId) {
+    currentDeleteEmployeeId = employeeId;
+    const modal = document.getElementById('deleteConfirmModal');
+    const employeeInfo = document.getElementById('employeeDeleteInfo');
+    
+    // Hiển thị loading
+    showLoading();
+    
+    // Lấy thông tin nhân viên
+    fetch(`/qlnhansu_V3/backend/src/api/employees.php?id=${employeeId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const employee = data.data;
+                employeeInfo.innerHTML = `
+                    <div class="employee-info">
+                        <h4>Thông tin nhân viên</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Mã nhân viên:</label>
+                                <span>${employee.employee_code || '-'}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Họ và tên:</label>
+                                <span>${employee.full_name || '-'}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Email:</label>
+                                <span>${employee.email || '-'}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Phòng ban:</label>
+                                <span>${employee.department_name || '-'}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Chức vụ:</label>
+                                <span>${employee.position_name || '-'}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Trạng thái:</label>
+                                <span>${employee.status || '-'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching employee info:', error);
+            employeeInfo.innerHTML = '<div class="alert alert-danger">Không thể tải thông tin nhân viên</div>';
+        })
+        .finally(() => {
+            hideLoading();
+            modal.style.display = 'block';
+        });
+}
+
+// Hàm đóng modal xác nhận xóa
+function closeDeleteConfirmModal() {
+    const modal = document.getElementById('deleteConfirmModal');
+    modal.style.display = 'none';
+    currentDeleteEmployeeId = null;
+}
+
+// Cập nhật event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing code ...
+
+    // Thêm event listeners cho modal xóa
+    const deleteModal = document.getElementById('deleteConfirmModal');
+    const closeBtn = deleteModal.querySelector('.close');
+    const cancelBtn = document.getElementById('cancelDeleteBtn');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+
+    closeBtn.onclick = closeDeleteConfirmModal;
+    cancelBtn.onclick = closeDeleteConfirmModal;
+    confirmBtn.onclick = function() {
+        if (currentDeleteEmployeeId) {
+            deleteEmployee(currentDeleteEmployeeId);
+        }
+    };
+
+    // Cập nhật event listener cho nút xóa trong bảng
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const employeeId = this.dataset.id;
+            showDeleteConfirmModal(employeeId);
+        };
+    });
+});
+
+// ... existing code ...
 

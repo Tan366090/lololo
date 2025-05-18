@@ -416,6 +416,29 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Xác nhận xóa nhân viên</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Lưu ý:</strong> Hành động này sẽ xóa vĩnh viễn nhân viên và tất cả dữ liệu liên quan.
+                </div>
+                <div id="employeeDeleteInfo">
+                    <!-- Thông tin nhân viên sẽ được hiển thị ở đây -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelDeleteBtn">Hủy</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

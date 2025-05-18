@@ -20,7 +20,7 @@ let positions = [];
 async function loadDepartmentsAndPositions() {
     try {
         // Load phòng ban
-        const deptResponse = await fetch('/qlnhansu_V2/backend/src/api/departments.php');
+        const deptResponse = await fetch('/qlnhansu_V3/backend/src/api/departments.php');
         if (!deptResponse.ok) {
             throw new Error('Không thể tải danh sách phòng ban');
         }
@@ -28,7 +28,7 @@ async function loadDepartmentsAndPositions() {
         departments = Array.isArray(deptData) ? deptData : deptData.data || [];
 
         // Load chức vụ
-        const posResponse = await fetch('/qlnhansu_V2/backend/src/api/positions.php');
+        const posResponse = await fetch('/qlnhansu_V3/backend/src/api/positions.php');
         if (!posResponse.ok) {
             throw new Error('Không thể tải danh sách chức vụ');
         }
@@ -318,7 +318,7 @@ async function autoRetryWithFix(employeeData, maxRetries = 3) {
             console.log("Debug - Dữ liệu chuẩn bị gửi:", processedData);
 
             // Gửi dữ liệu lên API
-            const response = await fetch('/qlnhansu_V2/backend/src/api/employees.php', {
+            const response = await fetch('/qlnhansu_V3/backend/src/api/employees.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -600,16 +600,6 @@ document.addEventListener('DOMContentLoaded', function() {
     attachAddEmployeeFormButtonEvent();
     attachAddEmployeeFileButtonEvent();
     attachRefreshButtonEvent();
-    attachTestButtonEvent();
-  
-    const closeBtn = document.getElementById('closeFileModalBtn');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeAddEmployeeByFileModal);
-    }
-    const cancelBtn = document.getElementById('cancelFileBtn');
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', closeAddEmployeeByFileModal);
-    }
 });
 
 function closeAddEmployeeByFileModal() {

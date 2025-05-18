@@ -532,6 +532,116 @@ if (isset($_GET['action']) && $_GET['action'] === 'getById' && isset($_GET['id']
     exit();
 }
 
+// Xử lý xóa mạnh nhân viên
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && strpos($_SERVER['REQUEST_URI'], '/force') !== false) {
+    $id = isset($_GET['id']) ? $_GET['id'] : null;
+    
+    if (!$id) {
+        http_response_code(400);
+        echo json_encode(['message' => 'Thiếu ID nhân viên']);
+        exit;
+    }
+
+    try {
+        $conn->beginTransaction();
+
+        // 1. Lấy user_id từ employees
+        $query = "SELECT user_id FROM employees WHERE id = :id";
+        $stmt = $conn->prepare($query);
+        $stmt->execute(['id' => $id]);
+        $user_id = $stmt->fetchColumn();
+        if (!$user_id) throw new Exception('Không tìm thấy nhân viên');
+
+        // 2. Xóa các bảng liên quan đến employees.id
+        // Đặc biệt: Xóa payroll_bonuses trước khi xóa bonuses
+        try {
+            $query = "SELECT bonus_id FROM bonuses WHERE employee_id = :id";
+            $stmt = $conn->prepare($query);
+            $stmt->execute(['id' => $id]);
+            $bonus_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            if (!empty($bonus_ids)) {
+                $in = str_repeat('?,', count($bonus_ids) - 1) . '?';
+                $query = "DELETE FROM payroll_bonuses WHERE bonus_id IN ($in)";
+                $stmt = $conn->prepare($query);
+                $stmt->execute($bonus_ids);
+            }
+        } catch (Exception $e) { /* Bỏ qua nếu bảng không tồn tại */ }
+
+        $employee_id_tables = [
+            'asset_assignments' => ['employee_id'],
+            'attendance' => ['employee_id'],
+            'bonuses' => ['employee_id'],
+            'certificates' => ['employee_id'],
+            'contracts' => ['employee_id'],
+            'degrees' => ['employee_id'],
+            'employee_positions' => ['employee_id'],
+            'family_members' => ['employee_id'],
+            'insurance' => ['employee_id'],
+            'interviews' => ['interviewer_employee_id'],
+            'kpi' => ['employee_id'],
+            'training_registrations' => ['employee_id'], // khoá học
+        ];
+        foreach ($employee_id_tables as $table => $columns) {
+            foreach ($columns as $col) {
+                try {
+                    $query = "DELETE FROM $table WHERE $col = :id";
+                    $stmt = $conn->prepare($query);
+                    $stmt->execute(['id' => $id]);
+                } catch (Exception $e) { /* Bỏ qua nếu bảng không tồn tại */ }
+            }
+        }
+
+        // 3. Xóa các bảng liên quan đến users.user_id
+        $user_id_tables = [
+            'activities' => ['user_id'],
+            'asset_assignments' => ['assigned_by_user_id', 'returned_to_user_id'],
+            'asset_maintenance' => ['created_by_user_id'],
+            'audit_logs' => ['user_id'],
+            'backup_logs' => ['created_by_user_id'],
+            'bonuses' => ['approved_by_user_id'],
+            'departments' => ['manager_id'],
+            'documents' => ['uploaded_by_user_id'],
+            'document_versions' => ['created_by_user_id'],
+            'email_verification_tokens' => ['user_id'],
+            'job_positions' => ['hiring_manager_user_id'],
+            'leaves' => ['approved_by_user_id'],
+            'user_profiles' => ['user_id'],
+        ];
+        foreach ($user_id_tables as $table => $columns) {
+            foreach ($columns as $col) {
+                try {
+                    $query = "DELETE FROM $table WHERE $col = :user_id";
+                    $stmt = $conn->prepare($query);
+                    $stmt->execute(['user_id' => $user_id]);
+                } catch (Exception $e) { /* Bỏ qua nếu bảng không tồn tại */ }
+            }
+        }
+
+        // 4. Xóa nhân viên và user
+        $query = "DELETE FROM employees WHERE id = :id";
+        $stmt = $conn->prepare($query);
+        $stmt->execute(['id' => $id]);
+
+        $query = "DELETE FROM users WHERE user_id = :user_id";
+        $stmt = $conn->prepare($query);
+        $stmt->execute(['user_id' => $user_id]);
+
+        $conn->commit();
+        echo json_encode([
+            'success' => true,
+            'message' => 'Xóa nhân viên và dữ liệu liên quan thành công'
+        ]);
+    } catch (Exception $e) {
+        $conn->rollBack();
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Lỗi khi xóa nhân viên: ' . $e->getMessage()
+        ]);
+    }
+    exit;
+}
+
 switch ($method) {
     case 'GET':
         $api->getEmployees();

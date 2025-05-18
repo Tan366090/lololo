@@ -92,7 +92,7 @@ class EmployeeFormHandler {
 
     async autoSaveDraft(formData) {
         try {
-            const response = await fetch('/qlnhansu_V2/backend/src/api/drafts.php', {
+            const response = await fetch('/qlnhansu_V3/backend/src/api/drafts.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -194,7 +194,7 @@ class EmployeeFormHandler {
             if (newPositionName && departmentId) {
                 // Gọi API tạo chức vụ mới
                 try {
-                    const response = await fetch('/qlnhansu_V2/backend/src/api/positions.php', {
+                    const response = await fetch('/qlnhansu_V3/backend/src/api/positions.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ name: newPositionName, department_id: departmentId })
@@ -303,7 +303,7 @@ class EmployeeFormHandler {
             try {
                 console.log(`Attempt ${retryCount + 1} to save employee data`);
                 
-                const response = await fetch('/qlnhansu_V2/backend/src/api/employees.php', {
+                const response = await fetch('/qlnhansu_V3/backend/src/api/employees.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -736,7 +736,7 @@ class EmployeeFormHandler {
 
     async loadDepartments() {
         try {
-            const response = await fetch('/qlnhansu_V2/backend/src/api/departments.php');
+            const response = await fetch('/qlnhansu_V3/backend/src/api/departments.php');
             if (!response.ok) throw new Error('Failed to load departments');
             const data = await response.json();
             if (data.success) {
@@ -765,7 +765,7 @@ class EmployeeFormHandler {
         }
 
         try {
-            const response = await fetch(`/qlnhansu_V2/backend/src/api/positions.php?department_id=${departmentId}`, {
+            const response = await fetch(`/qlnhansu_V3/backend/src/api/positions.php?department_id=${departmentId}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -837,7 +837,7 @@ class EmployeeFormHandler {
 
     async loadContractTypes() {
         try {
-            const response = await fetch('/qlnhansu_V2/backend/src/api/contract_types.php');
+            const response = await fetch('/qlnhansu_V3/backend/src/api/contract_types.php');
             if (!response.ok) throw new Error('Failed to load contract types');
             const data = await response.json();
     
