@@ -79,26 +79,29 @@ function parseFileContent(content) {
 
                 // Parse dữ liệu nhân viên từ dòng EMP theo đúng thứ tự
                 currentEmployee = {
-                    employee_code: parts[1] || '',      // MNV
-                    name: parts[2] || '',              // Tên
-                    full_name: parts[3] || '',         // Họ và tên đầy đủ
-                    email: parts[4] || '',             // Email
-                    phone: parts[5] || '',             // Số điện thoại
-                    birthday: parts[6] || '',          // Ngày sinh
-                    address: parts[7] || '',           // Địa chỉ
-                    department_name: parts[8] || '',   // Phòng ban
-                    position_name: parts[9] || '',     // Chức vụ
-                    contract_type: parts[10] || '',    // Loại hợp đồng
-                    base_salary: parts[11] || '',      // Lương
-                    contract_start_date: parts[12] || '', // Ngày bắt đầu
-                    contract_end_date: parts[13] || '',  // Ngày kết thúc
-                    family_members: []                  // Thành viên gia đình
+                    employee_code: parts[1],      // Mã nhân viên
+                    name: parts[2],              // Tên
+                    full_name: parts[2],         // Họ và tên đầy đủ
+                    email: parts[3],             // Email
+                    phone: parts[4],             // Số điện thoại
+                    birthday: parts[5],          // Ngày sinh
+                    address: parts[6],           // Địa chỉ
+                    department_name: parts[7],   // Phòng ban
+                    position_name: parts[8],     // Chức vụ
+                    contract_type: parts[9],     // Loại hợp đồng
+                    base_salary: parts[10],      // Lương
+                    contract_start_date: parts[11], // Ngày bắt đầu
+                    contract_end_date: parts[12],  // Ngày kết thúc
+                    status: parts[13],           // Trạng thái
+                    family_members: []           // Thành viên gia đình
                 };
 
                 // Kiểm tra các trường bắt buộc
                 if (!currentEmployee.employee_code) {
                     throw new Error('Thiếu mã nhân viên');
                 }
+
+                console.log("Parsed employee data:", currentEmployee);
             } else if (parts[0] === 'FAM' && currentEmployee) {
                 // Kiểm tra số lượng trường dữ liệu người thân
                 if (parts.length < 6) {
@@ -107,10 +110,10 @@ function parseFileContent(content) {
 
                 // Parse dữ liệu người thân theo đúng thứ tự
                 const fam = {
-                    name: parts[1] || '',          // Tên
-                    relationship: parts[2] || '',   // Quan hệ
-                    birthday: parts[3] || '',       // Ngày sinh
-                    occupation: parts[4] || '',     // Nghề nghiệp
+                    name: parts[1],          // Tên
+                    relationship: parts[2],   // Quan hệ
+                    birthday: parts[3],       // Ngày sinh
+                    occupation: parts[4],     // Nghề nghiệp
                     is_dependent: parts[5] === '1'  // Người phụ thuộc
                 };
 
@@ -134,6 +137,7 @@ function parseFileContent(content) {
             throw new Error('Không tìm thấy dữ liệu nhân viên nào trong file');
         }
 
+        console.log("All parsed employees:", employees);
         return employees;
     } catch (error) {
         console.error('Lỗi khi parse file:', error);
@@ -385,6 +389,9 @@ async function savePreviewedEmployees() {
     try {
         // Load dữ liệu phòng ban và chức vụ trước
         await loadDepartmentsAndPositions();
+        console.log("Loaded departments:", departments);
+        console.log("Loaded positions:", positions);
+        
         statusDiv.innerHTML = '<div class="alert alert-info">Đang lưu dữ liệu...</div>';
 
         console.log("Danh sách nhân viên trước khi lưu:", previewedEmployees);
@@ -394,17 +401,26 @@ async function savePreviewedEmployees() {
 
         for (const emp of previewedEmployees) {
             try {
-                // Điều chỉnh dữ liệu thông minh
-                const adjustedEmployee = smartProcessEmployeeData(emp);
+                console.log("Processing employee:", emp);
                 
                 // Kiểm tra và làm sạch dữ liệu
-                const employeeCode = adjustedEmployee.employee_code?.trim();
-                let name = adjustedEmployee.name?.trim();
-                let fullName = adjustedEmployee.full_name?.trim();
-                const email = adjustedEmployee.email?.trim();
-                const phone = adjustedEmployee.phone?.trim();
-                const departmentName = adjustedEmployee.department_name?.trim();
-                const positionName = adjustedEmployee.position_name?.trim();
+                const employeeCode = emp.employee_code?.trim();
+                let name = emp.name?.trim();
+                let fullName = emp.full_name?.trim();
+                const email = emp.email?.trim();
+                const phone = emp.phone?.trim();
+                const departmentName = emp.department_name?.trim();
+                const positionName = emp.position_name?.trim();
+
+                console.log("Cleaned data:", {
+                    employeeCode,
+                    name,
+                    fullName,
+                    email,
+                    phone,
+                    departmentName,
+                    positionName
+                });
 
                 // Đảm bảo có tên nhân viên
                 if (!name) {
@@ -417,14 +433,19 @@ async function savePreviewedEmployees() {
                     }
                 }
 
-                // Lấy ID phòng ban và chức vụ
+                // Lấy ID phòng ban
                 const departmentId = getDepartmentIdByName(departmentName);
+                console.log("Department lookup:", { departmentName, departmentId });
+                
                 if (!departmentId) {
                     errors.push(`Không tìm thấy phòng ban: ${departmentName}`);
                     continue;
                 }
 
+                // Lấy ID chức vụ
                 const positionId = getPositionIdByName(positionName, departmentId);
+                console.log("Position lookup:", { positionName, departmentId, positionId });
+                
                 if (!positionId) {
                     errors.push(`Không tìm thấy chức vụ: ${positionName} trong phòng ban ${departmentName}`);
                     continue;
@@ -432,38 +453,49 @@ async function savePreviewedEmployees() {
 
                 // Định dạng dữ liệu nhân viên
                 const employeeData = {
+                    employee_code: employeeCode,
                     name: name,
-                    fullName: fullName || name,
+                    full_name: fullName || name,
                     phone: phone || '',
                     email: email || '',
-                    department: departmentId,
-                    position: positionId,
-                    startDate: adjustedEmployee.contract_start_date ? formatDate(adjustedEmployee.contract_start_date) : null,
-                    birthDate: adjustedEmployee.birthday ? formatDate(adjustedEmployee.birthday) : null,
-                    address: adjustedEmployee.address?.trim() || '',
-                    gender: adjustedEmployee.gender || 'other',
-                    contract_type: adjustedEmployee.contract_type?.trim() || 'Permanent',
-                    base_salary: parseFloat(adjustedEmployee.base_salary) || 0,
-                    contract_start_date: adjustedEmployee.contract_start_date ? formatDate(adjustedEmployee.contract_start_date) : null,
-                    contract_end_date: adjustedEmployee.contract_end_date ? formatDate(adjustedEmployee.contract_end_date) : null
+                    department_id: departmentId,
+                    position_id: positionId,
+                    start_date: emp.contract_start_date ? formatDate(emp.contract_start_date) : null,
+                    birth_date: emp.birthday ? formatDate(emp.birthday) : null,
+                    address: emp.address?.trim() || '',
+                    gender: emp.gender || 'other',
+                    contract_type: emp.contract_type?.trim() || 'Permanent',
+                    base_salary: parseFloat(emp.base_salary) || 0,
+                    contract_start_date: emp.contract_start_date ? formatDate(emp.contract_start_date) : null,
+                    contract_end_date: emp.contract_end_date ? formatDate(emp.contract_end_date) : null,
+                    status: 'active'
                 };
 
-                // Đảm bảo name không bị trống
-                if (!employeeData.name.trim()) {
-                    employeeData.name = "Nhân viên " + (new Date().getTime());
-                    employeeData.fullName = employeeData.name;
-                }
+                console.log("Final employee data:", employeeData);
 
-                console.log("Debug - Final employee data to save:", employeeData);
+                // Gửi dữ liệu lên API
+                const response = await fetch('/qlnhansu_V3/backend/src/api/employees.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: "add",
+                        employee: employeeData
+                    })
+                });
 
-                // Thử lưu dữ liệu với tự động sửa lỗi
-                const result = await autoRetryWithFix(employeeData);
+                const result = await response.json();
+                console.log("API Response:", result);
+
                 if (result.success) {
                     employeesToSave.push(employeeData);
                 } else {
                     errors.push(`Không thể lưu nhân viên ${employeeCode || '[Không có mã]'}: ${result.message}`);
                 }
             } catch (err) {
+                console.error("Error processing employee:", err);
                 errors.push(`Lỗi xử lý nhân viên ${emp.employee_code || '[Không có mã]'}: ${err.message}`);
             }
         }

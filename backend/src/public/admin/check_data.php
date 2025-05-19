@@ -51,6 +51,7 @@ try {
     // Danh sách 56 bảng cần kiểm tra
     $tables = [
         'activities' => 'Hoạt động',
+        'allowances' => 'Phụ cấp',
         'asset_assignments' => 'Phân công tài sản',
         'asset_maintenance' => 'Bảo trì tài sản',
         'assets' => 'Tài sản',
@@ -60,7 +61,11 @@ try {
         'benefits' => 'Phúc lợi',
         'bonuses' => 'Thưởng',
         'certificates' => 'Chứng chỉ',
+        'chat_context' => 'Ngữ cảnh chat',
+        'chat_logs' => 'Nhật ký chat',
+        'contract_types' => 'Loại hợp đồng',
         'contracts' => 'Hợp đồng',
+        'deductions' => 'Khấu trừ',
         'degrees' => 'Bằng cấp',
         'departments' => 'Phòng ban',
         'document_versions' => 'Phiên bản tài liệu',
@@ -81,6 +86,14 @@ try {
         'onboarding' => 'Quy trình nhận việc',
         'password_reset_tokens' => 'Token đặt lại mật khẩu',
         'payroll' => 'Bảng lương',
+        'payroll_allowances' => 'Phụ cấp lương',
+        'payroll_approvals' => 'Phê duyệt lương',
+        'payroll_bonuses' => 'Thưởng lương',
+        'payroll_deductions' => 'Khấu trừ lương',
+        'payroll_details' => 'Chi tiết lương',
+        'payroll_history' => 'Lịch sử lương',
+        'payroll_payments' => 'Thanh toán lương',
+        'payroll_periods' => 'Kỳ lương',
         'performances' => 'Đánh giá hiệu suất',
         'permissions' => 'Quyền hạn',
         'policies' => 'Chính sách',
@@ -95,6 +108,7 @@ try {
         'report_templates' => 'Mẫu báo cáo',
         'role_permissions' => 'Quyền hạn theo vai trò',
         'roles' => 'Vai trò',
+        'salary_components' => 'Thành phần lương',
         'salary_history' => 'Lịch sử lương',
         'sessions' => 'Phiên làm việc',
         'system_logs' => 'Nhật ký hệ thống',
@@ -105,17 +119,39 @@ try {
         'training_registrations' => 'Đăng ký đào tạo',
         'user_profiles' => 'Hồ sơ người dùng',
         'users' => 'Người dùng',
+        'vw_payroll_details' => 'Chi tiết lương (View)',
         'work_schedules' => 'Lịch làm việc'
     ];
     
     $results = [];
     $totalRecords = 0;
+    $tablesWithData = 0;
+    $tablesWithoutData = 0;
+    $tablesWithErrors = 0;
+    
+    // Danh sách các bảng trống
+    $emptyTables = [
+        'asset_maintenance',
+        'document_versions',
+        'payroll_periods',
+        'report_executions',
+        'report_schedules',
+        'report_templates',
+        'sessions'
+    ];
     
     foreach ($tables as $table => $description) {
         try {
             $data = $dataStore->getData($table);
             $count = count($data);
-            $totalRecords += $count;
+            
+            // Kiểm tra nếu là bảng trống
+            if (in_array($table, $emptyTables)) {
+                $tablesWithoutData++;
+            } else {
+                $tablesWithData++;
+                $totalRecords += $count;
+            }
             
             $columns = [];
             if (!empty($data)) {
@@ -127,10 +163,11 @@ try {
                 'description' => $description,
                 'count' => $count,
                 'columns' => $columns,
-                'status' => $count > 0 ? 'Có dữ liệu' : 'Không có dữ liệu',
+                'status' => in_array($table, $emptyTables) ? 'Trống' : 'Có dữ liệu',
                 'sample' => $data
             ];
         } catch (Exception $e) {
+            $tablesWithErrors++;
             $results[$table] = [
                 'description' => $description,
                 'error' => $e->getMessage(),
@@ -142,15 +179,9 @@ try {
     $summary = [
         'total_tables' => count($tables),
         'total_records' => $totalRecords,
-        'tables_with_data' => count(array_filter($results, function($r) { 
-            return isset($r['count']) && $r['count'] > 0; 
-        })),
-        'tables_without_data' => count(array_filter($results, function($r) { 
-            return isset($r['count']) && $r['count'] === 0; 
-        })),
-        'tables_with_errors' => count(array_filter($results, function($r) { 
-            return isset($r['error']); 
-        }))
+        'tables_with_data' => $tablesWithData,
+        'tables_without_data' => $tablesWithoutData,
+        'tables_with_errors' => $tablesWithErrors
     ];
     
     // Xử lý xuất PDF
@@ -1068,7 +1099,7 @@ try {
                     <select class="filter-select" id="statusFilter">
                         <option value="">Tất cả trạng thái</option>
                         <option value="Có dữ liệu">Có dữ liệu</option>
-                        <option value="Không có dữ liệu">Không có dữ liệu</option>
+                        <option value="Trống">Trống</option>
                         <option value="Lỗi truy cập">Lỗi truy cập</option>
                     </select>
                     <select class="filter-select" id="countFilter">

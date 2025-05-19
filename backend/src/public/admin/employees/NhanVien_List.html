@@ -355,6 +355,122 @@
         </div>
     </div>
 
+    <!-- Edit Employee Modal -->
+    <div id="editEmployeeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sửa nhân viên</h3>
+                <span id="closeEditModalBtn" class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editEmployeeForm">
+                    <!-- Thông tin cá nhân -->
+                    <div class="form-section">
+                        <h4><i class="fas fa-user"></i> Thông tin cá nhân</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="editEmployeeName" class="required-field">Tên</label>
+                                <input type="text" id="editEmployeeName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editEmployeeFullName" class="required-field">Họ và tên đầy đủ</label>
+                                <input type="text" id="editEmployeeFullName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editEmployeeEmail" class="required-field">Email</label>
+                                <input type="email" id="editEmployeeEmail" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editEmployeePhone" class="required-field">Số điện thoại</label>
+                                <input type="tel" id="editEmployeePhone" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editEmployeeBirthday">Ngày sinh</label>
+                                <input type="date" id="editEmployeeBirthday" class="form-control">
+                            </div>
+                            <div class="form-group" style="grid-column: 1 / -1;">
+                                <label for="editEmployeeAddress">Địa chỉ</label>
+                                <textarea id="editEmployeeAddress" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin công việc -->
+                    <div class="form-section">
+                        <h4><i class="fas fa-briefcase"></i> Thông tin công việc</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="editEmployeeCode" class="required-field">Mã nhân viên</label>
+                                <input type="text" id="editEmployeeCode" class="form-control" required readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="editDepartmentId" class="required-field">Phòng ban</label>
+                                <select id="editDepartmentId" class="form-control" required>
+                                    <option value="">Chọn phòng ban</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editPositionId" class="required-field">Chức vụ</label>
+                                <select id="editPositionId" class="form-control" required>
+                                    <option value="">Chọn chức vụ</option>
+                                    <option value="new">+ Thêm chức vụ mới</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="editNewPositionGroup" style="display: none;">
+                                <label for="editNewPosition" class="required-field">Tên chức vụ mới</label>
+                                <input type="text" id="editNewPosition" class="form-control" placeholder="Nhập tên chức vụ mới">
+                            </div>
+                            <div class="form-group">
+                                <label for="editHireDate" class="required-field">Ngày bắt đầu làm việc</label>
+                                <input type="date" id="editHireDate" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin hợp đồng -->
+                    <div class="form-section">
+                        <h4><i class="fas fa-file-contract"></i> Thông tin hợp đồng</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="editContractType" class="required-field">Loại hợp đồng</label>
+                                <select id="editContractType" class="form-control" required>
+                                    <option value="">Chọn loại hợp đồng</option>
+                                    <option value="Permanent">Hợp đồng không xác định thời hạn</option>
+                                    <option value="Fixed-Term">Hợp đồng xác định thời hạn</option>
+                                    <option value="Intern">Hợp đồng thực tập</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editBaseSalary" class="required-field">Lương cơ bản</label>
+                                <input type="number" id="editBaseSalary" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editContractStartDate" class="required-field">Ngày bắt đầu hợp đồng</label>
+                                <input type="date" id="editContractStartDate" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin gia đình -->
+                    <div class="form-section">
+                        <h4><i class="fas fa-users"></i> Thông tin gia đình</h4>
+                        <div id="editFamilyMembers">
+                            <!-- Template cho một thành viên gia đình sẽ được render bằng JS -->
+                        </div>
+                        <button type="button" class="btn btn-primary btn-sm mt-2" id="editAddFamilyMemberBtn">
+                            <img src="add-friend.png" alt="Thêm thành viên" style="width: 20px; height: 20px; margin-right: 5px;">
+                            Thêm thành viên
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelEditEmployeeBtn">Hủy</button>
+                <button class="btn btn-primary" id="saveEditEmployeeBtn">Lưu</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Add Employee By File Modal -->
     <div id="addEmployeeByFileModal" class="modal">
         <div class="modal-content">
@@ -449,4 +565,4 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
    
 </body>
-</html> 
+</html>

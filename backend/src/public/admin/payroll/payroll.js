@@ -618,6 +618,9 @@ async function loadPayrollData() {
         // Update dashboard cards
         updateDashboardCards(payrollData);
 
+        // Cập nhật đúng tổng số phiếu lương từ API
+        animateValue('totalPayrolls', 0, totalItems, 1000);
+
         // Update all charts
         createMonthlySalaryChart(payrollData);
         createDepartmentSalaryChart(payrollData);
@@ -1465,7 +1468,7 @@ function updateDashboardCards(data) {
         animateValue('totalSalary', 0, totalSalary, 1000);
         animateValue('totalBonus', 0, totalBonus, 1000);
         animateValue('averageSalary', 0, averageSalary, 1000);
-        animateValue('totalPayrolls', 0, data.length, 1000);
+        
 
     } catch (error) {
         console.error('Error updating dashboard cards:', error);
@@ -1484,9 +1487,18 @@ function animateValue(elementId, start, end, duration) {
     const animate = () => {
         current += increment;
         if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-            element.textContent = formatCurrency(end);
+            // Nếu là tổng số phiếu lương thì chỉ hiển thị số, không định dạng tiền tệ
+            if (elementId === 'totalPayrolls') {
+                element.textContent = end;
+            } else {
+                element.textContent = formatCurrency(end);
+            }
         } else {
-            element.textContent = formatCurrency(Math.round(current));
+            if (elementId === 'totalPayrolls') {
+                element.textContent = Math.round(current);
+            } else {
+                element.textContent = formatCurrency(Math.round(current));
+            }
             requestAnimationFrame(animate);
         }
     };

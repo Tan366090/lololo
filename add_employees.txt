@@ -1,0 +1,119 @@
+EMP|EMP-IT-001|Nguyễn Văn An|nguyenvana123@gmail.com|0987654321|15/05/1990|123 Nguyễn Huệ, Q1, TP.HCM|IT|Senior Developer|Permanent|25000000|01/01/2024|31/12/2024|active
+FAM|Nguyễn Thị Bình|Vợ|20/08/1992|Kế toán|1
+FAM|Nguyễn Văn Cường|Con|10/03/2018|Học sinh|1
+
+EMP|EMP-HR-001|Trần Thị Bích|tranthibich123@gmail.com|0987654322|20/03/1988|456 Lê Lợi, Q1, TP.HCM|HR|HR Manager|Permanent|30000000|01/01/2024|31/12/2024|active
+FAM|Nguyễn Văn Dũng|Chồng|15/06/1985|Bác sĩ|0
+FAM|Trần Thị Lan|Con|05/09/2015|Học sinh|1
+
+EMP|EMP-MKT-001|Lê Văn Cường|levancuong123@gmail.com|0987654323|10/07/1995|789 Đồng Khởi, Q1, TP.HCM|Marketing|Marketing Specialist|Contract|15000000|01/01/2024|30/06/2024|active
+FAM|Trần Thị Dung|Vợ|15/09/1996|Nhân viên ngân hàng|0
+FAM|Lê Văn Minh|Con|20/12/2021|Học sinh|1
+
+EMP|EMP-SLS-001|Phạm Thị Dung|phamthidung123@gmail.com|0987654324|25/12/1992|321 Lê Duẩn, Q1, TP.HCM|Sales|Sales Manager|Permanent|28000000|01/01/2024|31/12/2024|active
+FAM|Nguyễn Văn Em|Chồng|30/03/1990|Kỹ sư|0
+FAM|Phạm Thị Nhi|Con|15/08/2019|Học sinh|1
+
+EMP|EMP-FIN-001|Vũ Văn Em|vuvane123@gmail.com|0987654325|05/04/1985|567 Nguyễn Du, Q1, TP.HCM|Finance|Finance Director|Permanent|35000000|01/01/2024|31/12/2024|active
+FAM|Lê Thị Hương|Vợ|15/08/1987|Giáo viên|0
+FAM|Vũ Văn Minh|Con|20/03/2012|Học sinh|1
+
+EMP|EMP-IT-002|Hoàng Văn Giang|hoangvangiang123@gmail.com|0987654326|15/06/1993|890 Lý Tự Trọng, Q1, TP.HCM|IT|Developer|Permanent|20000000|01/01/2024|31/12/2024|active
+FAM|Trần Thị Hà|Vợ|20/09/1994|Nhân viên văn phòng|0
+FAM|Hoàng Văn Phúc|Con|10/05/2020|Học sinh|1
+
+EMP|EMP-HR-002|Đỗ Thị Hà|dothiha123@gmail.com|0987654327|20/08/1991|123 Nguyễn Đình Chiểu, Q1, TP.HCM|HR|HR Specialist|Permanent|18000000|01/01/2024|31/12/2024|active
+FAM|Nguyễn Văn Hải|Chồng|25/05/1990|Kỹ sư|0
+FAM|Đỗ Thị Lan|Con|15/10/2017|Học sinh|1
+
+EMP|EMP-MKT-002|Nguyễn Văn Hải|nguyenvanhai123@gmail.com|0987654328|10/03/1989|456 Võ Văn Tần, Q1, TP.HCM|Marketing|Marketing Manager|Permanent|30000000|01/01/2024|31/12/2024|active
+FAM|Trần Thị Hương|Vợ|15/07/1990|Nhân viên ngân hàng|0
+FAM|Nguyễn Văn Khôi|Con|20/04/2016|Học sinh|1
+
+EMP|EMP-SLS-002|Trần Văn Hùng|tranvanhung123@gmail.com|0987654329|25/05/1994|789 Điện Biên Phủ, Q1, TP.HCM|Sales|Sales Executive|Contract|15000000|01/01/2024|30/06/2024|active
+FAM|Lê Thị Lan|Vợ|30/08/1995|Nhân viên văn phòng|0
+FAM|Trần Văn Minh|Con|10/12/2019|Học sinh|1
+
+EMP|EMP-FIN-002|Lê Thị Hương|lethihuong123@gmail.com|0987654330|15/07/1992|321 Nguyễn Huệ, Q1, TP.HCM|Finance|Accountant|Permanent|20000000|01/01/2024|31/12/2024|active
+FAM|Nguyễn Văn Khải|Chồng|20/04/1990|Kỹ sư|0
+FAM|Lê Thị Nhi|Con|25/09/2018|Học sinh|1
+
+EMP|EMP-IT-003|Phạm Văn Khải|phamvankhai123@gmail.com|0987654331|10/09/1993|567 Lê Duẩn, Q1, TP.HCM|IT|System Admin|Permanent|25000000|01/01/2024|31/12/2024|active
+FAM|Trần Thị Lan|Vợ|15/12/1994|Nhân viên ngân hàng|0
+FAM|Phạm Văn Phúc|Con|20/03/2020|Học sinh|1
+
+EMP|EMP-HR-003|Vũ Thị Lan|vuthilan123@gmail.com|0987654332|20/11/1991|890 Nguyễn Du, Q1, TP.HCM|HR|HR Assistant|Contract|12000000|01/01/2024|30/06/2024|active
+FAM|Nguyễn Văn Lâm|Chồng|25/08/1990|Bác sĩ|0
+FAM|Vũ Thị Minh|Con|15/05/2017|Học sinh|1
+
+EMP|EMP-MKT-003|Hoàng Văn Lâm|hoangvanlam123@gmail.com|0987654333|15/01/1994|123 Lý Tự Trọng, Q1, TP.HCM|Marketing|Content Writer|Permanent|18000000|01/01/2024|31/12/2024|active
+FAM|Trần Thị Mai|Vợ|20/04/1995|Giáo viên|0
+FAM|Hoàng Văn Khôi|Con|10/08/2019|Học sinh|1
+
+EMP|EMP-SLS-003|Đỗ Thị Mai|dothimai123@gmail.com|0987654334|25/03/1992|456 Nguyễn Đình Chiểu, Q1, TP.HCM|Sales|Sales Assistant|Contract|12000000|01/01/2024|30/06/2024|active
+FAM|Nguyễn Văn Minh|Chồng|30/06/1991|Kỹ sư|0
+FAM|Đỗ Thị Nhi|Con|20/10/2018|Học sinh|1
+
+EMP|EMP-FIN-003|Nguyễn Văn Minh|nguyenvanminh123@gmail.com|0987654335|10/05/1993|789 Võ Văn Tần, Q1, TP.HCM|Finance|Financial Analyst|Permanent|25000000|01/01/2024|31/12/2024|active
+FAM|Lê Thị Nga|Vợ|15/08/1994|Nhân viên văn phòng|0
+FAM|Nguyễn Văn Phúc|Con|25/12/2019|Học sinh|1
+
+EMP|EMP-IT-004|Trần Thị Nga|tranthinga123@gmail.com|0987654336|20/07/1991|321 Điện Biên Phủ, Q1, TP.HCM|IT|QA Engineer|Permanent|22000000|01/01/2024|31/12/2024|active
+FAM|Nguyễn Văn Nghĩa|Chồng|25/10/1990|Bác sĩ|0
+FAM|Trần Thị Lan|Con|15/03/2017|Học sinh|1
+
+EMP|EMP-HR-004|Lê Văn Nghĩa|levannghia123@gmail.com|0987654337|15/09/1994|567 Nguyễn Huệ, Q1, TP.HCM|HR|Recruiter|Permanent|20000000|01/01/2024|31/12/2024|active
+FAM|Trần Thị Nhi|Vợ|20/12/1995|Nhân viên ngân hàng|0
+FAM|Lê Văn Khôi|Con|10/06/2020|Học sinh|1
+
+EMP|EMP-MKT-004|Phạm Thị Nhi|phamthinh123@gmail.com|0987654338|25/11/1992|890 Lê Duẩn, Q1, TP.HCM|Marketing|Social Media Manager|Permanent|25000000|01/01/2024|31/12/2024|active
+FAM|Nguyễn Văn Phúc|Chồng|30/02/1991|Kỹ sư|0
+FAM|Phạm Thị Minh|Con|20/08/2018|Học sinh|1
+
+EMP|EMP-SLS-004|Vũ Văn Phúc|vuvanphuc123@gmail.com|0987654339|10/01/1993|123 Nguyễn Du, Q1, TP.HCM|Sales|Sales Representative|Contract|15000000|01/01/2024|30/06/2024|active
+FAM|Lê Thị Phương|Vợ|15/04/1994|Giáo viên|0
+FAM|Vũ Văn Khôi|Con|25/07/2019|Học sinh|1
+
+EMP|EMP-FIN-004|Hoàng Thị Phương|hoangthiphuong123@gmail.com|0987654340|20/03/1991|456 Lý Tự Trọng, Q1, TP.HCM|Finance|Tax Specialist|Permanent|22000000|01/01/2024|31/12/2024|active
+FAM|Nguyễn Văn Quân|Chồng|25/06/1990|Kỹ sư|0
+FAM|Hoàng Thị Lan|Con|15/09/2017|Học sinh|1
+
+EMP|EMP-IT-005|Đỗ Văn Quân|dovanquan123@gmail.com|0987654341|15/05/1994|789 Nguyễn Đình Chiểu, Q1, TP.HCM|IT|DevOps Engineer|Permanent|28000000|01/01/2024|31/12/2024|active
+FAM|Trần Thị Quỳnh|Vợ|20/08/1995|Nhân viên văn phòng|0
+FAM|Đỗ Văn Minh|Con|10/11/2019|Học sinh|1
+
+EMP|EMP-HR-005|Nguyễn Thị Quỳnh|nguyenthiquynh123@gmail.com|0987654342|25/07/1992|321 Võ Văn Tần, Q1, TP.HCM|HR|Training Specialist|Permanent|20000000|01/01/2024|31/12/2024|active
+FAM|Lê Văn Sơn|Chồng|30/10/1991|Bác sĩ|0
+FAM|Nguyễn Thị Nhi|Con|20/04/2018|Học sinh|1
+
+EMP|EMP-MKT-005|Trần Văn Sơn|tranvanson123@gmail.com|0987654343|10/09/1993|567 Điện Biên Phủ, Q1, TP.HCM|Marketing|Brand Manager|Permanent|30000000|01/01/2024|31/12/2024|active
+FAM|Phạm Thị Tâm|Vợ|15/12/1994|Nhân viên ngân hàng|0
+FAM|Trần Văn Phúc|Con|25/05/2020|Học sinh|1
+
+EMP|EMP-SLS-005|Lê Thị Tâm|lethitam123@gmail.com|0987654344|20/11/1991|890 Nguyễn Huệ, Q1, TP.HCM|Sales|Sales Coordinator|Contract|15000000|01/01/2024|30/06/2024|active
+FAM|Nguyễn Văn Thành|Chồng|25/02/1990|Kỹ sư|0
+FAM|Lê Thị Khôi|Con|15/08/2017|Học sinh|1
+
+EMP|EMP-FIN-005|Phạm Văn Thành|phamvanthanh123@gmail.com|0987654345|15/01/1994|123 Lê Duẩn, Q1, TP.HCM|Finance|Investment Analyst|Permanent|28000000|01/01/2024|31/12/2024|active
+FAM|Trần Thị Thảo|Vợ|20/04/1995|Giáo viên|0
+FAM|Phạm Văn Lan|Con|10/10/2019|Học sinh|1
+
+EMP|EMP-IT-006|Vũ Thị Thảo|vuthithao123@gmail.com|0987654346|25/03/1992|456 Nguyễn Du, Q1, TP.HCM|IT|UI/UX Designer|Permanent|25000000|01/01/2024|31/12/2024|active
+FAM|Hoàng Văn Thắng|Chồng|30/06/1991|Bác sĩ|0
+FAM|Vũ Thị Minh|Con|20/12/2018|Học sinh|1
+
+EMP|EMP-HR-006|Đỗ Văn Thắng|dovanthang123@gmail.com|0987654347|10/05/1993|789 Lý Tự Trọng, Q1, TP.HCM|HR|Compensation Specialist|Permanent|22000000|01/01/2024|31/12/2024|active
+FAM|Lê Thị Thu|Vợ|15/08/1994|Nhân viên văn phòng|0
+FAM|Đỗ Văn Nhi|Con|25/03/2020|Học sinh|1
+
+EMP|EMP-MKT-006|Nguyễn Thị Thu|nguyenthithu123@gmail.com|0987654348|20/07/1991|321 Nguyễn Đình Chiểu, Q1, TP.HCM|Marketing|Digital Marketing Specialist|Permanent|25000000|01/01/2024|31/12/2024|active
+FAM|Trần Văn Thủy|Chồng|25/10/1990|Kỹ sư|0
+FAM|Nguyễn Thị Lan|Con|15/06/2017|Học sinh|1
+
+EMP|EMP-SLS-006|Lê Văn Thủy|levanthuy123@gmail.com|0987654349|15/09/1994|567 Võ Văn Tần, Q1, TP.HCM|Sales|Business Development Manager|Permanent|30000000|01/01/2024|31/12/2024|active
+FAM|Phạm Thị Trang|Vợ|20/12/1995|Nhân viên ngân hàng|0
+FAM|Lê Văn Phúc|Con|10/09/2019|Học sinh|1
+
+EMP|EMP-FIN-006|Trần Thị Trang|tranthitrang123@gmail.com|0987654350|25/11/1992|890 Điện Biên Phủ, Q1, TP.HCM|Finance|Risk Manager|Permanent|32000000|01/01/2024|31/12/2024|active
+FAM|Nguyễn Văn Trung|Chồng|30/02/1991|Kỹ sư|0
+FAM|Trần Thị Khôi|Con|20/05/2018|Học sinh|1

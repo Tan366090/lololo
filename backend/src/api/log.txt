@@ -1,1 +1,24 @@
-nguyenvana@company.com
+Array
+(
+    [action] => add
+    [employee] => Array
+        (
+            [employee_code] => EMP-HR-004
+            [name] => Lê Văn Nghĩa
+            [full_name] => Lê Văn Nghĩa
+            [phone] => 0987654337
+            [email] => levannghia123@gmail.com
+            [department_id] => 2
+            [position_id] => 4
+            [start_date] => 2024-01-01
+            [birth_date] => 1994-09-15
+            [address] => 567 Nguyễn Huệ, Q1, TP.HCM
+            [gender] => other
+            [contract_type] => Permanent
+            [base_salary] => 20000000
+            [contract_start_date] => 2024-01-01
+            [contract_end_date] => 2024-12-31
+            [status] => active
+        )
+
+)

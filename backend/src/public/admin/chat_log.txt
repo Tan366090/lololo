@@ -97,3 +97,4 @@
 [2025-05-13 04:13:37] User message: Thống kê lương
 [2025-05-18 07:36:02] User message: Tổng số nhân viên
 [2025-05-18 07:36:06] User message: Thông tin phòng ban
+[2025-05-19 06:29:42] User message: báo cáo lương
