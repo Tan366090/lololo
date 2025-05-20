@@ -1,0 +1,24 @@
+EMP|NV00422|Tran Van B|Trần Văn B|TranVanB@gmail.com|0987654322|02/02/1991|456 Đường XYZ, Quận 2, TP.HCM|IT|IT Manager|Permanent|8000000|01/02/2024|31/12/2024
+FAM|Tran Thi D|Vợ|02/02/1993|Kế toán|1
+FAM|Tran Van E|Con|02/02/2016|Học sinh|1
+
+EMP|NV00423|Le Van C|Lê Văn C|LeVanC@gmail.com|0987654323|03/03/1992|789 Đường DEF, Quận 3, TP.HCM|IT|Senior Developer|Permanent|9000000|01/03/2024|31/12/2024
+FAM|Le Thi F|Vợ|03/03/1994|Giáo viên|1
+
+EMP|NV00424|Pham Van D|Phạm Văn D|PhamVanD@gmail.com|0987654324|04/04/1993|321 Đường GHI, Quận 4, TP.HCM|HR|HR Manager|Permanent|9500000|01/04/2024|31/12/2024
+FAM|Pham Thi G|Vợ|04/04/1995|Y tá|1
+
+EMP|NV00425|Hoang Van E|Hoàng Văn E|HoangVanE@gmail.com|0987654325|05/05/1994|654 Đường JKL, Quận 5, TP.HCM|HR|Recruiter|Permanent|8500000|01/05/2024|31/12/2024
+FAM|Hoang Thi I|Vợ|05/05/1996|Nhân viên văn phòng|1
+
+EMP|NV00426|Vu Van F|Vũ Văn F|VuVanF@gmail.com|0987654326|06/06/1995|987 Đường MNO, Quận 6, TP.HCM|Finance|Finance Manager|Permanent|11000000|01/06/2024|31/12/2024
+FAM|Vu Thi K|Vợ|06/06/1997|Kinh doanh|1
+
+EMP|NV00427|Nguyen Van G|Nguyễn Văn G|NguyenVanG@gmail.com|0987654327|07/07/1996|123 Đường PQR, Quận 7, TP.HCM|Finance|Accountant|Permanent|7500000|01/07/2024|31/12/2024
+FAM|Nguyen Thi H|Vợ|07/07/1998|Nhân viên kinh doanh|1
+
+EMP|NV00428|Tran Van H|Trần Văn H|TranVanH@gmail.com|0987654328|08/08/1997|456 Đường STU, Quận 8, TP.HCM|Marketing|Marketing Director|Permanent|12000000|01/08/2024|31/12/2024
+FAM|Tran Thi I|Vợ|08/08/1999|Nhân viên marketing|1
+
+EMP|NV00429|Le Van I|Lê Văn I|LeVanI@gmail.com|0987654329|09/09/1998|789 Đường VWX, Quận 9, TP.HCM|Sales|Sales Executive|Permanent|9000000|01/09/2024|31/12/2024
+FAM|Le Thi J|Vợ|09/09/2000|Nhân viên bán hàng|1

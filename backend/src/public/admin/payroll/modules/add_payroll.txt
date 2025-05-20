@@ -1,0 +1,14 @@
+employee_code=EMP-ADM-001
+pay_period_start=2024-05-01
+pay_period_end=2024-05-31
+work_days_payable=22
+base_salary_period=10000000
+allowances_total=2000000
+bonuses_total=1000000
+deductions_total=500000
+gross_salary=12500000
+tax_deduction=1250000
+insurance_deduction=1250000
+net_salary=10000000
+payment_method=bank_transfer
+notes=Ghi chú nếu có

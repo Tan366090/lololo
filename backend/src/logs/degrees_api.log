@@ -8169,3 +8169,17 @@ grees.php?action=departments
 [2025-05-19 08:46:30] Processing action: departments
 [2025-05-19 08:46:30] Database connection successful
 [2025-05-19 08:46:30] Processing action: employees
+[2025-05-20 17:09:54] Request received: GET /qlnhansu_V3/backend/src/api/degrees.php?action=departments
+[2025-05-20 17:09:54] Request received: GET /qlnhansu_V3/backend/src/api/degrees.php?action=employees
+[2025-05-20 17:09:54] GET parameters: Array
+(
+    [action] => employees
+)
+
+[2025-05-20 17:09:54] GET parameters: Array
+(
+    [action] => departments
+)
+
+[2025-05-20 17:09:54] Database connection successful
+[2025-05-20 17:09:54] Processing action: departments

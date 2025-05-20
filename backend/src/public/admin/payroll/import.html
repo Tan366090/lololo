@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Phiếu Lương</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .upload-area:hover {
+            border-color: #0d6efd;
+            background-color: #f8f9fa;
+        }
+        .upload-area.dragover {
+            border-color: #0d6efd;
+            background-color: #e9ecef;
+        }
+        #file-name {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .loading {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-file-import me-2"></i>Import Phiếu Lương</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="uploadForm">
+                            <div class="upload-area mb-3" id="dropZone">
+                                <i class="fas fa-cloud-upload-alt fa-3x mb-3 text-primary"></i>
+                                <h5>Kéo thả file hoặc click để chọn file</h5>
+                                <p class="text-muted">Chỉ chấp nhận file TXT</p>
+                                <input type="file" id="fileInput" class="d-none" accept=".txt">
+                                <div id="file-name"></div>
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-info-circle me-2"></i>Hướng dẫn:</h6>
+                                <ul class="mb-0">
+                                    <li>File TXT phải có định dạng key=value</li>
+                                    <li>Mỗi thông tin trên một dòng</li>
+                                    <li>Các trường bắt buộc: employee_code, pay_period_start, pay_period_end, work_days_payable, base_salary_period, gross_salary, net_salary</li>
+                                </ul>
+                            </div>
+
+                            <div class="card mt-3 d-none" id="previewCard">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="mb-0"><i class="fas fa-eye me-2"></i>Xem trước dữ liệu</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Thông tin nhân viên:</h6>
+                                            <table class="table table-sm">
+                                                <tr>
+                                                    <th>Mã nhân viên:</th>
+                                                    <td id="previewEmpCode"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Tên nhân viên:</th>
+                                                    <td id="previewEmpName"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Phòng ban:</th>
+                                                    <td id="previewEmpDept"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Thông tin lương:</h6>
+                                            <table class="table table-sm">
+                                                <tr>
+                                                    <th>Kỳ lương:</th>
+                                                    <td id="previewPayPeriod"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Số ngày công:</th>
+                                                    <td id="previewWorkDays"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Lương cơ bản:</th>
+                                                    <td id="previewBaseSalary"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Phụ cấp:</th>
+                                                    <td id="previewAllowances"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Thưởng:</th>
+                                                    <td id="previewBonuses"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Khấu trừ:</th>
+                                                    <td id="previewDeductions"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Lương gross:</th>
+                                                    <td id="previewGrossSalary"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Thuế:</th>
+                                                    <td id="previewTax"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Bảo hiểm:</th>
+                                                    <td id="previewInsurance"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Lương net:</th>
+                                                    <td id="previewNetSalary"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="loading text-center my-3">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Đang xử lý...</p>
+                            </div>
+
+                            <div class="alert d-none" id="resultAlert"></div>
+
+                            <div class="card mt-3 d-none" id="resultDetails">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Kết quả import</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Thông tin nhân viên:</h6>
+                                            <table class="table table-sm">
+                                                <tr>
+                                                    <th>Mã nhân viên:</th>
+                                                    <td id="empCode"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Tên nhân viên:</th>
+                                                    <td id="empName"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Phòng ban:</th>
+                                                    <td id="empDept"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Thông tin lương:</h6>
+                                            <table class="table table-sm">
+                                                <tr>
+                                                    <th>Kỳ lương:</th>
+                                                    <td id="payPeriod"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Số ngày công:</th>
+                                                    <td id="workDays"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Lương cơ bản:</th>
+                                                    <td id="baseSalary"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Phụ cấp:</th>
+                                                    <td id="allowances"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Thưởng:</th>
+                                                    <td id="bonuses"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Khấu trừ:</th>
+                                                    <td id="deductions"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Lương gross:</th>
+                                                    <td id="grossSalary"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Thuế:</th>
+                                                    <td id="tax"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Bảo hiểm:</th>
+                                                    <td id="insurance"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Lương net:</th>
+                                                    <td id="netSalary"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary" id="submitBtn">
+                                    <i class="fas fa-upload me-2"></i>Import
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const fileName = document.getElementById('file-name');
+            const uploadForm = document.getElementById('uploadForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.querySelector('.loading');
+            const resultAlert = document.getElementById('resultAlert');
+
+            // Xử lý click vào vùng upload
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            // Xử lý khi chọn file
+            fileInput.addEventListener('change', async function() {
+                const file = this.files[0];
+                if (file) {
+                    if (file.name.toLowerCase().endsWith('.txt')) {
+                        fileName.textContent = `File đã chọn: ${file.name}`;
+                        submitBtn.disabled = false;
+
+                        // Đọc và hiển thị preview
+                        try {
+                            const formData = new FormData();
+                            formData.append('payroll_file', file);
+                            formData.append('preview', 'true');
+
+                            const response = await fetch('./import.php', {
+                                method: 'POST',
+                                body: formData
+                            });
+
+                            const result = await response.json();
+                            if (result.success) {
+                                showPreview(result.data);
+                            } else {
+                                showAlert(result.message, 'danger');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            showAlert('Có lỗi xảy ra khi đọc file: ' + error.message, 'danger');
+                        }
+                    } else {
+                        showAlert('Chỉ chấp nhận file TXT', 'danger');
+                        fileInput.value = '';
+                        fileName.textContent = '';
+                        submitBtn.disabled = true;
+                    }
+                }
+            });
+
+            // Xử lý kéo thả
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length) {
+                    fileInput.files = files;
+                    handleFileSelect();
+                }
+            });
+
+            function handleFileSelect() {
+                const file = fileInput.files[0];
+                if (file) {
+                    if (file.name.toLowerCase().endsWith('.txt')) {
+                        fileName.textContent = `File đã chọn: ${file.name}`;
+                        submitBtn.disabled = false;
+                    } else {
+                        showAlert('Chỉ chấp nhận file TXT', 'danger');
+                        fileInput.value = '';
+                        fileName.textContent = '';
+                        submitBtn.disabled = true;
+                    }
+                }
+            }
+
+            function showLoading(show) {
+                loading.style.display = show ? 'block' : 'none';
+                submitBtn.disabled = show;
+            }
+
+            function showAlert(message, type) {
+                resultAlert.className = `alert alert-${type}`;
+                resultAlert.textContent = message;
+                resultAlert.classList.remove('d-none');
+            }
+
+            function showResultDetails(data) {
+                const resultDetails = document.getElementById('resultDetails');
+                resultDetails.classList.remove('d-none');
+
+                // Hiển thị thông tin nhân viên
+                document.getElementById('empCode').textContent = data.employee.code;
+                document.getElementById('empName').textContent = data.employee.name;
+                document.getElementById('empDept').textContent = data.employee.department;
+
+                // Hiển thị thông tin lương
+                document.getElementById('payPeriod').textContent = `${data.period.start} - ${data.period.end}`;
+                document.getElementById('workDays').textContent = data.period.work_days;
+                document.getElementById('baseSalary').textContent = data.salary.base;
+                document.getElementById('allowances').textContent = data.salary.allowances;
+                document.getElementById('bonuses').textContent = data.salary.bonuses;
+                document.getElementById('deductions').textContent = data.salary.deductions;
+                document.getElementById('grossSalary').textContent = data.salary.gross;
+                document.getElementById('tax').textContent = data.salary.tax;
+                document.getElementById('insurance').textContent = data.salary.insurance;
+                document.getElementById('netSalary').textContent = data.salary.net;
+            }
+
+            function showPreview(data) {
+                const previewCard = document.getElementById('previewCard');
+                previewCard.classList.remove('d-none');
+
+                // Hiển thị thông tin nhân viên
+                document.getElementById('previewEmpCode').textContent = data.employee.code;
+                document.getElementById('previewEmpName').textContent = data.employee.name;
+                document.getElementById('previewEmpDept').textContent = data.employee.department;
+
+                // Hiển thị thông tin lương
+                document.getElementById('previewPayPeriod').textContent = `${data.period.start} - ${data.period.end}`;
+                document.getElementById('previewWorkDays').textContent = data.period.work_days;
+                document.getElementById('previewBaseSalary').textContent = data.salary.base;
+                document.getElementById('previewAllowances').textContent = data.salary.allowances;
+                document.getElementById('previewBonuses').textContent = data.salary.bonuses;
+                document.getElementById('previewDeductions').textContent = data.salary.deductions;
+                document.getElementById('previewGrossSalary').textContent = data.salary.gross;
+                document.getElementById('previewTax').textContent = data.salary.tax;
+                document.getElementById('previewInsurance').textContent = data.salary.insurance;
+                document.getElementById('previewNetSalary').textContent = data.salary.net;
+            }
+
+            // Xử lý submit form
+            uploadForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const file = fileInput.files[0];
+                if (!file) {
+                    showAlert('Vui lòng chọn file', 'warning');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('payroll_file', file);
+
+                try {
+                    showLoading(true);
+                    const response = await fetch('./import.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    let result;
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        result = await response.json();
+                    } else {
+                        const text = await response.text();
+                        console.error('Invalid response:', text);
+                        throw new Error('Server trả về dữ liệu không hợp lệ');
+                    }
+
+                    console.log('API Response:', result);
+
+                    if (result.success) {
+                        showAlert('Import phiếu lương thành công!', 'success');
+                        showResultDetails(result.data);
+                        // Reset form và file input
+                        uploadForm.reset();
+                        fileName.textContent = '';
+                        // Reload trang để cập nhật danh sách
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 5000);
+                    } else {
+                        showAlert(result.message || 'Có lỗi xảy ra khi import file', 'danger');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showAlert('Có lỗi xảy ra khi upload file: ' + error.message, 'danger');
+                } finally {
+                    showLoading(false);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
