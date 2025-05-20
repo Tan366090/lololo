@@ -13,6 +13,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
         
         <!-- Internal CSS -->
         <link rel="stylesheet" href="css/attendance.css" />
@@ -162,6 +164,97 @@
                 gap: var(--spacing-md);
             }
 
+            /* Button Styles */
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 0.625rem 1.25rem;
+                font-weight: 500;
+                font-size: 0.875rem;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+                white-space: nowrap;
+                min-width: fit-content;
+            }
+
+            .btn:hover {
+                transform: translateY(-1px);
+            }
+
+            .btn ion-icon {
+                font-size: 1.1rem;
+                flex-shrink: 0;
+            }
+
+            .btn-primary {
+                background: #2563eb;
+                color: white;
+                border: none;
+            }
+
+            .btn-primary:hover {
+                background: #1d4ed8;
+            }
+
+            .btn-success {
+                background: #22c55e;
+                color: white;
+                border: none;
+            }
+
+            .btn-success:hover {
+                background: #16a34a;
+            }
+
+            .btn-info {
+                background: #3b82f6;
+                color: white;
+                border: none;
+            }
+
+            .btn-info:hover {
+                background: #2563eb;
+            }
+
+            /* Action Buttons Container */
+            .controls-bar > div:last-child {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                flex-wrap: nowrap;
+            }
+
+            @media (max-width: 1200px) {
+                .controls-bar {
+                    grid-template-columns: 1fr;
+                }
+                
+                .controls-bar > div:last-child {
+                    justify-content: flex-end;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .controls-bar {
+                    padding: var(--spacing-md);
+                }
+                
+                .filter-controls {
+                    grid-template-columns: 1fr;
+                }
+                
+                .controls-bar > div:last-child {
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+                
+                .btn {
+                    flex: 1;
+                    justify-content: center;
+                }
+            }
+
             /* Table Styles */
             .table-container {
                 background: white;
@@ -223,40 +316,6 @@
             .status-warning {
                 background: #fef3c7;
                 color: #d97706;
-            }
-
-            /* Buttons */
-            .btn {
-                display: inline-flex;
-                align-items: center;
-                gap: var(--spacing-sm);
-                padding: 0.625rem 1.25rem;
-                border-radius: var(--border-radius-md);
-                font-weight: 500;
-                font-size: 0.875rem;
-                transition: all var(--transition-normal);
-                border: none;
-                cursor: pointer;
-            }
-
-            .btn-primary {
-                background-color: var(--primary-color);
-                color: white;
-            }
-
-            .btn-primary:hover {
-                background-color: var(--primary-hover);
-                transform: translateY(-1px);
-            }
-
-            .btn-success {
-                background-color: var(--success-color);
-                color: white;
-            }
-
-            .btn-success:hover {
-                background-color: #16a34a;
-                transform: translateY(-1px);
             }
 
             /* Modal Styles */
@@ -334,18 +393,68 @@
                 z-index: 9999;
             }
 
-            .spinner {
-                width: 40px;
-                height: 40px;
-                border: 3px solid var(--border-color);
-                border-top: 3px solid var(--primary-color);
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
+            .loader {
+                animation: rotate 1s infinite;
+                height: 50px;
+                width: 50px;
             }
 
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
+            .loader:before,
+            .loader:after {
+                border-radius: 50%;
+                content: "";
+                display: block;
+                height: 20px;
+                width: 20px;
+            }
+
+            .loader:before {
+                animation: ball1 1s infinite;
+                background-color: #fff;
+                box-shadow: 30px 0 0 #ff3d00;
+                margin-bottom: 10px;
+            }
+
+            .loader:after {
+                animation: ball2 1s infinite;
+                background-color: #ff3d00;
+                box-shadow: 30px 0 0 #fff;
+            }
+
+            @keyframes rotate {
+                0% { transform: rotate(0deg) scale(0.8) }
+                50% { transform: rotate(360deg) scale(1.2) }
+                100% { transform: rotate(720deg) scale(0.8) }
+            }
+
+            @keyframes ball1 {
+                0% {
+                    box-shadow: 30px 0 0 #ff3d00;
+                }
+                50% {
+                    box-shadow: 0 0 0 #ff3d00;
+                    margin-bottom: 0;
+                    transform: translate(15px, 15px);
+                }
+                100% {
+                    box-shadow: 30px 0 0 #ff3d00;
+                    margin-bottom: 10px;
+                }
+            }
+
+            @keyframes ball2 {
+                0% {
+                    box-shadow: 30px 0 0 #fff;
+                }
+                50% {
+                    box-shadow: 0 0 0 #fff;
+                    margin-top: -20px;
+                    transform: translate(15px, 15px);
+                }
+                100% {
+                    box-shadow: 30px 0 0 #fff;
+                    margin-top: 0;
+                }
             }
 
             /* Pagination */
@@ -644,6 +753,273 @@
                     justify-content: flex-start;
                 }
             }
+
+            /* Thêm style cho date picker */
+            .flatpickr-calendar {
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                font-family: 'Inter', sans-serif;
+            }
+            .flatpickr-day.selected {
+                background: #2563eb;
+                border-color: #2563eb;
+            }
+            .flatpickr-day:hover {
+                background: #e0e7ff;
+            }
+            .flatpickr-current-month {
+                padding: 8px 0;
+            }
+            .flatpickr-months .flatpickr-month {
+                height: 40px;
+            }
+            .flatpickr-weekday {
+                font-weight: 600;
+                color: #64748b;
+            }
+            .flatpickr-day {
+                border-radius: 4px;
+                margin: 2px;
+            }
+            .flatpickr-day.today {
+                border-color: #2563eb;
+            }
+            .flatpickr-day.today:hover,
+            .flatpickr-day.today:focus {
+                background: #e0e7ff;
+                border-color: #2563eb;
+            }
+
+            /* Thêm CSS cho thông báo */
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                background: white;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 9999;
+                animation: slideIn 0.3s ease-out;
+            }
+            
+            .notification-content {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .notification ion-icon {
+                font-size: 24px;
+            }
+            
+            .notification.success {
+                background: #dcfce7;
+                color: #166534;
+            }
+            
+            .notification.error {
+                background: #fee2e2;
+                color: #991b1b;
+            }
+            
+            .notification.info {
+                background: #dbeafe;
+                color: #1e40af;
+            }
+            
+            .notification.warning {
+                background: #fef3c7;
+                color: #92400e;
+            }
+            
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            /* Unmarked Employees Modal Styles */
+            #unmarkedEmployeesModal .modal-content {
+                max-width: 900px;
+                width: 95%;
+                margin: 2% auto;
+                background: #fff;
+                border-radius: 16px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                padding: 2rem;
+                position: relative;
+                animation: modalSlideIn 0.3s ease-out;
+            }
+
+            #unmarkedEmployeesModal .modal-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 1.5rem;
+                padding-bottom: 1rem;
+                border-bottom: 2px solid #e2e8f0;
+            }
+
+            #unmarkedEmployeesModal .modal-header h2 {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #1e293b;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            #unmarkedEmployeesModal .modal-header ion-icon {
+                font-size: 1.8rem;
+                color: #2563eb;
+            }
+
+            #unmarkedEmployeesModal .table-container {
+                background: #f8fafc;
+                border-radius: 12px;
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            }
+
+            #unmarkedEmployeesModal .table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+            }
+
+            #unmarkedEmployeesModal .table th {
+                background: #f1f5f9;
+                color: #475569;
+                font-weight: 600;
+                padding: 1rem;
+                text-align: left;
+                font-size: 0.875rem;
+                border-bottom: 2px solid #e2e8f0;
+            }
+
+            #unmarkedEmployeesModal .table td {
+                padding: 1rem;
+                border-bottom: 1px solid #e2e8f0;
+                color: #475569;
+                font-size: 0.875rem;
+                vertical-align: middle;
+            }
+
+            #unmarkedEmployeesModal .table tbody tr:hover {
+                background-color: #f1f5f9;
+            }
+
+            #unmarkedEmployeesModal .status-badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 0.35rem 0.75rem;
+                border-radius: 9999px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                text-align: center;
+            }
+
+            #unmarkedEmployeesModal .status-active {
+                background: #dcfce7;
+                color: #166534;
+            }
+
+            #unmarkedEmployeesModal .status-warning {
+                background: #fef3c7;
+                color: #92400e;
+            }
+
+            #unmarkedEmployeesModal .btn-mark-attendance {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 0.5rem 1rem;
+                background: #2563eb;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 0.875rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            #unmarkedEmployeesModal .btn-mark-attendance:hover {
+                background: #1d4ed8;
+                transform: translateY(-1px);
+            }
+
+            #unmarkedEmployeesModal .btn-mark-attendance ion-icon {
+                font-size: 1.1rem;
+            }
+
+            #unmarkedEmployeesModal .modal-footer {
+                display: flex;
+                justify-content: flex-end;
+                gap: 12px;
+                margin-top: 1.5rem;
+                padding-top: 1rem;
+                border-top: 2px solid #e2e8f0;
+            }
+
+            #unmarkedEmployeesModal .btn-close {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 0.625rem 1.25rem;
+                background: #f1f5f9;
+                color: #475569;
+                border: none;
+                border-radius: 8px;
+                font-size: 0.875rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            #unmarkedEmployeesModal .btn-close:hover {
+                background: #e2e8f0;
+            }
+
+            @keyframes modalSlideIn {
+                from {
+                    transform: translateY(-20px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            @media (max-width: 768px) {
+                #unmarkedEmployeesModal .modal-content {
+                    margin: 5% auto;
+                    padding: 1.5rem;
+                }
+                
+                #unmarkedEmployeesModal .table-container {
+                    padding: 0.5rem;
+                }
+                
+                #unmarkedEmployeesModal .table th,
+                #unmarkedEmployeesModal .table td {
+                    padding: 0.75rem;
+                }
+                
+                #unmarkedEmployeesModal .btn-mark-attendance {
+                    padding: 0.4rem 0.75rem;
+                }
+            }
         </style>
 
         <!-- Scripts -->
@@ -651,6 +1027,16 @@
         <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@latest/dist/ionic/ionic.js"></script>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/vi.js"></script>
+        <script src="css/common.css"></script>
+        <script src="js/auth_utils.js"></script>
+        <script src="js/api_service.js"></script>
+        <script src="js/attendance-display.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
         <div class="container">
@@ -765,6 +1151,40 @@
             </main>
         </div>
 
+        <!-- Unmarked Employees Modal -->
+        <div id="unmarkedEmployeesModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <ion-icon name="people-outline"></ion-icon>
+                    <h2>Danh sách nhân viên chưa chấm công</h2>
+                </div>
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Mã nhân viên</th>
+                                    <th>Họ tên</th>
+                                    <th>Trạng thái</th>
+                                    <th>Phòng ban</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="unmarkedEmployeesList">
+                                <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-close" onclick="closeUnmarkedModal()">
+                        <ion-icon name="close-outline"></ion-icon>
+                        Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Delete Modal -->
         <div id="deleteModal" class="modal">
             <div class="modal-content">
@@ -791,17 +1211,19 @@
             <div class="modal-content">
                 <h2>
                     <ion-icon name="create-outline"></ion-icon>
-                    Sửa thông tin điểm danh
+                    <span id="modalTitle">Thêm chấm công mới</span>
                 </h2>
                 <form id="editForm" onsubmit="event.preventDefault(); updateAttendance();">
                     <input type="hidden" id="attendanceId" name="attendanceId">
                     <div class="form-group">
                         <label for="employeeId">Mã nhân viên:</label>
-                        <input type="text" id="employeeId" name="employeeId" class="form-control" required>
+                        <select id="employeeId" name="employeeId" class="form-control" required>
+                            <option value="">Chọn nhân viên...</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="attendanceDate">Ngày điểm danh:</label>
-                        <input type="date" id="attendanceDate" name="attendanceDate" class="form-control" required>
+                        <input type="text" id="attendanceDate" name="attendanceDate" class="form-control" required placeholder="DD/MM/YYYY">
                     </div>
                     <div class="form-group">
                         <label for="attendanceSymbol">Ký hiệu:</label>
@@ -832,18 +1254,8 @@
 
         <!-- Loading Spinner -->
         <div id="loadingSpinner" class="loading-spinner" style="display: none;">
-            <div class="spinner"></div>
+            <div class="loader"></div>
         </div>
-
-        <!-- Scripts -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="css/common.css"></script>
-        <script src="js/auth_utils.js"></script>
-        <script src="js/api_service.js"></script>
-        <script src="js/attendance-display.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <script>
         let currentAttendanceData = [];
@@ -855,74 +1267,118 @@
         let filterDate = '';
         let filterStatus = '';
 
+        // Khai báo biến datePicker ở global scope
+        let datePicker;
+
+        // Hàm khởi tạo datePicker
+        function initializeDatePicker() {
+            datePicker = flatpickr("#attendanceDate", {
+                locale: "vi",
+                dateFormat: "d/m/Y",
+                allowInput: true,
+                altInput: true,
+                altFormat: "d/m/Y",
+                theme: "material_blue",
+                disableMobile: "true",
+                onChange: function(selectedDates, dateStr) {
+                    // Khi ngày thay đổi, cập nhật lại danh sách nhân viên
+                    if (selectedDates.length > 0) {
+                        loadEmployeeList();
+                    }
+                }
+            });
+        }
+
         async function loadAttendanceData() {
             try {
-                const response = await fetch('/qlnhansu_V3/backend/src/api/v1/attendance.php?action=getAll');
+                // Hiển thị loading spinner
+                document.getElementById('loadingSpinner').style.display = 'flex';
+                
+                const baseUrl = window.location.origin;
+                console.log('Attempting to connect to:', `${baseUrl}/qlnhansu_V3/backend/src/api/v1/attendance.php?action=getAll`);
+                
+                const response = await fetch(`${baseUrl}/qlnhansu_V3/backend/src/api/v1/attendance.php?action=getAll`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const data = await response.json();
-                console.log('API DATA:', data);
+                console.log('API Response:', data);
+
                 if (data.success && Array.isArray(data.data)) {
                     currentAttendanceData = data.data;
                     currentPage = 1;
                     updateAttendanceTable();
                     updateStatsAndChart(currentAttendanceData);
                 } else {
-                    alert('Lỗi khi tải dữ liệu chấm công');
+                    throw new Error(data.message || 'Lỗi khi tải dữ liệu chấm công');
                 }
             } catch (error) {
-                alert('Lỗi kết nối server');
-                console.error('Error:', error);
+                console.error('Error details:', error);
+                console.error('Error stack:', error.stack);
+                showNotification('error', 'Lỗi kết nối server: ' + error.message);
+            } finally {
+                // Ẩn loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
             }
         }
 
         function displayAttendanceData(attendanceData) {
             const attendanceList = document.getElementById('attendanceList');
             attendanceList.innerHTML = '';
+            
             if (!Array.isArray(attendanceData) || attendanceData.length === 0) {
-                attendanceList.innerHTML = '<tr><td colspan="8">Không có dữ liệu</td></tr>';
+                attendanceList.innerHTML = '<tr><td colspan="8" class="text-center">Không có dữ liệu</td></tr>';
                 return;
             }
-            // Sắp xếp: Ngày giảm dần, trạng thái ưu tiên, tên nhân viên A-Z
-            attendanceData.sort((a, b) => {
-                // So sánh ngày
-                const dateA = new Date(a.attendance_date);
-                const dateB = new Date(b.attendance_date);
-                if (dateA.getTime() !== dateB.getTime()) {
-                    return dateB - dateA; // Mới nhất lên đầu
-                }
-                // Ưu tiên trạng thái: Hết hạn > Sắp hết hạn > Còn hiệu lực
-                const getStatusPriority = (r) => {
-                    if (r.attendance_symbol === 'A' || r.status_text === 'Hết hạn') return 1;
-                    if (r.status_text === 'Sắp hết hạn') return 2;
-                    if (r.attendance_symbol === 'P' || r.status_text === 'Còn hiệu lực') return 3;
-                    return 4;
-                };
-                const priA = getStatusPriority(a);
-                const priB = getStatusPriority(b);
-                if (priA !== priB) return priA - priB;
-                // Nếu cùng trạng thái, sắp xếp theo tên
-                return a.full_name.localeCompare(b.full_name, 'vi', {sensitivity: 'base'});
-            });
+
             attendanceData.forEach(record => {
                 const row = document.createElement('tr');
-                // Xác định text và class cho trạng thái
+                
+                // Format date from YYYY-MM-DD to DD/MM/YYYY
+                const formattedDate = record.attendance_date ? 
+                    new Date(record.attendance_date).toLocaleDateString('vi-VN', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    }) : '-';
+
+                // Xác định trạng thái và class
                 let statusText = '';
                 let statusClass = 'status-badge';
-                if (record.attendance_symbol === 'A' || record.status_text === 'Hết hạn') {
-                    statusText = 'Hết hạn';
-                    statusClass += ' status-expired';
-                } else if (record.attendance_symbol === 'P' || record.status_text === 'Còn hiệu lực') {
-                    statusText = 'Còn hiệu lực';
+                
+                switch(record.attendance_symbol) {
+                    case 'P':
+                        statusText = 'Có mặt';
                     statusClass += ' status-active';
-                } else if (record.status_text === 'Sắp hết hạn') {
-                    statusText = 'Sắp hết hạn';
+                        break;
+                    case 'A':
+                        statusText = 'Vắng mặt';
+                        statusClass += ' status-expired';
+                        break;
+                    case 'WFH':
+                        statusText = 'Làm từ xa';
                     statusClass += ' status-warning';
-                } else {
+                        break;
+                    case 'L':
+                        statusText = 'Đi muộn';
+                        statusClass += ' status-warning';
+                        break;
+                    default:
                     statusText = record.attendance_symbol || '-';
                 }
+
                 row.innerHTML = `
                     <td>${record.employee_code || '-'}</td>
                     <td>${record.employee_name || '-'}</td>
-                    <td>${record.attendance_date}</td>
+                    <td>${formattedDate}</td>
                     <td>${record.check_in_time || '-'}</td>
                     <td>${record.check_out_time || '-'}</td>
                     <td><span class="${statusClass}">${statusText}</span></td>
@@ -942,13 +1398,37 @@
 
         function editAttendance(id) {
             const record = currentAttendanceData.find(r => r.attendance_id == id);
-            if (!record) return;
+            if (!record) {
+                alert('Không tìm thấy thông tin chấm công');
+                return;
+            }
+
+            // Load danh sách nhân viên trước
+            loadEmployeeList().then(() => {
+                try {
             document.getElementById('attendanceId').value = record.attendance_id;
             document.getElementById('employeeId').value = record.employee_id;
-            document.getElementById('attendanceDate').value = record.attendance_date;
-            document.getElementById('attendanceSymbol').value = record.attendance_symbol;
+                    document.getElementById('employeeId').disabled = true;
+                    document.getElementById('modalTitle').textContent = 'Sửa thông tin điểm danh';
+                    
+                    // Set ngày cho date picker
+                    if (record.attendance_date) {
+                        datePicker.setDate(record.attendance_date);
+                    } else {
+                        datePicker.clear();
+                    }
+                    
+                    document.getElementById('attendanceSymbol').value = record.attendance_symbol || 'P';
             document.getElementById('notes').value = record.notes || '';
             document.getElementById('editModal').style.display = 'block';
+                } catch (error) {
+                    console.error('Error in editAttendance:', error);
+                    alert('Lỗi khi tải thông tin chấm công');
+                }
+            }).catch(error => {
+                console.error('Error loading employee list:', error);
+                alert('Lỗi khi tải danh sách nhân viên');
+            });
         }
 
         function confirmDelete(id) {
@@ -959,35 +1439,53 @@
         function closeModal() {
             document.getElementById('editModal').style.display = 'none';
             document.getElementById('deleteModal').style.display = 'none';
+            document.getElementById('employeeId').disabled = false;
+            // Reset date picker
+            datePicker.clear();
+            // Reset form
+            document.getElementById('editForm').reset();
         }
 
         document.getElementById('cancelDeleteButton').onclick = closeModal;
-        document.getElementById('confirmDeleteButton').onclick = function() {
+        document.getElementById('confirmDeleteButton').onclick = async function() {
             if (!deleteAttendanceId) return;
-            // Gọi API xóa ở đây, ví dụ:
-            fetch(`/qlnhansu_V3/backend/src/api/v1/attendance.php?action=delete&id=${deleteAttendanceId}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        loadAttendanceData();
-                    } else {
-                        alert('Xóa thất bại!');
-                    }
-                    closeModal();
-                })
-                .catch(() => {
-                    alert('Lỗi khi xóa!');
-                    closeModal();
-                });
+            
+            try {
+                // Hiển thị loading spinner
+                document.getElementById('loadingSpinner').style.display = 'flex';
+                
+                const response = await fetch(`/qlnhansu_V3/backend/src/api/v1/attendance.php?action=delete&id=${deleteAttendanceId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('success', 'Xóa điểm danh thành công');
+                    await loadAttendanceData();
+                } else {
+                    showNotification('error', 'Xóa thất bại: ' + (data.message || 'Lỗi không xác định'));
+                }
+            } catch (error) {
+                console.error('Error deleting attendance:', error);
+                showNotification('error', 'Lỗi khi xóa điểm danh');
+            } finally {
+                // Ẩn loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+                closeModal();
+            }
         };
 
         document.getElementById('addAttendanceButton').onclick = function() {
             // Reset form
             document.getElementById('editForm').reset();
             document.getElementById('attendanceId').value = '';
-            // Đặt tiêu đề modal
-            document.querySelector('#editModal h2').innerHTML = '<ion-icon name="create-outline"></ion-icon> Thêm chấm công mới';
-            // Hiện modal
+            document.getElementById('employeeId').disabled = false;
+            document.getElementById('modalTitle').textContent = 'Thêm chấm công mới';
+            
+            // Set ngày hiện tại cho date picker
+            datePicker.setDate(new Date());
+            
+            // Load danh sách nhân viên chưa chấm công
+            loadEmployeeList();
+            
             document.getElementById('editModal').style.display = 'block';
         };
 
@@ -1101,27 +1599,41 @@
         }
 
         function updateStatsAndChart(attendanceData) {
+            if (!Array.isArray(attendanceData)) {
+                console.error('Invalid attendance data:', attendanceData);
+                return;
+            }
+
             // Đếm số lượng theo trạng thái
             let present = 0, absent = 0, wfh = 0, late = 0;
-            if (Array.isArray(attendanceData)) {
+            
                 attendanceData.forEach(r => {
                     if (r && r.attendance_symbol) {
-                        if (r.attendance_symbol === 'P') present++;
-                        else if (r.attendance_symbol === 'A') absent++;
-                        else if (r.attendance_symbol === 'WFH') wfh++;
-                        else if (r.attendance_symbol === 'L') late++;
+                    switch(r.attendance_symbol) {
+                        case 'P': present++; break;
+                        case 'A': absent++; break;
+                        case 'WFH': wfh++; break;
+                        case 'L': late++; break;
                     }
-                });
-            }
+                }
+            });
+
             const total = present + absent + wfh + late;
+            
+            // Cập nhật số liệu thống kê
             document.getElementById('statTotal').textContent = total;
             document.getElementById('statPresent').textContent = present;
             document.getElementById('statAbsent').textContent = absent;
             document.getElementById('statWFH').textContent = wfh;
             document.getElementById('statLate').textContent = late;
-            // Pie Chart
-            if (window.attendancePieChart) window.attendancePieChart.destroy();
-            const ctx = document.getElementById('attendancePieChart').getContext('2d');
+
+            // Kiểm tra và vẽ biểu đồ nếu canvas tồn tại
+            const canvas = document.getElementById('attendancePieChart');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                if (window.attendancePieChart) {
+                    window.attendancePieChart.destroy();
+                }
             window.attendancePieChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
@@ -1142,9 +1654,407 @@
                     }
                 }
             });
+            }
         }
 
-        document.addEventListener('DOMContentLoaded', loadAttendanceData);
+        // Thêm các hàm format date
+        function formatDateForDisplay(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        function formatDateForInput(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toISOString().split('T')[0];
+        }
+
+        // Cập nhật hàm loadEmployeeList
+        async function loadEmployeeList() {
+            try {
+                // Kiểm tra nếu datePicker chưa được khởi tạo
+                if (!datePicker) {
+                    console.error('DatePicker chưa được khởi tạo');
+                    return;
+                }
+
+                // Lấy ngày hiện tại từ date picker hoặc ngày mặc định
+                const selectedDate = datePicker.selectedDates[0] || new Date();
+                const formattedDate = selectedDate.toISOString().split('T')[0];
+                
+                // Hiển thị loading spinner
+                document.getElementById('loadingSpinner').style.display = 'flex';
+                
+                const response = await fetch(`/qlnhansu_V3/backend/src/api/v1/attendance.php?action=getUnmarkedEmployees&date=${formattedDate}`);
+                const data = await response.json();
+                
+                if (data.success && Array.isArray(data.data)) {
+                    const select = document.getElementById('employeeId');
+                    select.innerHTML = '<option value="">Chọn nhân viên...</option>';
+                    
+                    if (data.data.length === 0) {
+                        const option = document.createElement('option');
+                        option.disabled = true;
+                        option.textContent = 'Tất cả nhân viên đã được chấm công cho ngày này';
+                        select.appendChild(option);
+                        select.disabled = true;
+                        
+                        // Hiển thị thông báo
+                        showNotification('success', `Tất cả nhân viên đã được chấm công cho ngày ${formatDateForDisplay(formattedDate)}`);
+                    } else {
+                        select.disabled = false;
+                        
+                        // Nhóm nhân viên theo trạng thái
+                        const groupedEmployees = data.data.reduce((acc, employee) => {
+                            const status = employee.employee_status || 'Không xác định';
+                            if (!acc[status]) {
+                                acc[status] = [];
+                            }
+                            acc[status].push(employee);
+                            return acc;
+                        }, {});
+                        
+                        // Tạo optgroup cho từng trạng thái
+                        Object.entries(groupedEmployees).forEach(([status, employees]) => {
+                            const optgroup = document.createElement('optgroup');
+                            optgroup.label = status;
+                            
+                            employees.forEach(employee => {
+                                const option = document.createElement('option');
+                                option.value = employee.employee_id;
+                                option.textContent = `${employee.employee_code} - ${employee.employee_name}`;
+                                optgroup.appendChild(option);
+                            });
+                            
+                            select.appendChild(optgroup);
+                        });
+                        
+                        // Hiển thị thông báo số lượng nhân viên chưa chấm công
+                        showNotification('info', `Có ${data.total_unmarked} nhân viên chưa được chấm công cho ngày ${formatDateForDisplay(formattedDate)}`);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading employee list:', error);
+                showNotification('error', 'Lỗi khi tải danh sách nhân viên');
+            } finally {
+                // Ẩn loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }
+        }
+
+        // Thêm hàm hiển thị thông báo
+        function showNotification(type, message) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <ion-icon name="${getIconForType(type)}"></ion-icon>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Tự động ẩn sau 5 giây
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Hàm lấy icon tương ứng với loại thông báo
+        function getIconForType(type) {
+            switch(type) {
+                case 'success':
+                    return 'checkmark-circle-outline';
+                case 'error':
+                    return 'alert-circle-outline';
+                case 'info':
+                    return 'information-circle-outline';
+                case 'warning':
+                    return 'warning-outline';
+                default:
+                    return 'notifications-outline';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Khởi tạo datePicker trước
+            initializeDatePicker();
+            
+            // Sau đó mới load dữ liệu
+            loadAttendanceData();
+            loadEmployeeList();
+            loadEmployeeCount();
+            
+            // Thêm sự kiện cho nút thêm mới
+            document.getElementById('addAttendanceButton').onclick = function() {
+                // Reset form
+                document.getElementById('editForm').reset();
+                document.getElementById('attendanceId').value = '';
+                document.getElementById('employeeId').disabled = false;
+                document.getElementById('modalTitle').textContent = 'Thêm chấm công mới';
+                
+                // Set ngày hiện tại cho date picker
+                datePicker.setDate(new Date());
+                
+                // Load danh sách nhân viên chưa chấm công
+                loadEmployeeList();
+                
+                document.getElementById('editModal').style.display = 'block';
+            };
+        });
+
+        // Thêm hàm mới
+        async function loadEmployeeCount() {
+            try {
+                const response = await fetch('/qlnhansu_V3/backend/src/api/v1/attendance.php?action=getEmployeeCount');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const totalEmployees = data.data.total_employees;
+                    // Thêm thông tin vào hero header
+                    const heroHeader = document.querySelector('.hero-header p');
+                    heroHeader.innerHTML = `Quản lý thông tin chấm công của ${totalEmployees} nhân viên`;
+                }
+            } catch (error) {
+                console.error('Error loading employee count:', error);
+            }
+        }
+
+        // Thêm hàm mới để hiển thị modal danh sách nhân viên chưa chấm công
+        function showUnmarkedEmployeesModal() {
+            document.getElementById('unmarkedEmployeesModal').style.display = 'block';
+            loadUnmarkedEmployeesList();
+        }
+
+        // Thêm hàm đóng modal
+        function closeUnmarkedModal() {
+            document.getElementById('unmarkedEmployeesModal').style.display = 'none';
+        }
+
+        // Thêm hàm tải danh sách nhân viên chưa chấm công
+        async function loadUnmarkedEmployeesList() {
+            try {
+                // Hiển thị loading spinner
+                document.getElementById('loadingSpinner').style.display = 'flex';
+                
+                const selectedDate = datePicker.selectedDates[0] || new Date();
+                const formattedDate = selectedDate.toISOString().split('T')[0];
+                
+                const response = await fetch(`/qlnhansu_V3/backend/src/api/v1/attendance.php?action=getUnmarkedEmployees&date=${formattedDate}`);
+                const data = await response.json();
+                
+                if (data.success && Array.isArray(data.data)) {
+                    const tbody = document.getElementById('unmarkedEmployeesList');
+                    tbody.innerHTML = '';
+                    
+                    if (data.data.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="5" class="text-center" style="padding: 2rem; color: #64748b;">
+                                    <ion-icon name="checkmark-circle-outline" style="font-size: 2rem; color: #22c55e; display: block; margin-bottom: 0.5rem;"></ion-icon>
+                                    Tất cả nhân viên đã được chấm công cho ngày ${formatDateForDisplay(formattedDate)}
+                                </td>
+                            </tr>`;
+                    } else {
+                        data.data.forEach(employee => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>
+                                    <span style="font-weight: 500; color: #1e293b;">${employee.employee_code || '-'}</span>
+                                </td>
+                                <td>
+                                    <div style="font-weight: 500; color: #1e293b;">${employee.employee_name || '-'}</div>
+                                </td>
+                                <td>
+                                    <span class="status-badge ${employee.employee_status === 'Đang làm việc' ? 'status-active' : 'status-warning'}">
+                                        ${employee.employee_status || 'Không xác định'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span style="color: #475569;">${employee.department_name || '-'}</span>
+                                </td>
+                                <td>
+                                    <button class="btn-mark-attendance" onclick="addAttendanceForEmployee(${employee.employee_id})">
+                                        <ion-icon name="add-circle-outline"></ion-icon>
+                                        Chấm công
+                                    </button>
+                                </td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading unmarked employees list:', error);
+                showNotification('error', 'Lỗi khi tải danh sách nhân viên chưa chấm công');
+            } finally {
+                // Ẩn loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }
+        }
+
+        // Thêm hàm chấm công cho nhân viên
+        function addAttendanceForEmployee(employeeId) {
+            // Reset form
+            document.getElementById('editForm').reset();
+            document.getElementById('attendanceId').value = '';
+            document.getElementById('employeeId').value = employeeId;
+            document.getElementById('employeeId').disabled = true;
+            document.getElementById('modalTitle').textContent = 'Thêm chấm công mới';
+            
+            // Set ngày hiện tại cho date picker
+            datePicker.setDate(new Date());
+            
+            // Đóng modal danh sách nhân viên chưa chấm công
+            closeUnmarkedModal();
+            
+            // Mở modal thêm chấm công
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        // Thêm nút vào controls bar
+        document.querySelector('.controls-bar .filter-controls').insertAdjacentHTML('beforeend', `
+            <button class="btn btn-info" onclick="showUnmarkedEmployeesModal()">
+                <ion-icon name="people-outline"></ion-icon>
+                Xem nhân viên chưa chấm công
+            </button>
+        `);
+
+        async function addAttendance() {
+            try {
+                // Hiển thị loading spinner
+                document.getElementById('loadingSpinner').style.display = 'flex';
+
+                // Lấy ngày từ date picker và chuyển đổi định dạng
+                const selectedDate = datePicker.selectedDates[0];
+                if (!selectedDate) {
+                    showNotification('error', 'Vui lòng chọn ngày chấm công');
+                    return;
+                }
+
+                // Chuyển đổi ngày sang định dạng YYYY-MM-DD
+                const formattedDate = selectedDate.toISOString().split('T')[0];
+
+                const formData = {
+                    employee_id: document.getElementById('employeeId').value,
+                    attendance_date: formattedDate,
+                    attendance_symbol: document.getElementById('attendanceSymbol').value,
+                    notes: document.getElementById('notes').value
+                };
+
+                const response = await fetch('/qlnhansu_V3/backend/src/api/v1/attendance.php?action=add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                // Đọc response dưới dạng text trước
+                const responseText = await response.text();
+                let data;
+                
+                try {
+                    // Thử parse JSON
+                    data = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('Invalid JSON response:', responseText);
+                    throw new Error('Server trả về dữ liệu không hợp lệ');
+                }
+
+                if (data.success) {
+                    showNotification('success', 'Thêm chấm công thành công');
+                    closeModal();
+                    await loadAttendanceData();
+                } else {
+                    showNotification('error', data.message || 'Có lỗi xảy ra');
+                }
+            } catch (error) {
+                console.error('Error adding attendance:', error);
+                showNotification('error', 'Lỗi khi thêm chấm công: ' + error.message);
+            } finally {
+                // Ẩn loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }
+        }
+
+        async function updateAttendance() {
+            try {
+                // Hiển thị loading spinner
+                document.getElementById('loadingSpinner').style.display = 'flex';
+
+                // Lấy ngày từ date picker và chuyển đổi định dạng
+                const selectedDate = datePicker.selectedDates[0];
+                if (!selectedDate) {
+                    showNotification('error', 'Vui lòng chọn ngày chấm công');
+                    return;
+                }
+
+                // Chuyển đổi ngày sang định dạng YYYY-MM-DD
+                const formattedDate = selectedDate.toISOString().split('T')[0];
+
+                const formData = {
+                    attendance_id: document.getElementById('attendanceId').value,
+                    employee_id: document.getElementById('employeeId').value,
+                    attendance_date: formattedDate,
+                    attendance_symbol: document.getElementById('attendanceSymbol').value,
+                    notes: document.getElementById('notes').value
+                };
+
+                const response = await fetch('/qlnhansu_V3/backend/src/api/v1/attendance.php?action=update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                // Đọc response dưới dạng text trước
+                const responseText = await response.text();
+                let data;
+                
+                try {
+                    // Thử parse JSON
+                    data = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('Invalid JSON response:', responseText);
+                    throw new Error('Server trả về dữ liệu không hợp lệ');
+                }
+
+                if (data.success) {
+                    showNotification('success', 'Cập nhật chấm công thành công');
+                    closeModal();
+                    await loadAttendanceData();
+                } else {
+                    showNotification('error', data.message || 'Có lỗi xảy ra');
+                }
+            } catch (error) {
+                console.error('Error updating attendance:', error);
+                showNotification('error', 'Lỗi khi cập nhật thông tin chấm công: ' + error.message);
+            } finally {
+                // Ẩn loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }
+        }
+
+        // Cập nhật form submit handler
+        document.getElementById('editForm').onsubmit = function(event) {
+            event.preventDefault();
+            const attendanceId = document.getElementById('attendanceId').value;
+            if (attendanceId) {
+                updateAttendance();
+            } else {
+                addAttendance();
+            }
+        };
         </script>
     </body>
 </html>

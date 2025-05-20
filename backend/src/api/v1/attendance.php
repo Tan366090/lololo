@@ -22,6 +22,17 @@ require_once $rootDir . '/config/database.php';
 // Set content type to JSON
 header('Content-Type: application/json');
 
+// Add CORS headers
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+// Handle preflight requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
 // Check database connection
 try {
     $db = Database::getConnection();
@@ -55,6 +66,15 @@ switch ($action) {
         break;
     case 'getStatistics':
         getAttendanceStatistics();
+        break;
+    case 'getEmployees':
+        getEmployeeList();
+        break;
+    case 'getEmployeeCount':
+        getEmployeeCount();
+        break;
+    case 'getUnmarkedEmployees':
+        getUnmarkedEmployees();
         break;
     default:
         http_response_code(400);
@@ -145,24 +165,8 @@ function addAttendance() {
     try {
         $data = json_decode(file_get_contents('php://input'), true);
         
-        // Validate required fields
-        $required_fields = ['employee_id', 'attendance_date', 'attendance_symbol'];
-        foreach ($required_fields as $field) {
-            if (!isset($data[$field])) {
-                throw new Exception("Thiếu trường bắt buộc: $field");
-            }
-        }
-        
-        // Check if attendance record already exists
-        $sql = "SELECT attendance_id FROM attendance 
-                WHERE employee_id = :employee_id AND attendance_date = :attendance_date";
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(':employee_id', $data['employee_id'], PDO::PARAM_INT);
-        $stmt->bindParam(':attendance_date', $data['attendance_date']);
-        $stmt->execute();
-        
-        if ($stmt->rowCount() > 0) {
-            throw new Exception('Đã tồn tại bản ghi chấm công cho nhân viên này vào ngày này');
+        if (!isset($data['employee_id']) || !isset($data['attendance_date']) || !isset($data['attendance_symbol'])) {
+            throw new Exception('Thiếu thông tin bắt buộc');
         }
         
         // Insert new attendance record
@@ -172,13 +176,24 @@ function addAttendance() {
                         :work_duration_hours, :attendance_symbol, :notes, 'manual')";
         
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(':employee_id', $data['employee_id'], PDO::PARAM_INT);
-        $stmt->bindParam(':attendance_date', $data['attendance_date']);
-        $stmt->bindParam(':check_in_time', $data['check_in_time'] ?? null);
-        $stmt->bindParam(':check_out_time', $data['check_out_time'] ?? null);
-        $stmt->bindParam(':work_duration_hours', $data['work_duration_hours'] ?? null);
-        $stmt->bindParam(':attendance_symbol', $data['attendance_symbol']);
-        $stmt->bindParam(':notes', $data['notes'] ?? null);
+        
+        // Create variables for binding
+        $employee_id = $data['employee_id'];
+        $attendance_date = $data['attendance_date'];
+        $check_in_time = $data['check_in_time'] ?? null;
+        $check_out_time = $data['check_out_time'] ?? null;
+        $work_duration_hours = $data['work_duration_hours'] ?? null;
+        $attendance_symbol = $data['attendance_symbol'];
+        $notes = $data['notes'] ?? null;
+        
+        // Bind parameters using variables
+        $stmt->bindParam(':employee_id', $employee_id, PDO::PARAM_INT);
+        $stmt->bindParam(':attendance_date', $attendance_date);
+        $stmt->bindParam(':check_in_time', $check_in_time);
+        $stmt->bindParam(':check_out_time', $check_out_time);
+        $stmt->bindParam(':work_duration_hours', $work_duration_hours);
+        $stmt->bindParam(':attendance_symbol', $attendance_symbol);
+        $stmt->bindParam(':notes', $notes);
         
         if ($stmt->execute()) {
             echo json_encode([
@@ -323,6 +338,109 @@ function getAttendanceStatistics() {
         echo json_encode([
             'success' => false,
             'message' => 'Lỗi khi lấy thống kê chấm công: ' . $e->getMessage()
+        ]);
+    }
+}
+
+// Hàm lấy danh sách nhân viên
+function getEmployeeList() {
+    global $db;
+    
+    try {
+        $sql = "SELECT e.id as employee_id, e.employee_code, e.name as employee_name,
+                       u.username, up.full_name
+                FROM employees e
+                JOIN users u ON e.id = u.user_id
+                JOIN user_profiles up ON u.user_id = up.user_id
+                ORDER BY e.employee_code ASC";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        echo json_encode([
+            'success' => true,
+            'data' => $employees
+        ]);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Lỗi khi lấy danh sách nhân viên: ' . $e->getMessage()
+        ]);
+    }
+}
+
+// Hàm đếm tổng số nhân viên
+function getEmployeeCount() {
+    global $db;
+    
+    try {
+        $sql = "SELECT COUNT(*) as total_employees FROM employees";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        echo json_encode([
+            'success' => true,
+            'data' => [
+                'total_employees' => (int)$result['total_employees']
+            ]
+        ]);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Lỗi khi đếm số lượng nhân viên: ' . $e->getMessage()
+        ]);
+    }
+}
+
+// Hàm lấy danh sách nhân viên chưa chấm công trong ngày
+function getUnmarkedEmployees() {
+    global $db;
+    
+    try {
+        $date = $_GET['date'] ?? date('Y-m-d');
+        
+        // Lấy danh sách nhân viên chưa chấm công trong ngày
+        $sql = "SELECT e.id as employee_id, e.employee_code, e.name as employee_name,
+                       u.username, up.full_name,
+                       CASE 
+                           WHEN e.status = 'active' THEN 'Đang làm việc'
+                           WHEN e.status = 'on_leave' THEN 'Đang nghỉ phép'
+                           ELSE 'Không xác định'
+                       END as employee_status
+                FROM employees e
+                JOIN users u ON e.id = u.user_id
+                JOIN user_profiles up ON u.user_id = up.user_id
+                WHERE e.status = 'active'  -- Chỉ lấy nhân viên đang làm việc
+                AND NOT EXISTS (
+                    SELECT 1 FROM attendance a 
+                    WHERE a.employee_id = e.id 
+                    AND a.attendance_date = :date
+                )
+                ORDER BY e.employee_code ASC";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':date', $date);
+        $stmt->execute();
+        $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Thêm thông tin về ngày chấm công
+        $response = [
+            'success' => true,
+            'data' => $employees,
+            'attendance_date' => $date,
+            'total_unmarked' => count($employees)
+        ];
+        
+        echo json_encode($response);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Lỗi khi lấy danh sách nhân viên chưa chấm công: ' . $e->getMessage()
         ]);
     }
 }
