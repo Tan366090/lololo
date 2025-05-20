@@ -1540,37 +1540,63 @@ async function editPayroll(id) {
 
 async function deletePayroll(id) {
     try {
-        // Kiểm tra trạng thái phiếu lương
-        const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=checkStatus&id=${id}`);
+        // Lấy thông tin chi tiết phiếu lương
+        const response = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=details&id=${id}`);
         const data = await response.json();
         
         if (!data.success) {
-            showError(data.message || 'Không thể kiểm tra trạng thái phiếu lương');
+            showError(data.message);
             return;
         }
 
-        if (data.data.status !== 'pending') {
-            showError('Chỉ có thể xóa phiếu lương ở trạng thái chờ duyệt');
-            return;
-        }
+        const payroll = data.data;
+        
+        // Tạo thông báo chi tiết
+        const confirmMessage = `
+            Bạn có chắc chắn muốn xóa phiếu lương này?
+            
+            Thông tin phiếu lương:
+            - Nhân viên: ${payroll.employee.name} (${payroll.employee.code})
+            - Phòng ban: ${payroll.employee.department}
+            - Kỳ lương: ${payroll.period.start} đến ${payroll.period.end}
+            - Lương cơ bản: ${payroll.salary.base} VNĐ
+            - Phụ cấp: ${payroll.salary.allowances} VNĐ
+            - Thưởng: ${payroll.salary.bonuses} VNĐ
+            - Khấu trừ: ${payroll.salary.deductions} VNĐ
+            - Thực lĩnh: ${payroll.salary.net} VNĐ
+        `;
 
-        if (!confirm('Bạn có chắc chắn muốn xóa phiếu lương này?')) {
-            return;
-        }
+        if (confirm(confirmMessage)) {
+            showLoading();
+            const deleteResponse = await fetch(`/qlnhansu_V3/backend/src/public/admin/api/payroll.php?action=delete&id=${id}`, {
+                method: 'DELETE'
+            });
+            const deleteData = await deleteResponse.json();
+            hideLoading();
 
-        showLoading();
-        const deleteResponse = await api.payroll.delete(id);
-
-        if (deleteResponse.success) {
-            showSuccess('Xóa phiếu lương thành công');
-            loadPayrollData();
-        } else {
-            showError(deleteResponse.message || 'Xóa phiếu lương thất bại');
+            if (deleteData.success) {
+                showSuccess('Xóa phiếu lương thành công');
+                loadPayrollData(); // Tải lại danh sách
+            } else {
+                showError(deleteData.message);
+            }
         }
     } catch (error) {
-        handleApiError(error, 'Lỗi khi xóa phiếu lương');
-    } finally {
         hideLoading();
+        showError('Có lỗi xảy ra khi xóa phiếu lương');
+        console.error('Error:', error);
+    }
+}
+
+// Hàm kiểm tra quyền admin
+async function checkAdminRole() {
+    try {
+        const response = await fetch('/qlnhansu_V3/backend/src/public/admin/api/auth.php?action=checkRole');
+        const data = await response.json();
+        return data.isAdmin === true;
+    } catch (error) {
+        console.error('Error checking admin role:', error);
+        return false;
     }
 }
 

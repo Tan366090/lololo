@@ -999,7 +999,7 @@ function updatePayroll($conn, $id) {
         }
 
         // Check if payroll exists and is editable
-        $checkQuery = "SELECT status FROM payroll WHERE id = ?";
+        $checkQuery = "SELECT status FROM payroll WHERE payroll_id = ?";
         $stmt = $conn->prepare($checkQuery);
         $stmt->execute([$id]);
         $payroll = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -1031,7 +1031,7 @@ function updatePayroll($conn, $id) {
 
         if (!empty($updateFields)) {
             $params[] = $id;
-            $query = "UPDATE payroll SET " . implode(', ', $updateFields) . " WHERE id = ?";
+            $query = "UPDATE payroll SET " . implode(', ', $updateFields) . " WHERE payroll_id = ?";
             $stmt = $conn->prepare($query);
             $stmt->execute($params);
         }
@@ -1085,18 +1085,14 @@ function updatePayroll($conn, $id) {
 // Hàm xóa phiếu lương
 function deletePayroll($conn, $id) {
     try {
-        // Check if payroll exists and is deletable
-        $checkQuery = "SELECT status FROM payroll WHERE id = ?";
+        // Check if payroll exists
+        $checkQuery = "SELECT status FROM payroll WHERE payroll_id = ?";
         $stmt = $conn->prepare($checkQuery);
         $stmt->execute([$id]);
         $payroll = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$payroll) {
-            throw new Exception('Payroll not found');
-        }
-
-        if ($payroll['status'] !== 'draft') {
-            throw new Exception('Cannot delete payroll that is not in draft status');
+            throw new Exception('Không tìm thấy phiếu lương');
         }
 
         // Begin transaction
@@ -1113,7 +1109,7 @@ function deletePayroll($conn, $id) {
         $stmt->execute([$id]);
 
         // Delete payroll
-        $deletePayrollQuery = "DELETE FROM payroll WHERE id = ?";
+        $deletePayrollQuery = "DELETE FROM payroll WHERE payroll_id = ?";
         $stmt = $conn->prepare($deletePayrollQuery);
         $stmt->execute([$id]);
 
